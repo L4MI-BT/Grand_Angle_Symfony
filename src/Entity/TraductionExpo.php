@@ -23,6 +23,17 @@ class TraductionExpo
     #[ORM\Column(nullable: true)]
     private ?\DateTime $dateAjout = null;
 
+    #[ORM\ManyToOne(inversedBy: 'traductionexpos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?exposition $idExposition = null;
+
+    #[ORM\ManyToOne(inversedBy: 'traductionexpos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?langue $idLangue = null;
+
+    #[ORM\ManyToOne(inversedBy: 'traductionexpos')]
+    private ?employe $idEmploye = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +71,42 @@ class TraductionExpo
     public function setDateAjout(?\DateTime $dateAjout): static
     {
         $this->dateAjout = $dateAjout;
+
+        return $this;
+    }
+
+    public function getIdExposition(): ?exposition
+    {
+        return $this->idExposition;
+    }
+
+    public function setIdExposition(?exposition $idExposition): static
+    {
+        $this->idExposition = $idExposition;
+
+        return $this;
+    }
+
+    public function getIdLangue(): ?langue
+    {
+        return $this->idLangue;
+    }
+
+    public function setIdLangue(?langue $idLangue): static
+    {
+        $this->idLangue = $idLangue;
+
+        return $this;
+    }
+
+    public function getIdEmploye(): ?employe
+    {
+        return $this->idEmploye;
+    }
+
+    public function setIdEmploye(?employe $idEmploye): static
+    {
+        $this->idEmploye = $idEmploye;
 
         return $this;
     }

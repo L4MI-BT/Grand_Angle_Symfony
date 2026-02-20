@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EspaceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,17 @@ class Espace
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $superficieM2 = null;
+
+    /**
+     * @var Collection<int, Emplacement>
+     */
+    #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'idEspace', orphanRemoval: true)]
+    private Collection $emplacements;
+
+    public function __construct()
+    {
+        $this->emplacements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +73,36 @@ class Espace
     public function setSuperficieM2(?string $superficieM2): static
     {
         $this->superficieM2 = $superficieM2;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Emplacement>
+     */
+    public function getEmplacements(): Collection
+    {
+        return $this->emplacements;
+    }
+
+    public function addEmplacement(Emplacement $emplacement): static
+    {
+        if (!$this->emplacements->contains($emplacement)) {
+            $this->emplacements->add($emplacement);
+            $emplacement->setIdEspace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmplacement(Emplacement $emplacement): static
+    {
+        if ($this->emplacements->removeElement($emplacement)) {
+            // set the owning side to null (unless already changed)
+            if ($emplacement->getIdEspace() === $this) {
+                $emplacement->setIdEspace(null);
+            }
+        }
 
         return $this;
     }

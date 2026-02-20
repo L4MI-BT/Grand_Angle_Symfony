@@ -23,6 +23,20 @@ class TraductionContenueEnrichie
     #[ORM\Column(nullable: true)]
     private ?\DateTime $dateAjout = null;
 
+    #[ORM\ManyToOne(inversedBy: 'traductionContenueEnrichies')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?contenuEnrichi $idContenuEnrichi = null;
+
+    #[ORM\ManyToOne(inversedBy: 'traductionContenueEnrichies')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?langue $idLangue = null;
+
+    #[ORM\ManyToOne(inversedBy: 'traductionContenueEnrichies')]
+    private ?employe $idEmploye = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $ordreAffichage = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +74,54 @@ class TraductionContenueEnrichie
     public function setDateAjout(?\DateTime $dateAjout): static
     {
         $this->dateAjout = $dateAjout;
+
+        return $this;
+    }
+
+    public function getIdContenuEnrichi(): ?contenuEnrichi
+    {
+        return $this->idContenuEnrichi;
+    }
+
+    public function setIdContenuEnrichi(?contenuEnrichi $idContenuEnrichi): static
+    {
+        $this->idContenuEnrichi = $idContenuEnrichi;
+
+        return $this;
+    }
+
+    public function getIdLangue(): ?langue
+    {
+        return $this->idLangue;
+    }
+
+    public function setIdLangue(?langue $idLangue): static
+    {
+        $this->idLangue = $idLangue;
+
+        return $this;
+    }
+
+    public function getIdEmploye(): ?employe
+    {
+        return $this->idEmploye;
+    }
+
+    public function setIdEmploye(?employe $idEmploye): static
+    {
+        $this->idEmploye = $idEmploye;
+
+        return $this;
+    }
+
+    public function getOrdreAffichage(): ?int
+    {
+        return $this->ordreAffichage;
+    }
+
+    public function setOrdreAffichage(?int $ordreAffichage): static
+    {
+        $this->ordreAffichage = $ordreAffichage;
 
         return $this;
     }

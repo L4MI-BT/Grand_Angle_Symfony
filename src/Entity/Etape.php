@@ -19,6 +19,10 @@ class Etape
     #[ORM\Column]
     private ?int $ordre = null;
 
+    #[ORM\ManyToOne(inversedBy: 'etapes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?exposition $idExposition = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class Etape
     public function setOrdre(int $ordre): static
     {
         $this->ordre = $ordre;
+
+        return $this;
+    }
+
+    public function getIdExposition(): ?exposition
+    {
+        return $this->idExposition;
+    }
+
+    public function setIdExposition(?exposition $idExposition): static
+    {
+        $this->idExposition = $idExposition;
 
         return $this;
     }

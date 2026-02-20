@@ -16,6 +16,10 @@ class Consultation
     #[ORM\Column(nullable: true)]
     private ?\DateTime $dateConsultation = null;
 
+    #[ORM\ManyToOne(inversedBy: 'consultations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?oeuvre $idOeuvre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +33,18 @@ class Consultation
     public function setDateConsultation(?\DateTime $dateConsultation): static
     {
         $this->dateConsultation = $dateConsultation;
+
+        return $this;
+    }
+
+    public function getIdOeuvre(): ?oeuvre
+    {
+        return $this->idOeuvre;
+    }
+
+    public function setIdOeuvre(?oeuvre $idOeuvre): static
+    {
+        $this->idOeuvre = $idOeuvre;
 
         return $this;
     }
