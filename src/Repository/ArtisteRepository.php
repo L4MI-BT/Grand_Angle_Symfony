@@ -34,6 +34,44 @@ class ArtisteRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+        /**
+     * Récupérer un artiste avec le nombre d'œuvres
+     * 
+     * @param int $id
+     * @return array|null
+     */
+    public function findWithNbOeuvres(int $id): ?array
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('a', 'COUNT(o.id) as nbOeuvres')
+            ->leftJoin('a.oeuvres', 'o')
+            ->where('a.id = :id')
+            ->setParameter('id', $id)
+            ->groupBy('a.id')
+            ->getQuery()
+            ->getOneOrNullResult();
+        
+        return $result;
+    }
+
+        /**
+     * Récupérer tous les artistes d'une exposition
+     * 
+     * @param int $idExposition
+     * @return Artiste[]
+     */
+    public function findByExposition(int $idExposition): array
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.oeuvres', 'o')
+            ->innerJoin('o.exposition', 'e')
+            ->where('e.id = :idExpo')
+            ->setParameter('idExpo', $idExposition)
+            ->distinct()
+            ->orderBy('a.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Artiste[] Returns an array of Artiste objects
 //     */
