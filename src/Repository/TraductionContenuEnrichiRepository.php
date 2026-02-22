@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\TraductionContenueEnrichie;
+use App\Entity\TraductionContenuEnrichi;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TraductionContenueEnrichie>
+ * @extends ServiceEntityRepository<TraductionContenuEnrichi>
  */
-class TraductionContenueEnrichieRepository extends ServiceEntityRepository
+class TraductionContenuEnrichiRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TraductionContenueEnrichie::class);
+        parent::__construct($registry, TraductionContenuEnrichi::class);
     }
 
     //    /**
-    //     * @return TraductionContenueEnrichie[] Returns an array of TraductionContenueEnrichie objects
+    //     * @return TraductionContenuEnrichi[] Returns an array of TraductionContenuEnrichi objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class TraductionContenueEnrichieRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?TraductionContenueEnrichie
+    //    public function findOneBySomeField($value): ?TraductionContenueEnrichi
     //    {
     //        return $this->createQueryBuilder('t')
     //            ->andWhere('t.exampleField = :val')

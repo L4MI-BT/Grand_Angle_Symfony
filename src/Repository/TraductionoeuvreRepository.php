@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\Traductionoeuvre;
+use App\Entity\TraductionOeuvre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Traductionoeuvre>
+ * @extends ServiceEntityRepository<TraductionOeuvre>
  */
-class TraductionoeuvreRepository extends ServiceEntityRepository
+class TraductionOeuvreRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Traductionoeuvre::class);
+        parent::__construct($registry, TraductionOeuvre::class);
     }
 
     //    /**

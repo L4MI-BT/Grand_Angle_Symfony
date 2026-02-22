@@ -23,7 +23,7 @@ class Artiste
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $prenom = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(name: 'anneeNaissance', nullable: true)]
     private ?int $anneeNaissance = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -32,7 +32,7 @@ class Artiste
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'dateAjout', type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
     #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'artistes')]

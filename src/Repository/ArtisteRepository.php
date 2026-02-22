@@ -16,6 +16,24 @@ class ArtisteRepository extends ServiceEntityRepository
         parent::__construct($registry, Artiste::class);
     }
 
+        /**
+     * Récupérer un artiste avec toutes ses œuvres
+     * 
+     * @param int $id
+     * @return Artiste|null
+     */
+    public function findWithOeuvres(int $id): ?Artiste
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.oeuvres', 'o')
+            ->addSelect('o')
+            ->where('a.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('o.anneeCreation', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Artiste[] Returns an array of Artiste objects
 //     */
