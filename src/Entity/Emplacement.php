@@ -9,11 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmplacementRepository::class)]
+#[ORM\Table(name: 'emplacement')]
 class Emplacement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idEmplacement')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
@@ -28,16 +29,16 @@ class Emplacement
     /**
      * @var Collection<int, Oeuvre>
      */
-    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'idEmplacement')]
+    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'emplacement')]
     private Collection $oeuvres;
 
-    #[ORM\ManyToOne(inversedBy: 'emplacements')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?espace $idEspace = null;
+    #[ORM\ManyToOne(targetEntity: Espace::class, inversedBy: 'emplacements')]
+    #[ORM\JoinColumn(name:'idEspace', referencedColumnName: 'idEspace', nullable: false)]
+    private ?Espace $espace = null;
 
     #[ORM\ManyToOne(inversedBy: 'emplacements')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?exposition $idExposition = null;
+    #[ORM\JoinColumn(name: 'idExposition', referencedColumnName: 'idExposition', nullable: false)]
+    private ?Exposition $exposition = null;
 
     public function __construct()
     {
@@ -97,7 +98,7 @@ class Emplacement
     {
         if (!$this->oeuvres->contains($oeuvre)) {
             $this->oeuvres->add($oeuvre);
-            $oeuvre->setIdEmplacement($this);
+            $oeuvre->setEmplacement($this);
         }
 
         return $this;
@@ -107,34 +108,34 @@ class Emplacement
     {
         if ($this->oeuvres->removeElement($oeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($oeuvre->getIdEmplacement() === $this) {
-                $oeuvre->setIdEmplacement(null);
+            if ($oeuvre->getEmplacement() === $this) {
+                $oeuvre->setEmplacement(null);
             }
         }
 
         return $this;
     }
 
-    public function getIdEspace(): ?espace
+    public function getEspace(): ?Espace
     {
-        return $this->idEspace;
+        return $this->espace;
     }
 
-    public function setIdEspace(?espace $idEspace): static
+    public function setEspace(?Espace $espace): static
     {
-        $this->idEspace = $idEspace;
+        $this->espace = $espace;
 
         return $this;
     }
 
-    public function getIdExposition(): ?exposition
+    public function getExposition(): ?Exposition
     {
-        return $this->idExposition;
+        return $this->exposition;
     }
 
-    public function setIdExposition(?exposition $idExposition): static
+    public function setExposition(?Exposition $exposition): static
     {
-        $this->idExposition = $idExposition;
+        $this->exposition = $exposition;
 
         return $this;
     }

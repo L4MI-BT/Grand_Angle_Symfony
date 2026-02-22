@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\TraductionOeuvreRepository;
+use App\Repository\TraductionContenuEnrichiRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TraductionOeuvreRepository::class)]
-#[ORM\Table(name: 'traductionoeuvre')]
-class TraductionOeuvre
+#[ORM\Entity(repositoryClass: TraductionContenuEnrichiRepository::class)]
+#[ORM\Table(name: 'traductioncontenuenrichi')]
+class TraductionContenuEnrichi
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'idTraductionOeuvre')]
+    #[ORM\Column(name: 'idTraductionContenu')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -21,18 +21,21 @@ class TraductionOeuvre
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $urlAcces = null;
 
+    #[ORM\Column(options: ['default' => 1])]
+    private ?int $ordreAffichage = 1;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
-    #[ORM\ManyToOne(targetEntity: Oeuvre::class, inversedBy: 'traductions')]
-    #[ORM\JoinColumn(name: 'idOeuvre', referencedColumnName: 'idOeuvre', nullable: false)]
-    private ?Oeuvre $oeuvre = null;
+    #[ORM\ManyToOne(targetEntity: ContenuEnrichi::class, inversedBy: 'traductions')]
+    #[ORM\JoinColumn(name: 'idContenuEnrichi', referencedColumnName: 'idContenuEnrichi', nullable: false)]
+    private ?ContenuEnrichi $contenuEnrichi = null;
 
-    #[ORM\ManyToOne(targetEntity: Langue::class, inversedBy: 'traductionOeuvres')]
+    #[ORM\ManyToOne(targetEntity: Langue::class, inversedBy: 'traductionContenuEnrichis')]
     #[ORM\JoinColumn(name: 'idLangue', referencedColumnName: 'idLangue', nullable: false)]
     private ?Langue $langue = null;
 
-    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'traductionOeuvres')]
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'traductionContenuEnrichis')]
     #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
     private ?Employe $employe = null;
 
@@ -68,6 +71,17 @@ class TraductionOeuvre
         return $this;
     }
 
+    public function getOrdreAffichage(): ?int
+    {
+        return $this->ordreAffichage;
+    }
+
+    public function setOrdreAffichage(?int $ordreAffichage): static
+    {
+        $this->ordreAffichage = $ordreAffichage;
+        return $this;
+    }
+
     public function getDateAjout(): ?\DateTime
     {
         return $this->dateAjout;
@@ -79,14 +93,14 @@ class TraductionOeuvre
         return $this;
     }
 
-    public function getOeuvre(): ?Oeuvre
+    public function getContenuEnrichi(): ?ContenuEnrichi
     {
-        return $this->oeuvre;
+        return $this->contenuEnrichi;
     }
 
-    public function setOeuvre(?Oeuvre $oeuvre): static
+    public function setContenuEnrichi(?ContenuEnrichi $contenuEnrichi): static
     {
-        $this->oeuvre = $oeuvre;
+        $this->contenuEnrichi = $contenuEnrichi;
         return $this;
     }
 

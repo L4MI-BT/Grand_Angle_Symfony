@@ -9,11 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmployeRepository::class)]
+#[ORM\Table(name: 'employe')]
 class Employe
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idEmploye')]
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
@@ -25,8 +26,13 @@ class Employe
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 250)]
-    private ?string $role = null;
+    #[ORM\Column(
+    type: Types::STRING, 
+    length: 20,
+    columnDefinition: "ENUM('admin', 'gestionnaire')",
+    options: ['default' => 'gestionnaire']
+    )]
+    private ?string $role = 'gestionnaire';
 
     #[ORM\Column(length: 50)]
     private ?string $login = null;
@@ -34,75 +40,78 @@ class Employe
     #[ORM\Column(length: 255)]
     private ?string $mdp = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $actif = null;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 1])]
+    private ?bool $actif = true;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $supprime = null;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private ?bool $supprime = false;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateCreation = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTime $dateSuppression = null;
 
     /**
-     * @var Collection<int, Traductionoeuvre>
+     * @var Collection<int, TraductionOeuvre>
      */
-    #[ORM\OneToMany(targetEntity: Traductionoeuvre::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: TraductionOeuvre::class, mappedBy: 'employe')]
     private Collection $traductionoeuvres;
 
     /**
-     * @var Collection<int, Traductionexpo>
+     * @var Collection<int, TraductionExpo>
      */
-    #[ORM\OneToMany(targetEntity: Traductionexpo::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: TraductionExpo::class, mappedBy: 'employe')]
     private Collection $traductionexpos;
 
     /**
-     * @var Collection<int, TraductionContenueEnrichie>
+     * @var Collection<int, TraductionContenuEnrichi>
      */
-    #[ORM\OneToMany(targetEntity: TraductionContenueEnrichie::class, mappedBy: 'idEmploye')]
-    private Collection $traductionContenueEnrichies;
+    #[ORM\OneToMany(targetEntity: TraductionContenuEnrichi::class, mappedBy: 'employe')]
+    private Collection $traductionContenuEnrichis;
 
     /**
-     * @var Collection<int, Traductionartiste>
+     * @var Collection<int, TraductionArtiste>
      */
-    #[ORM\OneToMany(targetEntity: Traductionartiste::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: TraductionArtiste::class, mappedBy: 'employe')]
     private Collection $traductionartistes;
 
     /**
      * @var Collection<int, Oeuvre>
      */
-    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'employe')]
     private Collection $oeuvres;
 
     /**
      * @var Collection<int, Exposition>
      */
-    #[ORM\OneToMany(targetEntity: Exposition::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: Exposition::class, mappedBy: 'employe')]
     private Collection $expositions;
 
-    #[ORM\ManyToOne(inversedBy: 'employes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?fonction $idFonction = null;
+    #[ORM\ManyToOne(targetEntity: Fonction::class, inversedBy: 'employes')]
+    #[ORM\JoinColumn(name: 'idFonction', referencedColumnName: 'idFonction', nullable: false)]
+    private ?Fonction $fonction = null;
 
     /**
      * @var Collection<int, ContenuEnrichi>
      */
-    #[ORM\OneToMany(targetEntity: ContenuEnrichi::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: ContenuEnrichi::class, mappedBy: 'employe')]
     private Collection $contenuEnrichis;
 
     /**
      * @var Collection<int, Artiste>
      */
-    #[ORM\OneToMany(targetEntity: Artiste::class, mappedBy: 'idEmploye')]
+    #[ORM\OneToMany(targetEntity: Artiste::class, mappedBy: 'employe')]
     private Collection $artistes;
 
     public function __construct()
     {
+        $this->dateCreation = new \DateTime();
+        $this->actif = true;
+        $this->supprime = false;
         $this->traductionoeuvres = new ArrayCollection();
         $this->traductionexpos = new ArrayCollection();
-        $this->traductionContenueEnrichies = new ArrayCollection();
+        $this->traductionContenuEnrichis = new ArrayCollection();
         $this->traductionartistes = new ArrayCollection();
         $this->oeuvres = new ArrayCollection();
         $this->expositions = new ArrayCollection();
@@ -187,24 +196,24 @@ class Employe
         return $this;
     }
 
-    public function getActif(): ?int
+    public function getActif(): ?bool
     {
         return $this->actif;
     }
 
-    public function setActif(?int $actif): static
+    public function setActif(?bool $actif): static
     {
         $this->actif = $actif;
 
         return $this;
     }
 
-    public function getSupprime(): ?int
+    public function getSupprime(): ?bool
     {
         return $this->supprime;
     }
 
-    public function setSupprime(?int $supprime): static
+    public function setSupprime(?bool $supprime): static
     {
         $this->supprime = $supprime;
 
@@ -236,29 +245,29 @@ class Employe
     }
 
     /**
-     * @return Collection<int, Traductionoeuvre>
+     * @return Collection<int, TraductionOeuvre>
      */
     public function getTraductionoeuvres(): Collection
     {
         return $this->traductionoeuvres;
     }
 
-    public function addTraductionoeuvre(Traductionoeuvre $traductionoeuvre): static
+    public function addTraductionoeuvre(TraductionOeuvre $traductionoeuvre): static
     {
         if (!$this->traductionoeuvres->contains($traductionoeuvre)) {
             $this->traductionoeuvres->add($traductionoeuvre);
-            $traductionoeuvre->setIdEmploye($this);
+            $traductionoeuvre->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionoeuvre(Traductionoeuvre $traductionoeuvre): static
+    public function removeTraductionoeuvre(TraductionOeuvre $traductionoeuvre): static
     {
         if ($this->traductionoeuvres->removeElement($traductionoeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($traductionoeuvre->getIdEmploye() === $this) {
-                $traductionoeuvre->setIdEmploye(null);
+            if ($traductionoeuvre->getEmploye() === $this) {
+                $traductionoeuvre->setEmploye(null);
             }
         }
 
@@ -266,29 +275,29 @@ class Employe
     }
 
     /**
-     * @return Collection<int, Traductionexpo>
+     * @return Collection<int, TraductionExpo>
      */
-    public function getTraductionexpos(): Collection
+    public function getTraductionExpos(): Collection
     {
         return $this->traductionexpos;
     }
 
-    public function addTraductionexpo(Traductionexpo $traductionexpo): static
+    public function addTraductionexpo(TraductionExpo $traductionexpo): static
     {
         if (!$this->traductionexpos->contains($traductionexpo)) {
             $this->traductionexpos->add($traductionexpo);
-            $traductionexpo->setIdEmploye($this);
+            $traductionexpo->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionexpo(Traductionexpo $traductionexpo): static
+    public function removeTraductionexpo(TraductionExpo $traductionexpo): static
     {
         if ($this->traductionexpos->removeElement($traductionexpo)) {
             // set the owning side to null (unless already changed)
-            if ($traductionexpo->getIdEmploye() === $this) {
-                $traductionexpo->setIdEmploye(null);
+            if ($traductionexpo->getEmploye() === $this) {
+                $traductionexpo->setEmploye(null);
             }
         }
 
@@ -296,29 +305,29 @@ class Employe
     }
 
     /**
-     * @return Collection<int, TraductionContenueEnrichie>
+     * @return Collection<int, TraductionContenuEnrichi>
      */
-    public function getTraductionContenueEnrichies(): Collection
+    public function getTraductionContenuEnrichis(): Collection
     {
-        return $this->traductionContenueEnrichies;
+        return $this->traductionContenuEnrichis;
     }
 
-    public function addTraductionContenueEnrichy(TraductionContenueEnrichie $traductionContenueEnrichy): static
+    public function addTraductionContenuEnrichy(TraductionContenuEnrichi $traductionContenuEnrichy): static
     {
-        if (!$this->traductionContenueEnrichies->contains($traductionContenueEnrichy)) {
-            $this->traductionContenueEnrichies->add($traductionContenueEnrichy);
-            $traductionContenueEnrichy->setIdEmploye($this);
+        if (!$this->traductionContenuEnrichis->contains($traductionContenuEnrichy)) {
+            $this->traductionContenuEnrichis->add($traductionContenuEnrichy);
+            $traductionContenuEnrichy->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionContenueEnrichy(TraductionContenueEnrichie $traductionContenueEnrichy): static
+    public function removeTraductionContenuEnrichy(TraductionContenuEnrichi $traductionContenuEnrichy): static
     {
-        if ($this->traductionContenueEnrichies->removeElement($traductionContenueEnrichy)) {
+        if ($this->traductionContenuEnrichis->removeElement($traductionContenuEnrichy)) {
             // set the owning side to null (unless already changed)
-            if ($traductionContenueEnrichy->getIdEmploye() === $this) {
-                $traductionContenueEnrichy->setIdEmploye(null);
+            if ($traductionContenuEnrichy->getEmploye() === $this) {
+                $traductionContenuEnrichy->setEmploye(null);
             }
         }
 
@@ -326,29 +335,29 @@ class Employe
     }
 
     /**
-     * @return Collection<int, Traductionartiste>
+     * @return Collection<int, TraductionArtiste>
      */
-    public function getTraductionartistes(): Collection
+    public function getTraductionArtistes(): Collection
     {
         return $this->traductionartistes;
     }
 
-    public function addTraductionartiste(Traductionartiste $traductionartiste): static
+    public function addTraductionArtiste(TraductionArtiste $traductionartiste): static
     {
         if (!$this->traductionartistes->contains($traductionartiste)) {
             $this->traductionartistes->add($traductionartiste);
-            $traductionartiste->setIdEmploye($this);
+            $traductionartiste->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionartiste(Traductionartiste $traductionartiste): static
+    public function removeTraductionartiste(TraductionArtiste $traductionartiste): static
     {
         if ($this->traductionartistes->removeElement($traductionartiste)) {
             // set the owning side to null (unless already changed)
-            if ($traductionartiste->getIdEmploye() === $this) {
-                $traductionartiste->setIdEmploye(null);
+            if ($traductionartiste->getEmploye() === $this) {
+                $traductionartiste->setEmploye(null);
             }
         }
 
@@ -367,7 +376,7 @@ class Employe
     {
         if (!$this->oeuvres->contains($oeuvre)) {
             $this->oeuvres->add($oeuvre);
-            $oeuvre->setIdEmploye($this);
+            $oeuvre->setEmploye($this);
         }
 
         return $this;
@@ -377,8 +386,8 @@ class Employe
     {
         if ($this->oeuvres->removeElement($oeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($oeuvre->getIdEmploye() === $this) {
-                $oeuvre->setIdEmploye(null);
+            if ($oeuvre->getEmploye() === $this) {
+                $oeuvre->setEmploye(null);
             }
         }
 
@@ -397,7 +406,7 @@ class Employe
     {
         if (!$this->expositions->contains($exposition)) {
             $this->expositions->add($exposition);
-            $exposition->setIdEmploye($this);
+            $exposition->setEmploye($this);
         }
 
         return $this;
@@ -407,22 +416,22 @@ class Employe
     {
         if ($this->expositions->removeElement($exposition)) {
             // set the owning side to null (unless already changed)
-            if ($exposition->getIdEmploye() === $this) {
-                $exposition->setIdEmploye(null);
+            if ($exposition->getEmploye() === $this) {
+                $exposition->setEmploye(null);
             }
         }
 
         return $this;
     }
 
-    public function getIdFonction(): ?fonction
+    public function getFonction(): ?Fonction
     {
-        return $this->idFonction;
+        return $this->fonction;
     }
 
-    public function setIdFonction(?fonction $idFonction): static
+    public function setFonction(?Fonction $fonction): static
     {
-        $this->idFonction = $idFonction;
+        $this->fonction = $fonction;
 
         return $this;
     }
@@ -439,7 +448,7 @@ class Employe
     {
         if (!$this->contenuEnrichis->contains($contenuEnrichi)) {
             $this->contenuEnrichis->add($contenuEnrichi);
-            $contenuEnrichi->setIdEmploye($this);
+            $contenuEnrichi->setEmploye($this);
         }
 
         return $this;
@@ -449,8 +458,8 @@ class Employe
     {
         if ($this->contenuEnrichis->removeElement($contenuEnrichi)) {
             // set the owning side to null (unless already changed)
-            if ($contenuEnrichi->getIdEmploye() === $this) {
-                $contenuEnrichi->setIdEmploye(null);
+            if ($contenuEnrichi->getEmploye() === $this) {
+                $contenuEnrichi->setEmploye(null);
             }
         }
 
@@ -469,7 +478,7 @@ class Employe
     {
         if (!$this->artistes->contains($artiste)) {
             $this->artistes->add($artiste);
-            $artiste->setIdEmploye($this);
+            $artiste->setEmploye($this);
         }
 
         return $this;
@@ -479,8 +488,8 @@ class Employe
     {
         if ($this->artistes->removeElement($artiste)) {
             // set the owning side to null (unless already changed)
-            if ($artiste->getIdEmploye() === $this) {
-                $artiste->setIdEmploye(null);
+            if ($artiste->getEmploye() === $this) {
+                $artiste->setEmploye(null);
             }
         }
 

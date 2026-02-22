@@ -7,11 +7,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TraductionExpoRepository::class)]
+#[ORM\Table(name: 'traductionExpo')]
 class TraductionExpo
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idTraductionExpo')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -20,19 +21,25 @@ class TraductionExpo
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $urlAcces = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
-    #[ORM\ManyToOne(inversedBy: 'traductionexpos')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?exposition $idExposition = null;
+    #[ORM\ManyToOne(targetEntity: Exposition::class, inversedBy: 'traductionexpos')]
+    #[ORM\JoinColumn(name: 'idExposition', referencedColumnName: 'idExposition', nullable: false)]
+    private ?Exposition $exposition = null;
 
-    #[ORM\ManyToOne(inversedBy: 'traductionexpos')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?langue $idLangue = null;
+    #[ORM\ManyToOne(targetEntity: Langue::class, inversedBy: 'traductionexpos')]
+    #[ORM\JoinColumn(name: 'idLangue', referencedColumnName: 'idLangue', nullable: false)]
+    private ?Langue $langue = null;
 
-    #[ORM\ManyToOne(inversedBy: 'traductionexpos')]
-    private ?employe $idEmploye = null;
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'traductionexpos')]
+    #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
+    private ?Employe $employe = null;
+
+    public function __construct()
+    {
+        $this->dateAjout = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -75,38 +82,38 @@ class TraductionExpo
         return $this;
     }
 
-    public function getIdExposition(): ?exposition
+    public function getExposition(): ?Exposition
     {
-        return $this->idExposition;
+        return $this->exposition;
     }
 
-    public function setIdExposition(?exposition $idExposition): static
+    public function setExposition(?Exposition $exposition): static
     {
-        $this->idExposition = $idExposition;
+        $this->exposition = $exposition;
 
         return $this;
     }
 
-    public function getIdLangue(): ?langue
+    public function getLangue(): ?langue
     {
-        return $this->idLangue;
+        return $this->langue;
     }
 
-    public function setIdLangue(?langue $idLangue): static
+    public function setLangue(?Langue $langue): static
     {
-        $this->idLangue = $idLangue;
+        $this->langue = $langue;
 
         return $this;
     }
 
-    public function getIdEmploye(): ?employe
+    public function getEmploye(): ?Employe
     {
-        return $this->idEmploye;
+        return $this->employe;
     }
 
-    public function setIdEmploye(?employe $idEmploye): static
+    public function setEmploye(?Employe $employe): static
     {
-        $this->idEmploye = $idEmploye;
+        $this->employe = $employe;
 
         return $this;
     }

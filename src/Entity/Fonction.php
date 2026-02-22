@@ -8,11 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FonctionRepository::class)]
+#[ORM\Table(name: 'fonction')]
 class Fonction
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idFonction')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -21,7 +22,7 @@ class Fonction
     /**
      * @var Collection<int, Employe>
      */
-    #[ORM\OneToMany(targetEntity: Employe::class, mappedBy: 'idFonction')]
+    #[ORM\OneToMany(targetEntity: Employe::class, mappedBy: 'fonction')]
     private Collection $employes;
 
     public function __construct()
@@ -58,7 +59,7 @@ class Fonction
     {
         if (!$this->employes->contains($employe)) {
             $this->employes->add($employe);
-            $employe->setIdFonction($this);
+            $employe->setFonction($this);
         }
 
         return $this;
@@ -68,8 +69,8 @@ class Fonction
     {
         if ($this->employes->removeElement($employe)) {
             // set the owning side to null (unless already changed)
-            if ($employe->getIdFonction() === $this) {
-                $employe->setIdFonction(null);
+            if ($employe->getFonction() === $this) {
+                $employe->setFonction(null);
             }
         }
 

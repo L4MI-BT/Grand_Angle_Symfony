@@ -9,11 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EspaceRepository::class)]
+#[ORM\Table(name: 'espace')]
 class Espace
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idEspace')]
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
@@ -28,7 +29,7 @@ class Espace
     /**
      * @var Collection<int, Emplacement>
      */
-    #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'idEspace', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'espace', orphanRemoval: true)]
     private Collection $emplacements;
 
     public function __construct()
@@ -89,7 +90,7 @@ class Espace
     {
         if (!$this->emplacements->contains($emplacement)) {
             $this->emplacements->add($emplacement);
-            $emplacement->setIdEspace($this);
+            $emplacement->setEspace($this);
         }
 
         return $this;
@@ -99,8 +100,8 @@ class Espace
     {
         if ($this->emplacements->removeElement($emplacement)) {
             // set the owning side to null (unless already changed)
-            if ($emplacement->getIdEspace() === $this) {
-                $emplacement->setIdEspace(null);
+            if ($emplacement->getEspace() === $this) {
+                $emplacement->setEspace(null);
             }
         }
 

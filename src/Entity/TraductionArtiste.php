@@ -7,11 +7,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TraductionArtisteRepository::class)]
+#[ORM\Table(name: 'traductionartiste')]
 class TraductionArtiste
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idTraductionArtiste')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -20,19 +21,25 @@ class TraductionArtiste
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $urlAcces = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
-    #[ORM\ManyToOne(inversedBy: 'traductionartistes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?artiste $idArtiste = null;
+    #[ORM\ManyToOne(targetEntity: Artiste::class, inversedBy: 'traductionArtistes')]
+    #[ORM\JoinColumn(name: 'idArtiste', referencedColumnName: 'idArtiste', nullable: false)]
+    private ?Artiste $artiste = null;
 
-    #[ORM\ManyToOne(inversedBy: 'traductionartistes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?langue $idLangue = null;
+    #[ORM\ManyToOne(targetEntity: Langue::class, inversedBy: 'traductionArtistes')]
+    #[ORM\JoinColumn(name: 'idLangue', referencedColumnName: 'idLangue', nullable: false)]
+    private ?Langue $langue = null;
 
-    #[ORM\ManyToOne(inversedBy: 'traductionartistes')]
-    private ?employe $idEmploye = null;
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'traductionArtistes')]
+    #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
+    private ?Employe $employe = null;
+
+    public function __construct()
+    {
+        $this->dateAjout = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -47,7 +54,6 @@ class TraductionArtiste
     public function setTraductionTexte(?string $traductionTexte): static
     {
         $this->traductionTexte = $traductionTexte;
-
         return $this;
     }
 
@@ -59,7 +65,6 @@ class TraductionArtiste
     public function setUrlAcces(?string $urlAcces): static
     {
         $this->urlAcces = $urlAcces;
-
         return $this;
     }
 
@@ -71,43 +76,39 @@ class TraductionArtiste
     public function setDateAjout(?\DateTime $dateAjout): static
     {
         $this->dateAjout = $dateAjout;
-
         return $this;
     }
 
-    public function getIdArtiste(): ?artiste
+    public function getArtiste(): ?Artiste
     {
-        return $this->idArtiste;
+        return $this->artiste;
     }
 
-    public function setIdArtiste(?artiste $idArtiste): static
+    public function setArtiste(?Artiste $artiste): static
     {
-        $this->idArtiste = $idArtiste;
-
+        $this->artiste = $artiste;
         return $this;
     }
 
-    public function getIdLangue(): ?langue
+    public function getLangue(): ?Langue
     {
-        return $this->idLangue;
+        return $this->langue;
     }
 
-    public function setIdLangue(?langue $idLangue): static
+    public function setLangue(?Langue $langue): static
     {
-        $this->idLangue = $idLangue;
-
+        $this->langue = $langue;
         return $this;
     }
 
-    public function getIdEmploye(): ?employe
+    public function getEmploye(): ?Employe
     {
-        return $this->idEmploye;
+        return $this->employe;
     }
 
-    public function setIdEmploye(?employe $idEmploye): static
+    public function setEmploye(?Employe $employe): static
     {
-        $this->idEmploye = $idEmploye;
-
+        $this->employe = $employe;
         return $this;
     }
 }

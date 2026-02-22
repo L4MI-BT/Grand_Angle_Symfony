@@ -9,11 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArtisteRepository::class)]
+#[ORM\Table(name: 'artiste')]
 class Artiste
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idArtiste')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -31,26 +32,28 @@ class Artiste
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'artistes')]
+    #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
+    private ?Employe $employe = null;
+
     /**
-     * @var Collection<int, Traductionartiste>
+     * @var Collection<int, TraductionArtiste>
      */
-    #[ORM\OneToMany(targetEntity: Traductionartiste::class, mappedBy: 'idArtiste', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TraductionArtiste::class, mappedBy: 'artiste')]
     private Collection $traductionartistes;
 
     /**
      * @var Collection<int, Oeuvre>
      */
-    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'idArtiste', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'artiste')]
     private Collection $oeuvres;
-
-    #[ORM\ManyToOne(inversedBy: 'artistes')]
-    private ?employe $idEmploye = null;
 
     public function __construct()
     {
+        $this->dateAjout = new \DateTime();  // ← AJOUTÉ
         $this->traductionartistes = new ArrayCollection();
         $this->oeuvres = new ArrayCollection();
     }
@@ -133,29 +136,29 @@ class Artiste
     }
 
     /**
-     * @return Collection<int, Traductionartiste>
+     * @return Collection<int, TraductionArtiste>
      */
     public function getTraductionartistes(): Collection
     {
         return $this->traductionartistes;
     }
 
-    public function addTraductionartiste(Traductionartiste $traductionartiste): static
+    public function addTraductionartiste(TraductionArtiste $traductionartiste): static
     {
         if (!$this->traductionartistes->contains($traductionartiste)) {
             $this->traductionartistes->add($traductionartiste);
-            $traductionartiste->setIdArtiste($this);
+            $traductionartiste->setArtiste($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionartiste(Traductionartiste $traductionartiste): static
+    public function removeTraductionartiste(TraductionArtiste $traductionartiste): static
     {
         if ($this->traductionartistes->removeElement($traductionartiste)) {
             // set the owning side to null (unless already changed)
-            if ($traductionartiste->getIdArtiste() === $this) {
-                $traductionartiste->setIdArtiste(null);
+            if ($traductionartiste->getArtiste() === $this) {
+                $traductionartiste->setArtiste(null);
             }
         }
 
@@ -174,7 +177,7 @@ class Artiste
     {
         if (!$this->oeuvres->contains($oeuvre)) {
             $this->oeuvres->add($oeuvre);
-            $oeuvre->setIdArtiste($this);
+            $oeuvre->setArtiste($this);
         }
 
         return $this;
@@ -184,22 +187,22 @@ class Artiste
     {
         if ($this->oeuvres->removeElement($oeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($oeuvre->getIdArtiste() === $this) {
-                $oeuvre->setIdArtiste(null);
+            if ($oeuvre->getArtiste() === $this) {
+                $oeuvre->setArtiste(null);
             }
         }
 
         return $this;
     }
 
-    public function getIdEmploye(): ?employe
+    public function getEmploye(): ?Employe
     {
-        return $this->idEmploye;
+        return $this->employe;
     }
 
-    public function setIdEmploye(?employe $idEmploye): static
+    public function setEmploye(?Employe $employe): static
     {
-        $this->idEmploye = $idEmploye;
+        $this->employe = $employe;
 
         return $this;
     }

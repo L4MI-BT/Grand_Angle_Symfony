@@ -6,11 +6,12 @@ use App\Repository\EtapeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EtapeRepository::class)]
+#[ORM\Table(name: 'etape')]
 class Etape
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idEtape')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -21,7 +22,7 @@ class Etape
 
     #[ORM\ManyToOne(inversedBy: 'etapes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?exposition $idExposition = null;
+    private ?Exposition $exposition = null;
 
     public function getId(): ?int
     {
@@ -52,14 +53,14 @@ class Etape
         return $this;
     }
 
-    public function getIdExposition(): ?exposition
+    public function getExposition(): ?Exposition
     {
-        return $this->idExposition;
+        return $this->exposition;
     }
 
-    public function setIdExposition(?exposition $idExposition): static
+    public function setExposition(?Exposition $exposition): static
     {
-        $this->idExposition = $idExposition;
+        $this->exposition = $exposition;
 
         return $this;
     }

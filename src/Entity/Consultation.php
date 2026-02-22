@@ -3,22 +3,29 @@
 namespace App\Entity;
 
 use App\Repository\ConsultationRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConsultationRepository::class)]
+#[ORM\Table(name: 'consultation')]
 class Consultation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idConsultation')]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateConsultation = null;
 
-    #[ORM\ManyToOne(inversedBy: 'consultations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?oeuvre $idOeuvre = null;
+    #[ORM\ManyToOne(targetEntity: Oeuvre::class, inversedBy: 'consultations')]
+    #[ORM\JoinColumn(name: 'idOeuvre', referencedColumnName: 'idOeuvre', nullable: false)]
+    private ?Oeuvre $oeuvre = null;
+
+    public function __construct()
+    {
+        $this->dateConsultation = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -33,19 +40,17 @@ class Consultation
     public function setDateConsultation(?\DateTime $dateConsultation): static
     {
         $this->dateConsultation = $dateConsultation;
-
         return $this;
     }
 
-    public function getIdOeuvre(): ?oeuvre
+    public function getOeuvre(): ?Oeuvre  
     {
-        return $this->idOeuvre;
+        return $this->oeuvre;
     }
 
-    public function setIdOeuvre(?oeuvre $idOeuvre): static
+    public function setOeuvre(?Oeuvre $oeuvre): static  
     {
-        $this->idOeuvre = $idOeuvre;
-
+        $this->oeuvre = $oeuvre;
         return $this;
     }
 }

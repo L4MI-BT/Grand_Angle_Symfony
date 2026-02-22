@@ -7,11 +7,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConfigurationRepository::class)]
+#[ORM\Table(name: 'configuration')]
 class Configuration
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idConfiguration')]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]

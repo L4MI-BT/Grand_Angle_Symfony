@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+//use App\Entity\TraductionContenuEnrichi;
 use App\Repository\ContenuEnrichiRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,41 +10,46 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContenuEnrichiRepository::class)]
+#[ORM\Table(name: 'contenuenrichi', indexes: [
+    new ORM\Index(name: 'idx_ordre_affichage', columns: ['ordreAffichage'])
+])]
 class ContenuEnrichi
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idContenuEnrichi')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 500, nullable: true)]
     private ?string $urlAcces = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $ordreAffichage = null;
+    #[ORM\Column(options: ['default' => 1])]
+    private ?int $ordreAffichage = 1;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
+    #[ORM\ManyToOne(targetEntity: Oeuvre::class, inversedBy: 'contenuEnrichis')]
+    #[ORM\JoinColumn(name: 'idOeuvre', referencedColumnName: 'idOeuvre', nullable: false)]
+    private ?Oeuvre $oeuvre = null;
+
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'contenuEnrichis')]
+    #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
+    private ?Employe $employe = null;
+
     /**
-     * @var Collection<int, TraductionContenueEnrichie>
+     * @var Collection<int, TraductionContenuEnrichi>
      */
-    #[ORM\OneToMany(targetEntity: TraductionContenueEnrichie::class, mappedBy: 'idContenuEnrichi', orphanRemoval: true)]
-    private Collection $traductionContenueEnrichies;
-
-    #[ORM\ManyToOne(inversedBy: 'contenuEnrichis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?oeuvre $idOeuvre = null;
-
-    #[ORM\ManyToOne(inversedBy: 'contenuEnrichis')]
-    private ?employe $idEmploye = null;
+    #[ORM\OneToMany(targetEntity: TraductionContenuEnrichi::class, mappedBy: 'contenuEnrichi')]
+    private Collection $traductions;
 
     public function __construct()
     {
-        $this->traductionContenueEnrichies = new ArrayCollection();
+        $this->dateAjout = new \DateTime();
+        $this->traductions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,7 +65,6 @@ class ContenuEnrichi
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -71,7 +76,6 @@ class ContenuEnrichi
     public function setUrlAcces(?string $urlAcces): static
     {
         $this->urlAcces = $urlAcces;
-
         return $this;
     }
 
@@ -83,7 +87,6 @@ class ContenuEnrichi
     public function setOrdreAffichage(?int $ordreAffichage): static
     {
         $this->ordreAffichage = $ordreAffichage;
-
         return $this;
     }
 
@@ -95,61 +98,55 @@ class ContenuEnrichi
     public function setDateAjout(?\DateTime $dateAjout): static
     {
         $this->dateAjout = $dateAjout;
+        return $this;
+    }
 
+    public function getOeuvre(): ?Oeuvre
+    {
+        return $this->oeuvre;
+    }
+
+    public function setOeuvre(?Oeuvre $oeuvre): static
+    {
+        $this->oeuvre = $oeuvre;
+        return $this;
+    }
+
+    public function getEmploye(): ?Employe
+    {
+        return $this->employe;
+    }
+
+    public function setEmploye(?Employe $employe): static
+    {
+        $this->employe = $employe;
         return $this;
     }
 
     /**
-     * @return Collection<int, TraductionContenueEnrichie>
+     * @return Collection<int, TraductionContenuEnrichi>
      */
-    public function getTraductionContenueEnrichies(): Collection
+    public function getTraductions(): Collection
     {
-        return $this->traductionContenueEnrichies;
+        return $this->traductions;
     }
 
-    public function addTraductionContenueEnrichy(TraductionContenueEnrichie $traductionContenueEnrichy): static
+    public function addTraduction(TraductionContenuEnrichi $traduction): static
     {
-        if (!$this->traductionContenueEnrichies->contains($traductionContenueEnrichy)) {
-            $this->traductionContenueEnrichies->add($traductionContenueEnrichy);
-            $traductionContenueEnrichy->setIdContenuEnrichi($this);
+        if (!$this->traductions->contains($traduction)) {
+            $this->traductions->add($traduction);
+            $traduction->setContenuEnrichi($this);
         }
-
         return $this;
     }
 
-    public function removeTraductionContenueEnrichy(TraductionContenueEnrichie $traductionContenueEnrichy): static
+    public function removeTraduction(TraductionContenuEnrichi $traduction): static
     {
-        if ($this->traductionContenueEnrichies->removeElement($traductionContenueEnrichy)) {
-            // set the owning side to null (unless already changed)
-            if ($traductionContenueEnrichy->getIdContenuEnrichi() === $this) {
-                $traductionContenueEnrichy->setIdContenuEnrichi(null);
+        if ($this->traductions->removeElement($traduction)) {
+            if ($traduction->getContenuEnrichi() === $this) {
+                $traduction->setContenuEnrichi(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getIdOeuvre(): ?oeuvre
-    {
-        return $this->idOeuvre;
-    }
-
-    public function setIdOeuvre(?oeuvre $idOeuvre): static
-    {
-        $this->idOeuvre = $idOeuvre;
-
-        return $this;
-    }
-
-    public function getIdEmploye(): ?employe
-    {
-        return $this->idEmploye;
-    }
-
-    public function setIdEmploye(?employe $idEmploye): static
-    {
-        $this->idEmploye = $idEmploye;
-
         return $this;
     }
 }

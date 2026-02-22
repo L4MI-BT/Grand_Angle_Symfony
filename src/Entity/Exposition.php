@@ -7,13 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SebastianBergmann\Type\Type;
 
 #[ORM\Entity(repositoryClass: ExpositionRepository::class)]
+#[ORM\Table(name: 'exposition')]
 class Exposition
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'idExposition')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -37,43 +39,46 @@ class Exposition
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $modulePublicActif = null;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private ?bool $modulePublicActif = false;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateCreation = null;
 
     /**
      * @var Collection<int, TraductionExpo>
      */
-    #[ORM\OneToMany(targetEntity: TraductionExpo::class, mappedBy: 'idExposition', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TraductionExpo::class, mappedBy: 'exposition')]
     private Collection $traductionExpos;
 
     /**
      * @var Collection<int, Oeuvre>
      */
-    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'idExposition')]
-    private Collection $oeuvre;
+    #[ORM\OneToMany(targetEntity: Oeuvre::class, mappedBy: 'exposition')]
+    private Collection $oeuvres;
 
-    #[ORM\ManyToOne(inversedBy: 'expositions')]
-    private ?employe $idEmploye = null;
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'expositions')]
+    #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
+    private ?Employe $employe = null;
 
     /**
      * @var Collection<int, Etape>
      */
-    #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'idExposition', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'exposition')]
     private Collection $etapes;
 
     /**
      * @var Collection<int, Emplacement>
      */
-    #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'idExposition', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'exposition', orphanRemoval: true)]
     private Collection $emplacements;
 
     public function __construct()
     {
+        $this->dateCreation = new \DateTime();
+        $this->modulePublicActif = false;
         $this->traductionExpos = new ArrayCollection();
-        $this->oeuvre = new ArrayCollection();
+        $this->oeuvres = new ArrayCollection();
         $this->etapes = new ArrayCollection();
         $this->emplacements = new ArrayCollection();
     }
@@ -167,12 +172,12 @@ class Exposition
         return $this;
     }
 
-    public function getModulePublicActif(): ?int
+    public function getModulePublicActif(): ?bool
     {
         return $this->modulePublicActif;
     }
 
-    public function setModulePublicActif(?int $modulePublicActif): static
+    public function setModulePublicActif(?bool $modulePublicActif): static
     {
         $this->modulePublicActif = $modulePublicActif;
 
@@ -203,7 +208,7 @@ class Exposition
     {
         if (!$this->traductionExpos->contains($traductionExpo)) {
             $this->traductionExpos->add($traductionExpo);
-            $traductionExpo->setIdExposition($this);
+            $traductionExpo->setExposition($this);
         }
 
         return $this;
@@ -213,8 +218,8 @@ class Exposition
     {
         if ($this->traductionExpos->removeElement($traductionExpo)) {
             // set the owning side to null (unless already changed)
-            if ($traductionExpo->getIdExposition() === $this) {
-                $traductionExpo->setIdExposition(null);
+            if ($traductionExpo->getExposition() === $this) {
+                $traductionExpo->setExposition(null);
             }
         }
 
@@ -224,16 +229,16 @@ class Exposition
     /**
      * @return Collection<int, Oeuvre>
      */
-    public function getOeuvre(): Collection
+    public function getOeuvres(): Collection
     {
-        return $this->oeuvre;
+        return $this->oeuvres;
     }
 
     public function addOeuvre(Oeuvre $oeuvre): static
     {
-        if (!$this->oeuvre->contains($oeuvre)) {
-            $this->oeuvre->add($oeuvre);
-            $oeuvre->setIdExposition($this);
+        if (!$this->oeuvres->contains($oeuvre)) {
+            $this->oeuvres->add($oeuvre);
+            $oeuvre->setExposition($this);
         }
 
         return $this;
@@ -241,24 +246,24 @@ class Exposition
 
     public function removeOeuvre(Oeuvre $oeuvre): static
     {
-        if ($this->oeuvre->removeElement($oeuvre)) {
+        if ($this->oeuvres->removeElement($oeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($oeuvre->getIdExposition() === $this) {
-                $oeuvre->setIdExposition(null);
+            if ($oeuvre->getExposition() === $this) {
+                $oeuvre->setExposition(null);
             }
         }
 
         return $this;
     }
 
-    public function getIdEmploye(): ?employe
+    public function getEmploye(): ?Employe
     {
-        return $this->idEmploye;
+        return $this->employe;
     }
 
-    public function setIdEmploye(?employe $idEmploye): static
+    public function setEmploye(?Employe $employe): static
     {
-        $this->idEmploye = $idEmploye;
+        $this->employe = $employe;
 
         return $this;
     }
@@ -275,7 +280,7 @@ class Exposition
     {
         if (!$this->etapes->contains($etape)) {
             $this->etapes->add($etape);
-            $etape->setIdExposition($this);
+            $etape->setExposition($this);
         }
 
         return $this;
@@ -285,8 +290,8 @@ class Exposition
     {
         if ($this->etapes->removeElement($etape)) {
             // set the owning side to null (unless already changed)
-            if ($etape->getIdExposition() === $this) {
-                $etape->setIdExposition(null);
+            if ($etape->getExposition() === $this) {
+                $etape->setExposition(null);
             }
         }
 
@@ -305,7 +310,7 @@ class Exposition
     {
         if (!$this->emplacements->contains($emplacement)) {
             $this->emplacements->add($emplacement);
-            $emplacement->setIdExposition($this);
+            $emplacement->setExposition($this);
         }
 
         return $this;
@@ -315,8 +320,8 @@ class Exposition
     {
         if ($this->emplacements->removeElement($emplacement)) {
             // set the owning side to null (unless already changed)
-            if ($emplacement->getIdExposition() === $this) {
-                $emplacement->setIdExposition(null);
+            if ($emplacement->getExposition() === $this) {
+                $emplacement->setExposition(null);
             }
         }
 
