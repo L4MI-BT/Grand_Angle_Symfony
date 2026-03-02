@@ -7,10 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: EmployeRepository::class)]
 #[ORM\Table(name: 'employe')]
-class Employe
+class Employe implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -117,6 +119,25 @@ class Employe
         $this->expositions = new ArrayCollection();
         $this->contenuEnrichis = new ArrayCollection();
         $this->artistes = new ArrayCollection();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->login;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_' . strtoupper($this->role)];
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->mdp;
+    }
+
+    public function eraseCredentials(): void
+    {
     }
 
     public function getId(): ?int
@@ -494,5 +515,24 @@ class Employe
         }
 
         return $this;
+    }
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'login' => $this->login,
+            'mdp' => $this->mdp,
+            'role' => $this->role,
+            'actif' => $this->actif,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->login = $data['login'];
+        $this->mdp = $data['mdp'];
+        $this->role = $data['role'];
+        $this->actif = $data['actif'];
     }
 }
