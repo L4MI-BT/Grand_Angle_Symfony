@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Public;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class Public/ExpositionPublicController extends AbstractController
+final class ExpositionPublicController extends AbstractController
 {
-    #[Route('/public/exposition/public', name: 'app_public_exposition_public')]
+    #[Route('/public/exposition', name: 'app_exposition_public_list')]
     public function index(): Response
     {
         return $this->render('public/exposition_public/index.html.twig', [
