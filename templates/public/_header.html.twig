@@ -1,24 +1,37 @@
 {% block header %}
-    <nav class="nav d-flex justify-content-between">
-        <h1>Grand Angle</h1>
-        <div class="dropdown">
-            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('styles/images/drapeau_francais.svg') }}" height="15px" width="15px" alt="blabla">FR
-            </button>
-            <div class="dropdown-menu">
-                    <ul>
-                        {% for langue in langues %}
-                            <li>
-                                <a class="dropdown-item" href="{{ "public/#{langue.code}" }}">
-                                    <img src="{{ asset(langue.img) }}" alt="{{ langue.nom }}" height="20px" width="20px">
-                                    {{langue.nom}}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-        
-        </div>
 
-    </nav>
+
+<div id="overlay"></div>
+
+
+
+<!-- MENU LATÉRAL -->
+<aside class="side-menu" id="sideMenu">
+
+    <ul>
+        <li class="nav-item"><a href="#" class="text-reset text-decoration-none">Accueil</a></li>
+        <li class="nav-item"><a href="#" class="text-reset text-decoration-none">Notre Asso</a></li>
+        <li class="nav-item" id="visiterItem">Visiter <span>></span></li>
+    </ul>
+
+    <div class="submenu" id="submenu">
+        <a href="#" class="text-reset text-decoration-none">Expo en cours</a>
+        <a href="#" class="text-reset text-decoration-none">Actualités</a>
+        <a href="#" class="text-reset text-decoration-none">Infos pratiques</a>
+    </div>
+
+</aside>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <button class="burger-btn" id="burgerBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <a class="logo-text" href="{{ path('app_public') }}">Grand Angle</a>
+
+</nav>
+
 {% endblock %}

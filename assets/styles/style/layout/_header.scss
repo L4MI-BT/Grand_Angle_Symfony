@@ -2,13 +2,118 @@
 
 @use '../common/variables';
 
-.caca {
-    background: #EB6C36;
-
-
+#overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 20;
 }
 
-.caca h1 {
-    color: variables.$blanc-casse;
-    
+#overlay.show { display: block; }
+
+/* ───── NAVBAR ───── */
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: #fffdee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 20;
+    background: variables.$vert-canard;
+}
+
+/* Burger */
+.burger-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px;
+    padding: 6px; 
+    flex-shrink: 0;
+
+    span{
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #fffdee;
+        border-radius: 2px;
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        transform-origin: center;
+    }
+}
+
+.burger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+
+/* Logo */
+
+.logo-text {
+    text-decoration: none;
+    font-family: 'newAmsterdam';
+    font-weight: 400;
+    color: #fffdee;
+    letter-spacing: 0.02em;
+    font-size: 2.5rem;
+}
+
+
+/* ───── MENU LATÉRAL GAUCHE ───── */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 72vw;
+    max-width: 300px;
+    height: 100%;
+    background: #fffdee;
+    z-index: 30;
+    transition: left 0.38s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    padding-top: 72px;
+}
+
+.side-menu.open { 
+    left: 0; 
+}
+
+/* Items de nav */
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.95rem 1.5rem;
+}
+
+
+
+/* Sous-menu */
+.submenu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+    background: #fffdee;
+}
+
+.submenu.open { 
+    max-height: 200px;
+}
+
+.submenu a {
+    display: block;
+    padding: 0.7rem 1.5rem 0.7rem 2.2rem;
+    font-size: 0.9rem;
+    transition: color 0.15s;
 }
