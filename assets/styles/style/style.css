@@ -1,0 +1,35 @@
+body {
+  background-color: #fffdee;
+  color: #008573;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "newAmsterdam";
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "inter";
+  src: url(../fonts/static/Inter_18pt-Light.ttf);
+  font-weight: 300;
+}
+@font-face {
+  font-family: "newAmsterdam";
+  src: url(../fonts/NewAmsterdam-Regular.ttf);
+  font-weight: 400;
+}
+.caca {
+  background: #EB6C36;
+}
+
+.caca h1 {
+  color: #fffdee;
+}
+
+footer {
+  height: 200px;
+  background: #008573;
+}
+footer h2 {
+  color: #fffdee;
+}/*# sourceMappingURL=style.css.map */

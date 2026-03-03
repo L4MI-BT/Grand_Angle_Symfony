@@ -1,0 +1,13 @@
+//Footer
+
+@use '../common/variables';
+
+
+footer{
+    height: 200px;
+    background: variables.$vert-canard;
+
+    h2{
+        color: variables.$blanc-casse;
+    }
+}
