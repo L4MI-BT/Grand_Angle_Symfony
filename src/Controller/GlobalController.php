@@ -8,10 +8,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class GlobalController extends AbstractController
 {
-    #[Route('/public', name: 'app_public')]
+    #[Route('/', name: 'app_public')]
     public function public(): Response
     {
-        return $this->render('public/index.html.twig');
+        return $this->render('public/index.html.twig', [
+            'langues' => null
+        ]);
     }
 
     #[Route('/admin', name: 'app_admin')]
@@ -19,4 +21,6 @@ final class GlobalController extends AbstractController
     {
         return $this->render('admin/index.html.twig');
     }
+
+
 }
