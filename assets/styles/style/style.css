@@ -19,6 +19,66 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
 }
 
+.text-vert-canard {
+  color: #008573;
+}
+
+.text-vert-sapin {
+  color: #00684C;
+}
+
+.text-blanc-casse {
+  color: #fffdee;
+}
+
+.bg-vert-canard {
+  background-color: #008573;
+}
+
+.bg-vert-sapin {
+  background-color: #00684C;
+}
+
+.bg-orange {
+  background-color: #EB6C36;
+}
+
+.bg-blanc-casse {
+  background-color: #fffdee;
+}
+
+.border-vert-canard {
+  border-color: #008573;
+}
+
+.border-vert-sapin {
+  border-color: #00684C;
+}
+
+.border-orange {
+  border-color: #EB6C36;
+}
+
+.btn-primary-custom {
+  background-color: #EB6C36;
+  border-color: #EB6C36;
+  color: #fffdee;
+}
+.btn-primary-custom:hover {
+  background-color: rgb(216.4615384615, 79.6923076923, 21.5384615385);
+  border-color: rgb(216.4615384615, 79.6923076923, 21.5384615385);
+}
+
+.btn-secondary-custom {
+  background-color: #00684C;
+  border-color: #00684C;
+  color: #fffdee;
+}
+.btn-secondary-custom:hover {
+  background-color: rgb(0, 53, 38.7307692308);
+  border-color: rgb(0, 53, 38.7307692308);
+}
+
 #overlay {
   display: none;
   position: fixed;
