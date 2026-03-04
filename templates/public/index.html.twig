@@ -5,7 +5,7 @@
 <div class="container">
     <h2 class="mt-5">{{exposition.titre}}</h2>
     <div class="card mb-3 border-vert-sapin">
-        <img src="{{ asset("styles/#{exposition.image}") }}" alt="{{ exposition.titre }}">
+        <img class="card-img" src="{{ asset("styles/#{exposition.image}") }}" alt="{{ exposition.titre }}">
         <div class="card-body">
             <h5 class="card-title text-vert-sapin">{{exposition.theme}}</h5>
             <p class="card-text text-vert-sapin">{{exposition.description}}</p>
@@ -19,7 +19,7 @@
     {% for item in futurExpo %}
         <h3 class="mt-2">{{item.titre}}</h3>
         <div class="card mb-3 border-vert-sapin">
-        <img src="{{ asset("styles/#{item.image}") }}" alt="{{ item.titre }}">
+        <img class="card-img" src="{{ asset("styles/#{item.image}") }}" alt="{{ item.titre }}">
         <div class="card-body">
             <h5 class="card-title text-vert-sapin">{{item.theme}}</h5>
             <p class="card-text text-vert-sapin">{{item.description}}</p>

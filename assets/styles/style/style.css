@@ -205,6 +205,14 @@ main {
   top: 0;
 }
 
+.card-img {
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
 footer {
   height: 200px;
   background: #008573;
