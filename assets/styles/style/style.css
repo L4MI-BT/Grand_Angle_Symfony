@@ -65,8 +65,9 @@ h1, h2, h3, h4, h5, h6 {
   color: #fffdee;
 }
 .btn-primary-custom:hover {
-  background-color: rgb(216.4615384615, 79.6923076923, 21.5384615385);
-  border-color: rgb(216.4615384615, 79.6923076923, 21.5384615385);
+  background-color: #fffdee;
+  border-color: #fffdee;
+  color: #EB6C36;
 }
 
 .btn-secondary-custom {
@@ -75,8 +76,9 @@ h1, h2, h3, h4, h5, h6 {
   color: #fffdee;
 }
 .btn-secondary-custom:hover {
-  background-color: rgb(0, 53, 38.7307692308);
-  border-color: rgb(0, 53, 38.7307692308);
+  background-color: #008573;
+  border-color: #008573;
+  color: #fffdee;
 }
 
 #overlay {

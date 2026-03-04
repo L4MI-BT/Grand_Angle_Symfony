@@ -36,6 +36,20 @@ class ExpositionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @return Exposition[]
+     */
+    public function findNoCurrent(): array|Exposition
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.modulePublicActif = :noactif')
+            ->setParameter('noactif', false)
+            ->orderBy('e.dateDebut', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+            
+    }
     //    /**
     //     * @return Exposition[] Returns an array of Exposition objects
     //     */
