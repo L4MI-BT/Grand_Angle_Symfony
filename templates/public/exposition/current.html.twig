@@ -130,7 +130,7 @@
                                 <p class="card-text text-vert-sapin">{{ oeuvre.description }}</p>
                             {% endif %}
                             
-                            <a href="#" class="btn btn-primary-custom mt-3">
+                            <a href="{{ path('oeuvre_show', {id: oeuvre.id}) }}" class="btn btn-primary-custom mt-3">
                                 <i class="bi bi-eye"></i> Voir les détails
                             </a>
                         </div>
