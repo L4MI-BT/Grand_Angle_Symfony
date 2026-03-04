@@ -1,0 +1,110 @@
+{% extends 'public/base_public.html.twig' %}
+
+{% block title %}{{ oeuvre.titre }} - Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container py-5">
+    
+    {# TITRE DE L'OEUVRE #}
+    <h1 class="display-5 mb-4 text-center text-vert-sapin">{{ oeuvre.titre }}</h1>
+    
+    {# IMAGE DE L'OEUVRE #}
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-8">
+            {% if oeuvre.image %}
+                <img src="{{ asset("styles/#{oeuvre.image}") }}" class="img-fluid rounded shadow" alt="{{ oeuvre.titre }}">
+            {% else %}
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 500px;">
+                    <span class="text-white fs-1">Image de l'œuvre</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    {# ARTISTE #}
+    <div class="mb-4">
+        <h3>Artiste</h3>
+        <p class="fs-5">{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</p>
+    </div>
+    
+    {# INFOS DE L'OEUVRE #}
+    <div class="mb-4">
+        <h3>Informations de l'œuvre</h3>
+        
+        <div class="row">
+            <div class="col-md-6">
+                {% if oeuvre.technique %}
+                    <p><strong>Technique :</strong> {{ oeuvre.technique }}</p>
+                {% endif %}
+                
+                {% if oeuvre.anneeCreation %}
+                    <p><strong>Année de création :</strong> {{ oeuvre.anneeCreation }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="col-md-6">
+                {% if oeuvre.hauteurCm and oeuvre.largeurCm %}
+                    <p>
+                        <strong>Dimensions :</strong> 
+                        {{ oeuvre.hauteurCm }} × {{ oeuvre.largeurCm }}
+                        {% if oeuvre.profondeurCm %} × {{ oeuvre.profondeurCm }}{% endif %} cm
+                    </p>
+                {% endif %}
+                
+                {% if oeuvre.exposition %}
+                    <p><strong>Exposition :</strong> {{ oeuvre.exposition.titre }}</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if oeuvre.description %}
+            <div class="mt-3">
+                <p>{{ oeuvre.description }}</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    {# CONTENUS ENRICHIS #}
+    {% if oeuvre.contenuEnrichis is not empty %}
+        <div class="mb-5">
+            <h3>Contenus enrichis</h3>
+            
+            {% for contenu in oeuvre.contenuEnrichis %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {# AUDIO/VIDEO/IMAGE #}
+                        {% if contenu.urlAcces %}
+                            <div class="ratio ratio-16x9 mb-3">
+                                {# Icône play pour représenter le média #}
+                                <div class="bg-secondary rounded d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-play-circle text-white" style="font-size: 4rem;"></i>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        {# DESCRIPTION #}
+                        {% if contenu.description %}
+                            <p class="text-vert-sapin">{{ contenu.description }}</p>
+                        {% endif %}
+                        
+                        {# BOUTON LECTURE #}
+                        {% if contenu.urlAcces %}
+                            <a href="{{ contenu.urlAcces }}" class="btn btn-primary-custom" target="_blank">
+                                <i class="bi bi-play-fill"></i> Écouter/Voir
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    {# BOUTON RETOUR #}
+    <div class="text-center mt-5">
+        <a href="{{ path('exposition_current') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à l'exposition
+        </a>
+    </div>
+    
+</div>
+{% endblock %}
