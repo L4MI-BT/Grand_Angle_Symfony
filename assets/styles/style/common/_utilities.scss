@@ -1,0 +1,67 @@
+@use './variables';
+
+// Classes de couleurs de texte
+.text-vert-canard {
+    color: variables.$vert-canard;
+}
+
+.text-vert-sapin {
+    color: variables.$vert-sapin;
+}
+
+.text-blanc-casse {
+    color: variables.$blanc-casse;
+}
+
+// Classes de fond
+.bg-vert-canard {
+    background-color: variables.$vert-canard;
+}
+
+.bg-vert-sapin {
+    background-color: variables.$vert-sapin;
+}
+
+.bg-orange {
+    background-color: variables.$orange;
+}
+
+.bg-blanc-casse {
+    background-color: variables.$blanc-casse;
+}
+
+// Classes de bordure
+.border-vert-canard {
+    border-color: variables.$vert-canard;
+}
+
+.border-vert-sapin {
+    border-color: variables.$vert-sapin;
+}
+
+.border-orange {
+    border-color: variables.$orange;
+}
+
+// Boutons personnalisés
+.btn-primary-custom {
+    background-color: variables.$orange;
+    border-color: variables.$orange;
+    color: variables.$blanc-casse;
+    
+    &:hover {
+        background-color: darken(variables.$orange, 10%);
+        border-color: darken(variables.$orange, 10%);
+    }
+}
+
+.btn-secondary-custom {
+    background-color: variables.$vert-sapin;
+    border-color: variables.$vert-sapin;
+    color: variables.$blanc-casse;
+    
+    &:hover {
+        background-color: darken(variables.$vert-sapin, 10%);
+        border-color: darken(variables.$vert-sapin, 10%);
+    }
+}
