@@ -19,6 +19,68 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
 }
 
+.text-vert-canard {
+  color: #008573;
+}
+
+.text-vert-sapin {
+  color: #00684C;
+}
+
+.text-blanc-casse {
+  color: #fffdee;
+}
+
+.bg-vert-canard {
+  background-color: #008573;
+}
+
+.bg-vert-sapin {
+  background-color: #00684C;
+}
+
+.bg-orange {
+  background-color: #EB6C36;
+}
+
+.bg-blanc-casse {
+  background-color: #fffdee;
+}
+
+.border-vert-canard {
+  border-color: #008573;
+}
+
+.border-vert-sapin {
+  border-color: #00684C;
+}
+
+.border-orange {
+  border-color: #EB6C36;
+}
+
+.btn-primary-custom {
+  background-color: #EB6C36;
+  border-color: #EB6C36;
+  color: #fffdee;
+}
+.btn-primary-custom:hover {
+  background-color: #fffdee;
+  border-color: #fffdee;
+  color: #EB6C36;
+}
+
+.btn-secondary-custom {
+  background-color: #00684C;
+  border-color: #00684C;
+  color: #fffdee;
+}
+.btn-secondary-custom:hover {
+  background-color: #008573;
+  border-color: #008573;
+  color: #fffdee;
+}
+
 #overlay {
   display: none;
   position: fixed;

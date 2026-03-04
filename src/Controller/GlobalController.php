@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\ExpositionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,10 +11,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class GlobalController extends AbstractController
 {
     #[Route('/', name: 'app_public')]
-    public function public(): Response
+    public function public(ExpositionRepository $expositionRepository,): Response
     {
+        $exposition = $expositionRepository->findCurrent();
+        $futurExpo = $expositionRepository->findNoCurrent();
+
         return $this->render('public/index.html.twig', [
-            'langues' => null
+            'langues' => null,
+            'exposition' => $exposition,
+            'futurExpo' => $futurExpo,
         ]);
     }
 

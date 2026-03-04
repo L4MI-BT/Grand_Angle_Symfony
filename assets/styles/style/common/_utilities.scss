@@ -50,8 +50,9 @@
     color: variables.$blanc-casse;
     
     &:hover {
-        background-color: darken(variables.$orange, 10%);
-        border-color: darken(variables.$orange, 10%);
+        background-color: variables.$blanc-casse;
+        border-color: variables.$blanc-casse;
+        color: variables.$orange;
     }
 }
 
@@ -61,7 +62,8 @@
     color: variables.$blanc-casse;
     
     &:hover {
-        background-color: darken(variables.$vert-sapin, 10%);
-        border-color: darken(variables.$vert-sapin, 10%);
+        background-color: variables.$vert-canard;
+        border-color: variables.$vert-canard;
+        color: variables.$blanc-casse;
     }
 }

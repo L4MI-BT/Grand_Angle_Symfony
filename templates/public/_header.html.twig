@@ -8,13 +8,13 @@
 <aside class="side-menu" id="sideMenu">
 
     <ul>
-        <li class="nav-item"><a href="#" class="text-reset text-decoration-none">Accueil</a></li>
+        <li class="nav-item"><a href="{{ path('app_public') }}" class="text-reset text-decoration-none">Accueil</a></li>
         <li class="nav-item"><a href="#" class="text-reset text-decoration-none">Notre Asso</a></li>
         <li class="nav-item" id="visiterItem">Visiter <span>></span></li>
     </ul>
 
     <div class="submenu" id="submenu">
-        <a href="#" class="text-reset text-decoration-none">Expo en cours</a>
+        <a href="{{ path('exposition_current') }}" class="text-reset text-decoration-none">Expo en cours</a>
         <a href="#" class="text-reset text-decoration-none">Actualités</a>
         <a href="#" class="text-reset text-decoration-none">Infos pratiques</a>
     </div>
