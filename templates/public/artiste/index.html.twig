@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{artiste.nom}}{{artiste.prenom}}{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h2>{{artiste.nom}} {{artiste.prenom}}</h2>
+    <img src="{{ asset("styles/#{artiste.image}") }}" alt="{{artiste.nom}} {{artiste.prenom}}">
+    <p>{{artiste.anneeNaissance}}</p>
+</div>
+{% endblock %}
