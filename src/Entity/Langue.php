@@ -26,13 +26,13 @@ class Langue
      * @var Collection<int, TraductionOeuvre>
      */
     #[ORM\OneToMany(targetEntity: TraductionOeuvre::class, mappedBy: 'langue')]
-    private Collection $traductionoeuvres;
+    private Collection $traductionOeuvres;
 
     /**
      * @var Collection<int, TraductionExpo>
      */
     #[ORM\OneToMany(targetEntity: TraductionExpo::class, mappedBy: 'langue')]
-    private Collection $traductionexpos;
+    private Collection $traductionExpos;
 
     /**
      * @var Collection<int, TraductionContenuEnrichi>
@@ -44,17 +44,17 @@ class Langue
      * @var Collection<int, TraductionArtiste>
      */
     #[ORM\OneToMany(targetEntity: TraductionArtiste::class, mappedBy: 'langue')]
-    private Collection $traductionartistes;
+    private Collection $traductionArtistes;
 
     #[ORM\Column(length: 5)]
     private ?string $code = null;
 
     public function __construct()
     {
-        $this->traductionoeuvres = new ArrayCollection();
-        $this->traductionexpos = new ArrayCollection();
+        $this->traductionOeuvres = new ArrayCollection();
+        $this->traductionExpos = new ArrayCollection();
         $this->traductionContenuEnrichis = new ArrayCollection();
-        $this->traductionartistes = new ArrayCollection();
+        $this->traductionArtistes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,27 +89,27 @@ class Langue
     /**
      * @return Collection<int, TraductionOeuvre>
      */
-    public function getTraductionoeuvres(): Collection
+    public function getTraductionOeuvres(): Collection
     {
-        return $this->traductionoeuvres;
+        return $this->traductionOeuvres;
     }
 
-    public function addTraductionoeuvre(TraductionOeuvre $traductionoeuvre): static
+    public function addTraductionOeuvre(TraductionOeuvre $traductionOeuvre): static
     {
-        if (!$this->traductionoeuvres->contains($traductionoeuvre)) {
-            $this->traductionoeuvres->add($traductionoeuvre);
-            $traductionoeuvre->setLangue($this);
+        if (!$this->traductionOeuvres->contains($traductionOeuvre)) {
+            $this->traductionOeuvres->add($traductionOeuvre);
+            $traductionOeuvre->setLangue($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionoeuvre(TraductionOeuvre $traductionoeuvre): static
+    public function removeTraductionoeuvre(TraductionOeuvre $traductionOeuvre): static
     {
-        if ($this->traductionoeuvres->removeElement($traductionoeuvre)) {
+        if ($this->traductionOeuvres->removeElement($traductionOeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($traductionoeuvre->getLangue() === $this) {
-                $traductionoeuvre->setLangue(null);
+            if ($traductionOeuvre->getLangue() === $this) {
+                $traductionOeuvre->setLangue(null);
             }
         }
 
@@ -119,27 +119,27 @@ class Langue
     /**
      * @return Collection<int, TraductionExpo>
      */
-    public function getTraductionexpos(): Collection
+    public function getTraductionExpos(): Collection
     {
-        return $this->traductionexpos;
+        return $this->traductionExpos;
     }
 
-    public function addTraductionexpo(TraductionExpo $traductionexpo): static
+    public function addTraductionExpo(TraductionExpo $traductionExpo): static
     {
-        if (!$this->traductionexpos->contains($traductionexpo)) {
-            $this->traductionexpos->add($traductionexpo);
-            $traductionexpo->setLangue($this);
+        if (!$this->traductionExpos->contains($traductionExpo)) {
+            $this->traductionExpos->add($traductionExpo);
+            $traductionExpo->setLangue($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionexpo(TraductionExpo $traductionexpo): static
+    public function removeTraductionExpo(TraductionExpo $traductionExpo): static
     {
-        if ($this->traductionexpos->removeElement($traductionexpo)) {
+        if ($this->traductionExpos->removeElement($traductionExpo)) {
             // set the owning side to null (unless already changed)
-            if ($traductionexpo->getLangue() === $this) {
-                $traductionexpo->setLangue(null);
+            if ($traductionExpo->getLangue() === $this) {
+                $traductionExpo->setLangue(null);
             }
         }
 
@@ -179,27 +179,27 @@ class Langue
     /**
      * @return Collection<int, TraductionArtiste>
      */
-    public function getTraductionartistes(): Collection
+    public function getTraductionArtistes(): Collection
     {
-        return $this->traductionartistes;
+        return $this->traductionArtistes;
     }
 
-    public function addTraductionartiste(TraductionArtiste $traductionartiste): static
+    public function addTraductionArtiste(TraductionArtiste $traductionArtiste): static
     {
-        if (!$this->traductionartistes->contains($traductionartiste)) {
-            $this->traductionartistes->add($traductionartiste);
-            $traductionartiste->setLangue($this);
+        if (!$this->traductionArtistes->contains($traductionArtiste)) {
+            $this->traductionArtistes->add($traductionArtiste);
+            $traductionArtiste->setLangue($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionartiste(TraductionArtiste $traductionartiste): static
+    public function removeTraductionArtiste(TraductionArtiste $traductionArtiste): static
     {
-        if ($this->traductionartistes->removeElement($traductionartiste)) {
+        if ($this->traductionArtistes->removeElement($traductionArtiste)) {
             // set the owning side to null (unless already changed)
-            if ($traductionartiste->getLangue() === $this) {
-                $traductionartiste->setLangue(null);
+            if ($traductionArtiste->getLangue() === $this) {
+                $traductionArtiste->setLangue(null);
             }
         }
 
