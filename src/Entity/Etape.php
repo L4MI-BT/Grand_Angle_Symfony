@@ -21,7 +21,7 @@ class Etape
     private ?int $ordre = null;
 
     #[ORM\ManyToOne(inversedBy: 'etapes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'idExposition', referencedColumnName: 'idExposition', nullable: false)]
     private ?Exposition $exposition = null;
 
     public function getId(): ?int

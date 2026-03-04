@@ -16,6 +16,26 @@ class ExpositionRepository extends ServiceEntityRepository
         parent::__construct($registry, Exposition::class);
     }
 
+        /**
+     * Récupérer l'exposition actuellement en cours
+     * 
+     * @return Exposition|null
+     */
+    public function findCurrent(): ?Exposition
+    {
+        $today = new \DateTime();
+        
+        return $this->createQueryBuilder('e')
+            ->where('e.dateDebut <= :today')
+            ->andWhere('e.dateFin >= :today')
+            ->andWhere('e.modulePublicActif = :actif')
+            ->setParameter('today', $today)
+            ->setParameter('actif', true)
+            ->orderBy('e.dateDebut', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     //    /**
     //     * @return Exposition[] Returns an array of Exposition objects
     //     */

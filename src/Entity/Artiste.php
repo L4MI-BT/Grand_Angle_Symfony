@@ -43,7 +43,7 @@ class Artiste
      * @var Collection<int, TraductionArtiste>
      */
     #[ORM\OneToMany(targetEntity: TraductionArtiste::class, mappedBy: 'artiste')]
-    private Collection $traductionartistes;
+    private Collection $traductionArtistes;
 
     /**
      * @var Collection<int, Oeuvre>
@@ -54,7 +54,7 @@ class Artiste
     public function __construct()
     {
         $this->dateAjout = new \DateTime();  // ← AJOUTÉ
-        $this->traductionartistes = new ArrayCollection();
+        $this->traductionArtistes = new ArrayCollection();
         $this->oeuvres = new ArrayCollection();
     }
 
@@ -138,27 +138,27 @@ class Artiste
     /**
      * @return Collection<int, TraductionArtiste>
      */
-    public function getTraductionartistes(): Collection
+    public function getTraductionArtistes(): Collection
     {
-        return $this->traductionartistes;
+        return $this->traductionArtistes;
     }
 
-    public function addTraductionartiste(TraductionArtiste $traductionartiste): static
+    public function addTraductionArtiste(TraductionArtiste $traductionArtiste): static
     {
-        if (!$this->traductionartistes->contains($traductionartiste)) {
-            $this->traductionartistes->add($traductionartiste);
-            $traductionartiste->setArtiste($this);
+        if (!$this->traductionArtistes->contains($traductionArtiste)) {
+            $this->traductionArtistes->add($traductionArtiste);
+            $traductionArtiste->setArtiste($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionartiste(TraductionArtiste $traductionartiste): static
+    public function removeTraductionArtiste(TraductionArtiste $traductionArtiste): static
     {
-        if ($this->traductionartistes->removeElement($traductionartiste)) {
+        if ($this->traductionArtistes->removeElement($traductionArtiste)) {
             // set the owning side to null (unless already changed)
-            if ($traductionartiste->getArtiste() === $this) {
-                $traductionartiste->setArtiste(null);
+            if ($traductionArtiste->getArtiste() === $this) {
+                $traductionArtiste->setArtiste(null);
             }
         }
 

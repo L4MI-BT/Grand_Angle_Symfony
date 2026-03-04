@@ -4,6 +4,7 @@
 @use 'common/fonts';
 @use 'common/global';
 @use 'common/variables';
+@use 'common/utilities';
 
 //Component
 
@@ -11,5 +12,6 @@
 //Layout
 @use 'layout/header';
 @use 'layout/mainIndex';
+@use 'layout/exposition';
 
 @use 'layout/footer';

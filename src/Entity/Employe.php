@@ -58,13 +58,13 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, TraductionOeuvre>
      */
     #[ORM\OneToMany(targetEntity: TraductionOeuvre::class, mappedBy: 'employe')]
-    private Collection $traductionoeuvres;
+    private Collection $traductionOeuvres;
 
     /**
      * @var Collection<int, TraductionExpo>
      */
     #[ORM\OneToMany(targetEntity: TraductionExpo::class, mappedBy: 'employe')]
-    private Collection $traductionexpos;
+    private Collection $traductionExpos;
 
     /**
      * @var Collection<int, TraductionContenuEnrichi>
@@ -76,7 +76,7 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, TraductionArtiste>
      */
     #[ORM\OneToMany(targetEntity: TraductionArtiste::class, mappedBy: 'employe')]
-    private Collection $traductionartistes;
+    private Collection $traductionArtistes;
 
     /**
      * @var Collection<int, Oeuvre>
@@ -111,10 +111,10 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dateCreation = new \DateTime();
         $this->actif = true;
         $this->supprime = false;
-        $this->traductionoeuvres = new ArrayCollection();
-        $this->traductionexpos = new ArrayCollection();
+        $this->traductionOeuvres = new ArrayCollection();
+        $this->traductionExpos = new ArrayCollection();
         $this->traductionContenuEnrichis = new ArrayCollection();
-        $this->traductionartistes = new ArrayCollection();
+        $this->traductionArtistes = new ArrayCollection();
         $this->oeuvres = new ArrayCollection();
         $this->expositions = new ArrayCollection();
         $this->contenuEnrichis = new ArrayCollection();
@@ -268,27 +268,27 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, TraductionOeuvre>
      */
-    public function getTraductionoeuvres(): Collection
+    public function getTraductionOeuvres(): Collection
     {
-        return $this->traductionoeuvres;
+        return $this->traductionOeuvres;
     }
 
-    public function addTraductionoeuvre(TraductionOeuvre $traductionoeuvre): static
+    public function addTraductionOeuvre(TraductionOeuvre $traductionOeuvre): static
     {
-        if (!$this->traductionoeuvres->contains($traductionoeuvre)) {
-            $this->traductionoeuvres->add($traductionoeuvre);
-            $traductionoeuvre->setEmploye($this);
+        if (!$this->traductionOeuvres->contains($traductionOeuvre)) {
+            $this->traductionOeuvres->add($traductionOeuvre);
+            $traductionOeuvre->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionoeuvre(TraductionOeuvre $traductionoeuvre): static
+    public function removeTraductionOeuvre(TraductionOeuvre $traductionOeuvre): static
     {
-        if ($this->traductionoeuvres->removeElement($traductionoeuvre)) {
+        if ($this->traductionOeuvres->removeElement($traductionOeuvre)) {
             // set the owning side to null (unless already changed)
-            if ($traductionoeuvre->getEmploye() === $this) {
-                $traductionoeuvre->setEmploye(null);
+            if ($traductionOeuvre->getEmploye() === $this) {
+                $traductionOeuvre->setEmploye(null);
             }
         }
 
@@ -300,25 +300,25 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getTraductionExpos(): Collection
     {
-        return $this->traductionexpos;
+        return $this->traductionExpos;
     }
 
-    public function addTraductionexpo(TraductionExpo $traductionexpo): static
+    public function addTraductionExpo(TraductionExpo $traductionExpo): static
     {
-        if (!$this->traductionexpos->contains($traductionexpo)) {
-            $this->traductionexpos->add($traductionexpo);
-            $traductionexpo->setEmploye($this);
+        if (!$this->traductionExpos->contains($traductionExpo)) {
+            $this->traductionExpos->add($traductionExpo);
+            $traductionExpo->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionexpo(TraductionExpo $traductionexpo): static
+    public function removeTraductionExpo(TraductionExpo $traductionExpo): static
     {
-        if ($this->traductionexpos->removeElement($traductionexpo)) {
+        if ($this->traductionExpos->removeElement($traductionExpo)) {
             // set the owning side to null (unless already changed)
-            if ($traductionexpo->getEmploye() === $this) {
-                $traductionexpo->setEmploye(null);
+            if ($traductionExpo->getEmploye() === $this) {
+                $traductionExpo->setEmploye(null);
             }
         }
 
@@ -360,25 +360,25 @@ class Employe implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getTraductionArtistes(): Collection
     {
-        return $this->traductionartistes;
+        return $this->traductionArtistes;
     }
 
-    public function addTraductionArtiste(TraductionArtiste $traductionartiste): static
+    public function addTraductionArtiste(TraductionArtiste $traductionArtiste): static
     {
-        if (!$this->traductionartistes->contains($traductionartiste)) {
-            $this->traductionartistes->add($traductionartiste);
-            $traductionartiste->setEmploye($this);
+        if (!$this->traductionArtistes->contains($traductionArtiste)) {
+            $this->traductionArtistes->add($traductionArtiste);
+            $traductionArtiste->setEmploye($this);
         }
 
         return $this;
     }
 
-    public function removeTraductionartiste(TraductionArtiste $traductionartiste): static
+    public function removeTraductionartiste(TraductionArtiste $traductionArtiste): static
     {
-        if ($this->traductionartistes->removeElement($traductionartiste)) {
+        if ($this->traductionArtistes->removeElement($traductionArtiste)) {
             // set the owning side to null (unless already changed)
-            if ($traductionartiste->getEmploye() === $this) {
-                $traductionartiste->setEmploye(null);
+            if ($traductionArtiste->getEmploye() === $this) {
+                $traductionArtiste->setEmploye(null);
             }
         }
 

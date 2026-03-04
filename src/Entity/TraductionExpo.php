@@ -24,15 +24,15 @@ class TraductionExpo
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $dateAjout = null;
 
-    #[ORM\ManyToOne(targetEntity: Exposition::class, inversedBy: 'traductionexpos')]
+    #[ORM\ManyToOne(targetEntity: Exposition::class, inversedBy: 'traductionExpos')]
     #[ORM\JoinColumn(name: 'idExposition', referencedColumnName: 'idExposition', nullable: false)]
     private ?Exposition $exposition = null;
 
-    #[ORM\ManyToOne(targetEntity: Langue::class, inversedBy: 'traductionexpos')]
+    #[ORM\ManyToOne(targetEntity: Langue::class, inversedBy: 'traductionExpos')]
     #[ORM\JoinColumn(name: 'idLangue', referencedColumnName: 'idLangue', nullable: false)]
     private ?Langue $langue = null;
 
-    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'traductionexpos')]
+    #[ORM\ManyToOne(targetEntity: Employe::class, inversedBy: 'traductionExpos')]
     #[ORM\JoinColumn(name: 'idEmploye', referencedColumnName: 'idEmploye', nullable: true)]
     private ?Employe $employe = null;
 
