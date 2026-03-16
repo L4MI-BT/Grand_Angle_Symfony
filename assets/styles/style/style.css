@@ -81,6 +81,14 @@ h1, h2, h3, h4, h5, h6 {
   color: #fffdee;
 }
 
+.card-img {
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
 #overlay {
   display: none;
   position: fixed;
@@ -203,14 +211,6 @@ h1, h2, h3, h4, h5, h6 {
 
 main {
   top: 0;
-}
-
-.card-img {
-  height: 300px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
 }
 
 footer {
