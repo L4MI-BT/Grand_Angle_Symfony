@@ -1,12 +1,33 @@
-{% extends 'base.html.twig' %}
+{% extends 'public/base_public.html.twig' %}
 
 {% block title %}{{artiste.nom}}{{artiste.prenom}}{% endblock %}
 
-{% block body %}
+{% block main %}
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <div>
+            <h2>{{artiste.nom}} {{artiste.prenom}}</h2>
+            <p>{{artiste.anneeNaissance}}</p>
+            <p>{{artiste.description}}</p>
+        </div>
+        <div>
+            <img src="{{ asset("styles/#{artiste.image}") }}" alt="{{artiste.nom}} {{artiste.prenom}}" class="rounded shadow m-3" height="500px">
+        </div>
+    </div>
+    <div>
+        <h3>Oeuvres : </h3>
+        <div class="row">
+        {% for item in artiste.oeuvres %}
+            <div class="col-sm-4">
+                <div class="card mb-5">
+                    <a href="{{ path('oeuvre_show', {id: item.id}) }}">
+                        <img src="{{ asset("styles/#{item.image}") }}" alt="{{item.titre}}" class="card-img rounded shadow">
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h2>{{artiste.nom}} {{artiste.prenom}}</h2>
-    <img src="{{ asset("styles/#{artiste.image}") }}" alt="{{artiste.nom}} {{artiste.prenom}}">
-    <p>{{artiste.anneeNaissance}}</p>
 </div>
 {% endblock %}
