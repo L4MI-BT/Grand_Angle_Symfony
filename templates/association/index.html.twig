@@ -1,0 +1,42 @@
+{% extends 'public/base_public.html.twig' %}
+
+{% block title %}Qui sommes-nous ? - Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container py-5">
+
+    {# TITRE #}
+    <h1 class="display-5 mb-4 text-vert-sapin">Qui sommes-nous ?</h1>
+
+    {# TEXTE #}
+    <p class="fs-5">
+        Depuis 1996, <strong>Grand Angle</strong> ouvre ses portes aux artistes 
+        et au public au cœur de Tours. Dans cette ville riche d'histoire et de culture, 
+        notre mission est simple : donner vie à des œuvres d'art et les partager avec le plus grand nombre.
+    </p>
+
+    <p class="fs-5">
+        Tableaux, sculptures, installations sonores… Chaque exposition est une nouvelle aventure, 
+        une nouvelle façon de voir le monde. Depuis bientôt 30 ans, nous accueillons des artistes 
+        aux univers très différents et mettons tout en œuvre pour que leur vision soit respectée 
+        et transmise au public.
+    </p>
+
+    <p class="fs-5">
+        Derrière chaque exposition, <strong>25 passionné·es</strong> travaillent ensemble : 
+        techniciens, chargés de communication, traducteurs… Une équipe soudée, au service de l'art et des artistes.
+    </p>
+
+    <p class="fs-5 text-vert-sapin fst-italic">
+        Grand Angle, c'est avant tout une histoire de rencontres — entre les artistes, les œuvres et le public.
+    </p>
+
+    {# IMAGE #}
+    <div class="mt-4">
+        <img src="{{ asset("styles/images/chateau-tours-exterieur.jpg") }}" 
+            class="img-fluid rounded shadow" 
+            alt="Tours Grand Angle">
+    </div>
+
+</div>
+{% endblock %}
