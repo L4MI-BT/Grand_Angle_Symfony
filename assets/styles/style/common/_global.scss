@@ -2,12 +2,22 @@
 
 @use './variables';
 
-body {
+body:not(.admin) {
     background-color: variables.$blanc-casse;
-    color: variables.$vert-canard
+    color: variables.$vert-canard;
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-family: "newAmsterdam";
+    font-weight: 400;
+}
+
+body:not(.admin) h1, 
+body:not(.admin) h2, 
+body:not(.admin) h3, 
+body:not(.admin) h4, 
+body:not(.admin) h5, 
+body:not(.admin) h6 {
     font-family: "newAmsterdam";
     font-weight: 400;
 }
