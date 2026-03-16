@@ -1,0 +1,43 @@
+{% extends "admin/base_admin.html.twig" %}
+
+{% block title %}Employe index{% endblock %}
+
+{% block main %}
+    <h1>Employe index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Login</th>
+                <th>Mdp</th>
+                <th>Role</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employe in employes %}
+            <tr>
+                <td>{{ employe.nom }}</td>
+                <td>{{ employe.prenom }}</td>
+                <td>{{ employe.email }}</td>
+                <td>{{ employe.login }}</td>
+                <td>{{ employe.mdp }}</td>
+                <td>{{ employe.role }}</td>
+                <td>
+                    <a href="{{ path('app_admin_employe_show', {'id': employe.id}) }}">show</a>
+                    <a href="{{ path('app_admin_employe_edit', {'id': employe.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_employe_new') }}">Create new</a>
+{% endblock %}

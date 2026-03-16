@@ -12,9 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Fonction
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'idFonction')]
-    private ?int $id = null;
+    #[ORM\Column(name: 'idFonction', type: 'string', length: 3)]
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $intitule = null;
@@ -30,7 +29,7 @@ class Fonction
         $this->employes = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

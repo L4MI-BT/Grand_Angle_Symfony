@@ -1,0 +1,62 @@
+{% extends "admin/base_admin.html.twig" %}
+
+{% block title %}Employe{% endblock %}
+
+{% block main %}
+    <h1>Employe</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ employe.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ employe.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ employe.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ employe.email }}</td>
+            </tr>
+            <tr>
+                <th>Role</th>
+                <td>{{ employe.role }}</td>
+            </tr>
+            <tr>
+                <th>Login</th>
+                <td>{{ employe.login }}</td>
+            </tr>
+            <tr>
+                <th>Mdp</th>
+                <td>{{ employe.mdp }}</td>
+            </tr>
+            <tr>
+                <th>Actif</th>
+                <td>{{ employe.actif ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Supprime</th>
+                <td>{{ employe.supprime ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>DateCreation</th>
+                <td>{{ employe.dateCreation ? employe.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateSuppression</th>
+                <td>{{ employe.dateSuppression ? employe.dateSuppression|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_employe_index') }}">back to list</a>
+
+    <a href="{{ path('app_admin_employe_edit', {'id': employe.id}) }}">edit</a>
+
+    {{ include('admin/employe/_delete_form.html.twig') }}
+{% endblock %}
