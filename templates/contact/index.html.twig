@@ -1,0 +1,43 @@
+{% extends 'public/base_public.html.twig' %}
+
+{% block title %}Infos-pratiques - Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container py-5">
+
+    {# HORAIRES #}
+    <div class="mb-5">
+        <h2 class="text-vert-sapin mb-3">Horaires</h2>
+        <p>Lundi - Vendredi : 10h - 18h</p>
+        <p>Samedi : 10h - 20h</p>
+        <p>Dimanche : Fermé</p>
+    </div>
+
+    {# CONTACT #}
+    <div class="mb-5">
+        <h2 class="text-vert-sapin mb-3">Contact</h2>
+        <p><i class="bi bi-geo-alt"></i> 12 rue des Artistes, 37000 Tours</p>
+        <p><i class="bi bi-telephone"></i> 02 47 00 00 00</p>
+        <p><i class="bi bi-envelope"></i> contact@grandangle.fr</p>
+    </div>
+
+    {# SITE DE L'ASSO #}
+    <div class="mb-5">
+        <h2 class="text-vert-sapin mb-3">Le site de l'asso</h2>
+        <a href="https://www.grandangle.fr" target="_blank" class="btn btn-primary-custom">
+            <i class="bi bi-globe"></i> www.grandangle.fr
+        </a>
+    </div>
+
+    {# MENTIONS LÉGALES #}
+    <div class="mb-5">
+        <h2 class="text-vert-sapin mb-3">Mentions Légales</h2>
+        <p><strong>Raison sociale :</strong> Association Grand Angle</p>
+        <p><strong>Siège social :</strong> 12 rue des Artistes, 37000 Tours</p>
+        <p><strong>Directeur de publication :</strong> M. Fioret</p>
+        <p><strong>Email :</strong> contact@grandangle.fr</p>
+        <p><strong>Hébergeur :</strong> OVH, 2 rue Kellermann, 59100 Roubaix</p>
+    </div>
+
+</div>
+{% endblock %}
