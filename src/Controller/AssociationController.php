@@ -11,7 +11,7 @@ final class AssociationController extends AbstractController
     #[Route('/association', name: 'app_association')]
     public function index(): Response
     {
-        return $this->render('association/index.html.twig', [
+        return $this->render('public/association/index.html.twig', [
             'controller_name' => 'AssociationController',
         ]);
     }
