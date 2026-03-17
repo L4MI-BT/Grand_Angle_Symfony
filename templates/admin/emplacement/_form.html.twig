@@ -1,0 +1,43 @@
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# DESCRIPTION #}
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# POSITIONS #}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            {{ form_label(form.positionX, 'Position X (mètres)', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.positionX, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.positionY, 'Position Y (mètres)', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.positionY, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+    </div>
+
+    {# ESPACE #}
+    <div class="mb-3">
+        {{ form_label(form.espace, 'Espace', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.espace, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EXPOSITION #}
+    <div class="mb-4">
+        {{ form_label(form.exposition, 'Exposition', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.exposition, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_emplacement_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}

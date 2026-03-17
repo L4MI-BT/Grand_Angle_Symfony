@@ -1,0 +1,56 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Contenu enrichi - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Contenu enrichi</h1>
+        <a href="{{ path('app_admin_contenu_enrichi_edit', {'id': contenu_enrichi.id}) }}" 
+        class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+    </div>
+
+    {# INFOS #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Oeuvre associée</p>
+                    <p class="text-white">{{ contenu_enrichi.oeuvre ? contenu_enrichi.oeuvre.titre : '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Ordre d'affichage</p>
+                    <p class="text-white">{{ contenu_enrichi.ordreAffichage ?? '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Ajouté le</p>
+                    <p class="text-white">{{ contenu_enrichi.dateAjout ? contenu_enrichi.dateAjout|date('d/m/Y à H:i') : '-' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">URL d'accès</p>
+                    {% if contenu_enrichi.urlAcces %}
+                        <a href="{{ contenu_enrichi.urlAcces }}" target="_blank" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-play-circle"></i> Voir le contenu
+                        </a>
+                    {% else %}
+                        <p class="text-secondary fst-italic">Aucune URL</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if contenu_enrichi.description %}
+                <p class="text-secondary small mb-1 mt-3">Description</p>
+                <p class="text-white">{{ contenu_enrichi.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# BOUTON RETOUR #}
+    <a href="{{ path('app_admin_contenu_enrichi_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Retour à la liste
+    </a>
+
+</div>
+{% endblock %}

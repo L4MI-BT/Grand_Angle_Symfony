@@ -1,0 +1,53 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Associer Oeuvres / Artiste - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Associer Oeuvres / Artiste</h1>
+    </div>
+
+    <div class="card bg-dark border-secondary">
+        <div class="card-body">
+            <form method="POST">
+
+                {# OEUVRES #}
+                <div class="mb-3">
+                    <label class="form-label text-white">Oeuvres</label>
+                    <select name="oeuvre" class="form-select bg-dark text-white border-secondary">
+                        <option value="">-- Sélectionner une oeuvre --</option>
+                        {% for oeuvre in oeuvres %}
+                            <option value="{{ oeuvre.id }}">{{ oeuvre.titre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# ARTISTES #}
+                <div class="mb-4">
+                    <label class="form-label text-white">Artistes</label>
+                    <select name="artiste" class="form-select bg-dark text-white border-secondary">
+                        <option value="">-- Sélectionner un artiste --</option>
+                        {% for artiste in artistes %}
+                            <option value="{{ artiste.id }}">{{ artiste.prenom }} {{ artiste.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# BOUTONS #}
+                <div class="d-flex justify-content-between">
+                    <a href="{{ path('app_admin_artiste_index') }}" class="btn btn-outline-danger">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Valider
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

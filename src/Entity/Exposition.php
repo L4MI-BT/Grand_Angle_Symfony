@@ -73,6 +73,9 @@ class Exposition
     #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'exposition', orphanRemoval: true)]
     private Collection $emplacements;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $frequentation = null;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTime();
@@ -324,6 +327,18 @@ class Exposition
                 $emplacement->setExposition(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFrequentation(): ?int
+    {
+        return $this->frequentation;
+    }
+
+    public function setFrequentation(?int $frequentation): static
+    {
+        $this->frequentation = $frequentation;
 
         return $this;
     }

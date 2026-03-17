@@ -24,6 +24,9 @@ class Etape
     #[ORM\JoinColumn(name: 'idExposition', referencedColumnName: 'idExposition', nullable: false)]
     private ?Exposition $exposition = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $estComplete = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Etape
     public function setExposition(?Exposition $exposition): static
     {
         $this->exposition = $exposition;
+
+        return $this;
+    }
+
+    public function isEstComplete(): ?bool
+    {
+        return $this->estComplete;
+    }
+
+    public function setEstComplete(?bool $estComplete): static
+    {
+        $this->estComplete = $estComplete;
 
         return $this;
     }

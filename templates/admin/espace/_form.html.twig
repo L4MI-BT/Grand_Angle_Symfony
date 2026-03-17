@@ -1,0 +1,31 @@
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# NOM ESPACE #}
+    <div class="mb-3">
+        {{ form_label(form.nomEspace, 'Nom de l\'espace', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.nomEspace, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# DESCRIPTION #}
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary', 'rows': '3'}}) }}
+    </div>
+
+    {# SUPERFICIE #}
+    <div class="mb-4">
+        {{ form_label(form.superficieM2, 'Superficie (m²)', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.superficieM2, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_espace_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}

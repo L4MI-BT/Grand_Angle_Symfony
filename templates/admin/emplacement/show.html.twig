@@ -1,0 +1,77 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Emplacement - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Emplacement</h1>
+        <a href="{{ path('app_admin_emplacement_edit', {'id': emplacement.id}) }}" 
+        class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+    </div>
+
+    {# INFOS #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Description</p>
+                    <p class="text-white">{{ emplacement.description ?? '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Espace</p>
+                    <p class="text-white">{{ emplacement.espace ? emplacement.espace.nomEspace : '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Exposition</p>
+                    <p class="text-white">{{ emplacement.exposition ? emplacement.exposition.titre : '-' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Position X</p>
+                    <p class="text-white">{{ emplacement.positionX ?? '-' }} m</p>
+
+                    <p class="text-secondary small mb-1">Position Y</p>
+                    <p class="text-white">{{ emplacement.positionY ?? '-' }} m</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# OEUVRES DE L'EMPLACEMENT #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Oeuvres à cet emplacement</h5>
+            {% if emplacement.oeuvres is empty %}
+                <p class="text-secondary fst-italic">Aucune oeuvre à cet emplacement</p>
+            {% else %}
+                <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Artiste</th>
+                            <th>N° identification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for oeuvre in emplacement.oeuvres %}
+                        <tr>
+                            <td>{{ oeuvre.titre }}</td>
+                            <td>{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</td>
+                            <td>{{ oeuvre.numeroIdentification ?? '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    {# BOUTON RETOUR #}
+    <a href="{{ path('app_admin_emplacement_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Retour à la liste
+    </a>
+
+</div>
+{% endblock %}

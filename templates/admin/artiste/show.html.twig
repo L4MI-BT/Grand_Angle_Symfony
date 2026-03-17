@@ -1,46 +1,82 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}Artiste{% endblock %}
+{% block title %}{{ artiste.prenom }} {{ artiste.nom }} - Admin Grand Angle{% endblock %}
 
-{% block body %}
-    <h1>Artiste</h1>
+{% block main %}
+<div class="container-fluid py-4">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ artiste.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ artiste.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ artiste.prenom }}</td>
-            </tr>
-            <tr>
-                <th>AnneeNaissance</th>
-                <td>{{ artiste.anneeNaissance }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ artiste.description }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ artiste.image }}</td>
-            </tr>
-            <tr>
-                <th>DateAjout</th>
-                <td>{{ artiste.dateAjout ? artiste.dateAjout|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">{{ artiste.prenom }} {{ artiste.nom }}</h1>
+        <a href="{{ path('app_admin_artiste_edit', {'id': artiste.id}) }}" 
+        class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+    </div>
 
-    <a href="{{ path('app_admin_artiste_index') }}">back to list</a>
+    {# INFOS #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Année de naissance</p>
+                    <p class="text-white">{{ artiste.anneeNaissance ?? '-' }}</p>
 
-    <a href="{{ path('app_admin_artiste_edit', {'id': artiste.id}) }}">edit</a>
+                    <p class="text-secondary small mb-1">Ajouté le</p>
+                    <p class="text-white">{{ artiste.dateAjout ? artiste.dateAjout|date('d/m/Y à H:i') : '-' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Responsable</p>
+                    <p class="text-white">
+                        {% if artiste.employe %}
+                            {{ artiste.employe.prenom }} {{ artiste.employe.nom }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
 
-    {{ include('admin/artiste/_delete_form.html.twig') }}
+            {% if artiste.description %}
+                <p class="text-secondary small mb-1 mt-3">Description</p>
+                <p class="text-white">{{ artiste.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# OEUVRES DE L'ARTISTE #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Oeuvres</h5>
+            {% if artiste.oeuvres is empty %}
+                <p class="text-secondary fst-italic">Aucune oeuvre associée</p>
+            {% else %}
+                <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Technique</th>
+                            <th>Exposition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for oeuvre in artiste.oeuvres %}
+                        <tr>
+                            <td>{{ oeuvre.titre }}</td>
+                            <td>{{ oeuvre.technique ?? '-' }}</td>
+                            <td>{{ oeuvre.exposition ? oeuvre.exposition.titre : '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    {# BOUTON RETOUR #}
+    <a href="{{ path('app_admin_artiste_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Retour à la liste
+</a>
+
+</div>
 {% endblock %}

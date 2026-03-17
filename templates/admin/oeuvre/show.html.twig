@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 text-white">{{ oeuvre.titre }}</h1>
         <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}" 
-        class="btn btn-outline-warning">
+           class="btn btn-outline-warning">
             <i class="bi bi-pencil"></i> Modifier
         </a>
     </div>
@@ -52,3 +52,41 @@
             {% if oeuvre.description %}
                 <p class="text-secondary small mb-1 mt-3">Description</p>
                 <p class="text-white">{{ oeuvre.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# CONTENU ENRICHI #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Contenu enrichi</h5>
+            {% if oeuvre.contenuEnrichis is empty %}
+                <p class="text-secondary fst-italic">Aucun contenu enrichi</p>
+            {% else %}
+                <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contenu in oeuvre.contenuEnrichis %}
+                        <tr>
+                            <td>{{ contenu.description ?? '-' }}</td>
+                            <td>{{ contenu.urlAcces ?? '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    {# BOUTON RETOUR #}
+    <a href="{{ path('app_admin_oeuvre_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Retour à la liste
+    </a>
+
+</div>
+{% endblock %}
