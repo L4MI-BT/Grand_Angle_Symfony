@@ -36,13 +36,19 @@
     
     <div class="mb-3">
         {{ form_label(form.mdp, 'MOT DE PASSE', {'label_attr': {'class': 'form-label text-white'}})}}
-        {{ form_widget(form.mdp,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        <div class="row">
+            <div class="col-4">
+                {{ form_widget(form.generateMdp, {'attr': {'class': 'btn btn-secondary'}}) }}
+            </div>
+            <div class="col-8">
+                {{ form_widget(form.mdp,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+            </div>
+        </div>
     </div>
 
     <div class="mb-3">
         {{ form_label(form.role, 'ROLE', {'label_attr': {'class': 'form-label text-white'}})}}
         {{ form_widget(form.role,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
-        </div>
     </div>
 
     <div class="m-3">
@@ -56,4 +62,11 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById('employe_generateMdp').addEventListener('click', async function() {
+            const response = await fetch('{{ path('app_new_password') }}');
+            const data = await response.json();
+            document.getElementById('employe_mdp').value = data.password;
+        });
+    </script>
 {{form_end(form)}}
