@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+    
+    <div class="mb-3">
+        {{ form_label(form.id, 'ID', {'label_attr': {'class': 'form-label text-white'}})}}
+        {{ form_widget(form.id,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.intitule, 'INTITULE', {'label_attr': {'class': 'form-label text-white'}})}}
+        {{ form_widget(form.intitule,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    <div class="m-3">
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('app_admin_employe_index') }}" class="btn btn-outline-danger">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}
