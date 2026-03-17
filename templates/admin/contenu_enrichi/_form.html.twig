@@ -1,0 +1,43 @@
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# DESCRIPTION #}
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary', 'rows': '4'}}) }}
+    </div>
+
+    {# URL ACCES #}
+    <div class="mb-3">
+        {{ form_label(form.urlAcces, 'URL d\'accès', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.urlAcces, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# ORDRE AFFICHAGE #}
+    <div class="mb-3">
+        {{ form_label(form.ordreAffichage, 'Ordre d\'affichage', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.ordreAffichage, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# OEUVRE #}
+    <div class="mb-3">
+        {{ form_label(form.oeuvre, 'Oeuvre associée', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.oeuvre, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EMPLOYE #}
+    <div class="mb-4">
+        {{ form_label(form.employe, 'Responsable', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.employe, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_contenu_enrichi_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}

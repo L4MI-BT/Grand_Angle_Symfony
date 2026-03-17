@@ -1,4 +1,43 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# NOM #}
+    <div class="mb-3">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# PRENOM #}
+    <div class="mb-3">
+        {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.prenom, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# ANNEE NAISSANCE #}
+    <div class="mb-3">
+        {{ form_label(form.anneeNaissance, 'Année de naissance', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.anneeNaissance, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# DESCRIPTION #}
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary', 'rows': '4'}}) }}
+    </div>
+
+    {# EMPLOYE #}
+    <div class="mb-4">
+        {{ form_label(form.employe, 'Responsable', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.employe, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_artiste_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}

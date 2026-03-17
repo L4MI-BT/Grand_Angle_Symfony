@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Artiste;
 use App\Form\ArtisteType;
 use App\Repository\ArtisteRepository;
+use App\Repository\OeuvreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,5 +78,30 @@ final class ArtisteController extends AbstractController
         }
 
         return $this->redirectToRoute('app_admin_artiste_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/artiste/associer', name: 'app_admin_artiste_associer')]
+    public function associer(Request $request, ArtisteRepository $artisteRepository, OeuvreRepository $oeuvreRepository, EntityManagerInterface $entityManager): Response
+    {
+        $artistes = $artisteRepository->findAll();
+        $oeuvres = $oeuvreRepository->findAll();
+
+        if($request->isMethod('POST')) {
+            $oeuvreId = $request->request->get('oeuvre');
+            $artisteId = $request->request->get('artiste');
+
+            $oeuvre = $oeuvreRepository->find($oeuvreId);
+            $artiste = $artisteRepository->find($artisteId);
+
+            if($oeuvre && $artiste) {
+                $oeuvre->setArtiste($artiste);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_admin_artiste_index');
+            }
+        }
+        return $this->render('admin/artiste/associer.html.twig', [
+            'artistes' => $artistes,
+            'oeuvres' => $oeuvres,
+        ]);
     }
 }

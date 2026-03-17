@@ -1,0 +1,64 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Emplacements - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Emplacements</h1>
+    </div>
+
+    {# TABLEAU #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <table class="table table-dark table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Espace</th>
+                        <th>Exposition</th>
+                        <th>Position X</th>
+                        <th>Position Y</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for emplacement in emplacements %}
+                    <tr>
+                        <td>{{ emplacement.description ?? '-' }}</td>
+                        <td>{{ emplacement.espace ? emplacement.espace.nomEspace : '-' }}</td>
+                        <td>{{ emplacement.exposition ? emplacement.exposition.titre : '-' }}</td>
+                        <td>{{ emplacement.positionX ?? '-' }}</td>
+                        <td>{{ emplacement.positionY ?? '-' }}</td>
+                        <td>
+                            <a href="{{ path('app_admin_emplacement_show', {'id': emplacement.id}) }}" 
+                            class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i> Voir
+                            </a>
+                            <a href="{{ path('app_admin_emplacement_edit', {'id': emplacement.id}) }}" 
+                            class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-pencil"></i> Modifier
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-secondary">Aucun emplacement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {# BOUTON AJOUTER #}
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('app_admin_emplacement_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Ajouter un emplacement
+        </a>
+    </div>
+
+</div>
+{% endblock %}

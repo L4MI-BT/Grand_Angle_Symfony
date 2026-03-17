@@ -1,11 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base_admin.html.twig' %}
 
-{% block title %}New Artiste{% endblock %}
+{% block title %}Ajouter un artiste - Admin Grand Angle{% endblock %}
 
-{% block body %}
-    <h1>Create new Artiste</h1>
+{% block main %}
+<div class="container-fluid py-4">
 
-    {{ include('admin/artiste/_form.html.twig') }}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Ajouter un artiste</h1>
+    </div>
 
-    <a href="{{ path('app_admin_artiste_index') }}">back to list</a>
+    <div class="card bg-dark border-secondary">
+        <div class="card-body">
+            {{ include('admin/artiste/_form.html.twig') }}
+        </div>
+    </div>
+
+</div>
 {% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}{{ espace.nomEspace }} - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">{{ espace.nomEspace }}</h1>
+        <a href="{{ path('app_admin_espace_edit', {'id': espace.id}) }}" 
+        class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+    </div>
+
+    {# INFOS #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <p class="text-secondary small mb-1">Superficie</p>
+            <p class="text-white">{{ espace.superficieM2 ?? '-' }} m²</p>
+
+            {% if espace.description %}
+                <p class="text-secondary small mb-1 mt-3">Description</p>
+                <p class="text-white">{{ espace.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# EMPLACEMENTS DE L'ESPACE #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Emplacements</h5>
+            {% if espace.emplacements is empty %}
+                <p class="text-secondary fst-italic">Aucun emplacement associé</p>
+            {% else %}
+                <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Position X</th>
+                            <th>Position Y</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emplacement in espace.emplacements %}
+                        <tr>
+                            <td>{{ emplacement.description ?? '-' }}</td>
+                            <td>{{ emplacement.positionX ?? '-' }}</td>
+                            <td>{{ emplacement.positionY ?? '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    {# BOUTON RETOUR #}
+    <a href="{{ path('app_admin_espace_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Retour à la liste
+    </a>
+
+</div>
+{% endblock %}

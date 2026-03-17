@@ -58,8 +58,20 @@ final class ExpositionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('app_admin_exposition_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        // Gestion des étapes séparément
+        if ($request->isMethod('POST') && $request->request->has('etapes') || 
+            $request->isMethod('POST') && !$form->isSubmitted()) {
+            
+            $etapesData = $request->request->all('etapes') ?? [];
+            foreach ($exposition->getEtapes() as $etape) {
+                $estComplete = isset($etapesData[$etape->getId()]);
+                $etape->setEstComplete($estComplete);
+            }
+            $entityManager->flush();
+            return $this->redirectToRoute('app_admin_exposition_edit', ['id' => $exposition->getId()]);
         }
 
         return $this->render('admin/exposition/edit.html.twig', [
@@ -67,6 +79,7 @@ final class ExpositionController extends AbstractController
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{id}', name: 'app_admin_exposition_delete', methods: ['POST'])]
     public function delete(Request $request, Exposition $exposition, EntityManagerInterface $entityManager): Response
