@@ -1,0 +1,54 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}{{ oeuvre.titre }} - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">{{ oeuvre.titre }}</h1>
+        <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}" 
+        class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+    </div>
+
+    {# INFOS PRINCIPALES #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Artiste</p>
+                    <p class="text-white">{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</p>
+
+                    <p class="text-secondary small mb-1">Technique</p>
+                    <p class="text-white">{{ oeuvre.technique ?? '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Année de création</p>
+                    <p class="text-white">{{ oeuvre.anneeCreation ?? '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Dimensions</p>
+                    <p class="text-white">
+                        {{ oeuvre.hauteurCm ?? '-' }} × {{ oeuvre.largeurCm ?? '-' }}
+                        {% if oeuvre.profondeurCm %} × {{ oeuvre.profondeurCm }}{% endif %} cm
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Exposition</p>
+                    <p class="text-white">{{ oeuvre.exposition ? oeuvre.exposition.titre : '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Livraison prévue</p>
+                    <p class="text-white">{{ oeuvre.dateLivraisonPrevue ? oeuvre.dateLivraisonPrevue|date('d/m/Y') : '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Livraison réelle</p>
+                    <p class="text-white">{{ oeuvre.dateLivraisonReelle ? oeuvre.dateLivraisonReelle|date('d/m/Y') : '-' }}</p>
+
+                    <p class="text-secondary small mb-1">Ajoutée le</p>
+                    <p class="text-white">{{ oeuvre.dateAjout|date('d/m/Y à H:i') }}</p>
+                </div>
+            </div>
+
+            {% if oeuvre.description %}
+                <p class="text-secondary small mb-1 mt-3">Description</p>
+                <p class="text-white">{{ oeuvre.description }}</p>

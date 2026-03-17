@@ -1,0 +1,83 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Toutes les oeuvres - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Toutes les oeuvres</h1>
+        <input type="text" class="form-control bg-dark text-white border-secondary w-25" 
+            placeholder="Recherche..." id="searchInput">
+    </div>
+
+    {# TABLEAU #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <table class="table table-dark table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Artiste</th>
+                        <th>Technique</th>
+                        <th>Exposition</th>
+                        <th>Livraison prévue</th>
+                        <th>Livraison réelle</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="oeuvresList">
+                {% for oeuvre in oeuvres %}
+                    <tr class="oeuvre-row">
+                        <td>{{ oeuvre.titre }}</td>
+                        <td>{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</td>
+                        <td>{{ oeuvre.technique ?? '-' }}</td>
+                        <td>{{ oeuvre.exposition ? oeuvre.exposition.titre : '-' }}</td>
+                        <td>{{ oeuvre.dateLivraisonPrevue ? oeuvre.dateLivraisonPrevue|date('d/m/Y') : '-' }}</td>
+                        <td>{{ oeuvre.dateLivraisonReelle ? oeuvre.dateLivraisonReelle|date('d/m/Y') : '-' }}</td>
+                        <td>
+                            <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}" 
+                            class="btn btn-sm btn-outline-warning mb-1">
+                                <i class="bi bi-pencil"></i> Modifier
+                            </a>
+                            <a href="{{ path('app_admin_oeuvre_show', {'id': oeuvre.id}) }}" 
+                            class="btn btn-sm btn-outline-info mb-1">
+                                <i class="bi bi-eye"></i> Contenu enrichi
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-secondary">Aucune oeuvre trouvée</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {# BOUTONS BAS #}
+    <div class="d-flex justify-content-between">
+        <a href="#" class="btn btn-outline-secondary">
+            <i class="bi bi-map"></i> Gestion des oeuvres de l'expo actuel
+        </a>
+        <a href="{{ path('app_admin_oeuvre_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Ajouter une oeuvre +
+        </a>
+    </div>
+
+</div>
+
+{# SCRIPT RECHERCHE #}
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+    const search = this.value.toLowerCase();
+    document.querySelectorAll('.oeuvre-row').forEach(function(row) {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+    });
+});
+</script>
+
+{% endblock %}

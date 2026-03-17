@@ -1,0 +1,87 @@
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# TITRE #}
+    <div class="mb-3">
+        {{ form_label(form.titre, 'Titre', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# DESCRIPTION #}
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary', 'rows': '4'}}) }}
+    </div>
+
+    {# TECHNIQUE #}
+    <div class="mb-3">
+        {{ form_label(form.technique, 'Technique', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.technique, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# ANNÉE + DIMENSIONS #}
+    <div class="row mb-3">
+        <div class="col-md-3">
+            {{ form_label(form.anneeCreation, 'Année de création', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.anneeCreation, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.hauteurCm, 'Hauteur (cm)', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.hauteurCm, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.largeurCm, 'Largeur (cm)', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.largeurCm, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.profondeurCm, 'Profondeur (cm)', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.profondeurCm, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+    </div>
+
+    {# DATES LIVRAISON #}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            {{ form_label(form.dateLivraisonPrevue, 'Date livraison prévue', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.dateLivraisonPrevue, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.dateLivraisonReelle, 'Date livraison réelle', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.dateLivraisonReelle, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+    </div>
+
+    {# ARTISTE #}
+    <div class="mb-3">
+        {{ form_label(form.artiste, 'Artiste', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.artiste, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EXPOSITION #}
+    <div class="mb-3">
+        {{ form_label(form.exposition, 'Exposition', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.exposition, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EMPLACEMENT #}
+    <div class="mb-3">
+        {{ form_label(form.emplacement, 'Emplacement', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.emplacement, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EMPLOYE #}
+    <div class="mb-4">
+        {{ form_label(form.employe, 'Responsable', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.employe, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_oeuvre_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}

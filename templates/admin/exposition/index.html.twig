@@ -1,0 +1,98 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Expositions - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Expositions</h1>
+        <a href="{{ path('app_admin_exposition_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Créer une future expo
+        </a>
+    </div>
+
+    {# RECHERCHE #}
+    <div class="mb-4">
+        <input type="text" class="form-control bg-dark text-white border-secondary" 
+            placeholder="Recherche..." id="searchInput">
+    </div>
+
+    {# CARDS EXPOSITIONS #}
+    <div id="expositionsList">
+        {% for exposition in expositions %}
+        <div class="card bg-dark border-secondary mb-3 exposition-card">
+            <div class="card-body">
+                <p class="text-secondary small mb-2">Résumé de l'expo</p>
+                <div class="row">
+
+                    {# GAUCHE : titre + calendrier #}
+                    <div class="col-md-6">
+                        <h5 class="text-white mb-3">{{ exposition.titre }}</h5>
+                        <div class="d-flex gap-2 text-secondary">
+                            <span><i class="bi bi-calendar-event"></i> 
+                                {{ exposition.dateDebut ? exposition.dateDebut|date('d/m/Y') : 'Non définie' }}
+                            </span>
+                            <span>→</span>
+                            <span>
+                                {{ exposition.dateFin ? exposition.dateFin|date('d/m/Y') : 'Non définie' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    {# DROITE : artistes #}
+                    <div class="col-md-4">
+                        <p class="text-secondary small mb-2">Artiste(s)</p>
+                        {% set artistes = [] %}
+                        {% for oeuvre in exposition.oeuvres %}
+                            {% if oeuvre.artiste and oeuvre.artiste.nom not in artistes %}
+                                {% set artistes = artistes|merge([oeuvre.artiste.nom]) %}
+                                <p class="text-white mb-1">
+                                    <i class="bi bi-person"></i> 
+                                    {{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+                        {% if artistes is empty %}
+                            <p class="text-secondary fst-italic">Aucun artiste</p>
+                        {% endif %}
+                    </div>
+
+                    {# ACTIONS #}
+                    <div class="col-md-2 d-flex flex-column gap-2 justify-content-center">
+                        <a href="{{ path('app_admin_exposition_show', {'id': exposition.id}) }}" 
+                        class="btn btn-sm btn-outline-light">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ path('app_admin_exposition_edit', {'id': exposition.id}) }}" 
+                        class="btn btn-sm btn-outline-warning">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        {% if exposition.oeuvres is empty %}
+                            {{ include('admin/exposition/_delete_form.html.twig') }}
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p class="text-secondary">Aucune exposition trouvée.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{# SCRIPT RECHERCHE #}
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+    const search = this.value.toLowerCase();
+    document.querySelectorAll('.exposition-card').forEach(function(card) {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(search) ? 'block' : 'none';
+    });
+});
+</script>
+
+{% endblock %}
