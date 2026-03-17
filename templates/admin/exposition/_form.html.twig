@@ -1,0 +1,61 @@
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# TITRE #}
+    <div class="mb-3">
+        {{ form_label(form.titre, 'Nom de l\'expo', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# THEME #}
+    <div class="mb-3">
+        {{ form_label(form.theme, 'Thème', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.theme, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# DATES #}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            {{ form_label(form.dateDebut, 'Date de début', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.dateDebut, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.dateFin, 'Date de fin', {'label_attr': {'class': 'form-label text-white'}}) }}
+            {{ form_widget(form.dateFin, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+    </div>
+
+    {# HORAIRES #}
+    <div class="mb-3">
+        {{ form_label(form.horaires, 'Horaires', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.horaires, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# DESCRIPTION #}
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary', 'rows': '4'}}) }}
+    </div>
+
+    {# EMPLOYE #}
+    <div class="mb-3">
+        {{ form_label(form.employe, 'Responsable', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.employe, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# MODULE PUBLIC #}
+    <div class="mb-4 form-check">
+        {{ form_widget(form.modulePublicActif, {'attr': {'class': 'form-check-input'}}) }}
+        {{ form_label(form.modulePublicActif, 'Activer le module public', {'label_attr': {'class': 'form-check-label text-white'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_exposition_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Valider
+        </button>
+    </div>
+
+{{ form_end(form) }}

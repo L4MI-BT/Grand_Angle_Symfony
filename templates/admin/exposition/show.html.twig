@@ -1,0 +1,101 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}{{ exposition.titre }} - Admin Grand Angle{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">{{ exposition.titre }}</h1>
+        <a href="{{ path('app_admin_exposition_edit', {'id': exposition.id}) }}" 
+        class="btn btn-outline-warning">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+    </div>
+
+    {# INFOS PRINCIPALES #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Thème</p>
+                    <p class="text-white">{{ exposition.theme ?? 'Non défini' }}</p>
+
+                    <p class="text-secondary small mb-1">Dates</p>
+                    <p class="text-white">
+                        {{ exposition.dateDebut ? exposition.dateDebut|date('d/m/Y') : 'Non définie' }}
+                        → 
+                        {{ exposition.dateFin ? exposition.dateFin|date('d/m/Y') : 'Non définie' }}
+                    </p>
+
+                    <p class="text-secondary small mb-1">Horaires</p>
+                    <p class="text-white">{{ exposition.horaires ?? 'Non définis' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Responsable</p>
+                    <p class="text-white">
+                        {% if exposition.employe %}
+                            {{ exposition.employe.prenom }} {{ exposition.employe.nom }}
+                        {% else %}
+                            Non défini
+                        {% endif %}
+                    </p>
+
+                    <p class="text-secondary small mb-1">Module public</p>
+                    <p>
+                        {% if exposition.modulePublicActif %}
+                            <span class="badge bg-success">Actif</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactif</span>
+                        {% endif %}
+                    </p>
+
+                    <p class="text-secondary small mb-1">Créée le</p>
+                    <p class="text-white">{{ exposition.dateCreation|date('d/m/Y à H:i') }}</p>
+                </div>
+            </div>
+
+            {% if exposition.description %}
+                <p class="text-secondary small mb-1 mt-3">Description</p>
+                <p class="text-white">{{ exposition.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# OEUVRES ASSOCIÉES #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Oeuvres associées</h5>
+            {% if exposition.oeuvres is empty %}
+                <p class="text-secondary fst-italic">Aucune oeuvre associée</p>
+            {% else %}
+                <table class="table table-dark table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Artiste</th>
+                            <th>Technique</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for oeuvre in exposition.oeuvres %}
+                        <tr>
+                            <td>{{ oeuvre.titre }}</td>
+                            <td>{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</td>
+                            <td>{{ oeuvre.technique ?? '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    {# BOUTON RETOUR #}
+    <a href="{{ path('app_admin_exposition_index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Retour à la liste
+    </a>
+
+</div>
+{% endblock %}
