@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Exposition;
 use App\Form\ExpositionType;
+use App\Repository\EmplacementRepository;
 use App\Repository\ExpositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,10 +44,12 @@ final class ExpositionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_admin_exposition_show', methods: ['GET'])]
-    public function show(Exposition $exposition): Response
+    public function show(Exposition $exposition, EmplacementRepository $emplacementRepository): Response
     {
+        $emplacements = $emplacementRepository->findBy(['exposition' => $exposition]);
         return $this->render('admin/exposition/show.html.twig', [
             'exposition' => $exposition,
+            'emplacements' => $emplacements,
         ]);
     }
 

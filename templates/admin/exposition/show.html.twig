@@ -14,6 +14,24 @@
         </a>
     </div>
 
+    {# ALERTE OEUVRES NON LIVREES #}
+    {% set oeuvresNonLivrees = exposition.oeuvres|filter(o => o.dateLivraisonReelle is null) %}
+    {% if oeuvresNonLivrees|length > 0 and exposition.dateDebut %}
+        {% set joursAvantDebut = (exposition.dateDebut|date('U') - "now"|date('U')) / 86400 %}
+        {% if joursAvantDebut <= 7 and joursAvantDebut > 0 %}
+            <div class="alert alert-danger mb-4">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <strong>Attention !</strong> L'exposition ouvre dans {{ joursAvantDebut|round }} jour(s) et 
+                <strong>{{ oeuvresNonLivrees|length }} oeuvre(s)</strong> ne sont pas encore livrées :
+                <ul class="mt-2 mb-0">
+                    {% for oeuvre in oeuvresNonLivrees %}
+                        <li>{{ oeuvre.titre }} - {{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endif %}
+
     {# INFOS PRINCIPALES #}
     <div class="card bg-dark border-secondary mb-4">
         <div class="card-body">
@@ -63,6 +81,78 @@
         </div>
     </div>
 
+    {# TIMELINE #}
+    {% if exposition.dateDebut and exposition.dateFin %}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Période de l'exposition</h5>
+
+            {% set debut = exposition.dateDebut|date('U') %}
+            {% set fin = exposition.dateFin|date('U') %}
+            {% set aujourd_hui = "now"|date('U') %}
+            {% set duree = fin - debut %}
+            {% set ecoule = aujourd_hui - debut %}
+            {% set avancement = duree > 0 ? (ecoule / duree * 100)|round : 0 %}
+            {% set avancement = avancement > 100 ? 100 : avancement %}
+            {% set avancement = avancement < 0 ? 0 : avancement %}
+
+            <div class="d-flex justify-content-between text-secondary small mb-1">
+                <span>{{ exposition.dateDebut|date('d/m/Y') }}</span>
+                <span>{{ exposition.dateFin|date('d/m/Y') }}</span>
+            </div>
+            <div class="progress mb-2" style="height: 20px;">
+                <div class="progress-bar bg-success" 
+                    role="progressbar" 
+                    style="width: {{ avancement }}%">
+                </div>
+            </div>
+            <div class="text-center text-secondary small">
+                {% if avancement == 0 %}
+                    <span class="badge bg-secondary">Pas encore commencée</span>
+                {% elseif avancement >= 100 %}
+                    <span class="badge bg-danger">Terminée</span>
+                {% else %}
+                    <span class="badge bg-success">En cours - {{ avancement }}% écoulé</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# CYCLE DE VIE #}
+    {% if exposition.etapes is not empty %}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Cycle de vie</h5>
+
+            {% set total = exposition.etapes|length %}
+            {% set completes = exposition.etapes|filter(e => e.estComplete == true)|length %}
+            {% set pourcentage = total > 0 ? (completes / total * 100)|round : 0 %}
+
+            <div class="progress mb-4" style="height: 25px;">
+                <div class="progress-bar bg-success" 
+                    role="progressbar" 
+                    style="width: {{ pourcentage }}%">
+                    {{ pourcentage }}%
+                </div>
+            </div>
+
+            <div class="row">
+                {% for etape in exposition.etapes|sort((a, b) => a.ordre <=> b.ordre) %}
+                <div class="col-md-4 mb-2">
+                    {% if etape.estComplete %}
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                    {% else %}
+                        <i class="bi bi-circle text-secondary"></i>
+                    {% endif %}
+                    <span class="text-white ms-2">{{ etape.libelle }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     {# OEUVRES ASSOCIÉES #}
     <div class="card bg-dark border-secondary mb-4">
         <div class="card-body">
@@ -76,6 +166,8 @@
                             <th>Titre</th>
                             <th>Artiste</th>
                             <th>Technique</th>
+                            <th>Livraison prévue</th>
+                            <th>Livraison réelle</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,11 +176,112 @@
                             <td>{{ oeuvre.titre }}</td>
                             <td>{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</td>
                             <td>{{ oeuvre.technique ?? '-' }}</td>
+                            <td>{{ oeuvre.dateLivraisonPrevue ? oeuvre.dateLivraisonPrevue|date('d/m/Y') : '-' }}</td>
+                            <td>
+                                {% if oeuvre.dateLivraisonReelle %}
+                                    <span class="badge bg-success">{{ oeuvre.dateLivraisonReelle|date('d/m/Y') }}</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">En attente</span>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             {% endif %}
+        </div>
+    </div>
+
+    {# PLAN DU BATIMENT #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Plan de l'exposition</h5>
+            {% if emplacements is empty %}
+                <p class="text-secondary fst-italic">Aucun emplacement défini</p>
+            {% else %}
+                <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="width: 100%; background-color: #1a1a2e; border-radius: 8px;">
+
+                    {# BATIMENT PRINCIPAL #}
+                    <rect x="20" y="20" width="860" height="460" fill="none" stroke="#6c757d" stroke-width="3"/>
+
+                    {# HALL PRINCIPAL #}
+                    <rect x="620" y="20" width="260" height="460" fill="#2a2a3e" stroke="#6c757d" stroke-width="2"/>
+                    <text x="750" y="260" fill="#adb5bd" font-size="14" text-anchor="middle">Hall Principal</text>
+
+                    {# ESPACE 2 (nord-est) #}
+                    <rect x="320" y="20" width="300" height="220" fill="#2a2a3e" stroke="#6c757d" stroke-width="2"/>
+                    <text x="470" y="120" fill="#adb5bd" font-size="14" text-anchor="middle">Espace 2</text>
+
+                    {# ESPACE 1 (sud-est) #}
+                    <rect x="320" y="260" width="300" height="220" fill="#2a2a3e" stroke="#6c757d" stroke-width="2"/>
+                    <text x="470" y="380" fill="#adb5bd" font-size="14" text-anchor="middle">Espace 1</text>
+
+                    {# ESPACE 3 (ouest) #}
+                    <rect x="20" y="20" width="300" height="460" fill="#2a2a3e" stroke="#6c757d" stroke-width="2"/>
+                    <text x="170" y="260" fill="#adb5bd" font-size="14" text-anchor="middle">Espace 3</text>
+
+                    {# EMPLACEMENTS ET OEUVRES #}
+                    {% for emplacement in emplacements %}
+                        {% if emplacement.oeuvres is not empty %}
+                            {% for oeuvre in emplacement.oeuvres %}
+                                {% set px = (emplacement.positionX * 100) %}
+                                {% set py = (emplacement.positionY * 100) %}
+                                <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}">
+                                    <rect x="{{ px - 15 }}" y="{{ py - 15 }}" 
+                                        width="30" height="30" 
+                                        fill="#0dcaf0" stroke="#fff" stroke-width="1" 
+                                        rx="4"/>
+                                    <text x="{{ px }}" y="{{ py + 5 }}" 
+                                        fill="#000" font-size="12" 
+                                        text-anchor="middle" font-weight="bold">
+                                        {{ oeuvre.numeroIdentification ?? '?' }}
+                                    </text>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+
+                </svg>
+            {% endif %}
+        </div>
+    </div>
+
+    {# FREQUENTATION #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Fréquentation</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Visiteurs de l'exposition</p>
+                    <p class="text-white fs-4">
+                        {{ exposition.frequentation ?? '0' }}
+                        <span class="text-secondary fs-6">visiteurs</span>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-secondary small mb-1">Scans QR code par oeuvre</p>
+                    {% if exposition.oeuvres is empty %}
+                        <p class="text-secondary fst-italic">Aucune oeuvre</p>
+                    {% else %}
+                        <table class="table table-dark table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Oeuvre</th>
+                                    <th>Scans</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for oeuvre in exposition.oeuvres %}
+                                <tr>
+                                    <td>{{ oeuvre.titre }}</td>
+                                    <td>{{ oeuvre.consultations|length }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 
