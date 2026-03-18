@@ -1,4 +1,37 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+    {# LIBELLE #}
+    <div class="mb-3">
+        {{ form_label(form.libelle, 'Libellé', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.libelle, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# ORDRE #}
+    <div class="mb-3">
+        {{ form_label(form.ordre, 'Ordre', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.ordre, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EXPOSITION #}
+    <div class="mb-3">
+        {{ form_label(form.exposition, 'Exposition', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.exposition, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+
+    {# EST COMPLETE #}
+    <div class="mb-4 form-check">
+        {{ form_widget(form.estComplete, {'attr': {'class': 'form-check-input'}}) }}
+        {{ form_label(form.estComplete, 'Étape complète', {'label_attr': {'class': 'form-check-label text-white'}}) }}
+    </div>
+
+    {# BOUTONS #}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_etape_index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}

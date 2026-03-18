@@ -33,7 +33,7 @@ final class EtapeController extends AbstractController
             $entityManager->persist($etape);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_etape_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_etape_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/etape/new.html.twig', [
