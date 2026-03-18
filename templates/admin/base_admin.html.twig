@@ -62,6 +62,11 @@
 
             {# CONTENU PRINCIPAL #}
             <div class="flex-grow-1 p-4">
+                {% if app.user %}
+                    <div class="d-flex justify-content-end">
+                        Bonjour, <a href="{{ path('app_admin_profil') }}">{{ app.user.prenom }} {{ app.user.nom }}</a>
+                    </div>
+                {% endif %}
                 {% block main %}{% endblock %}
             </div>
         </div>
