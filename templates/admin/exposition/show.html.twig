@@ -235,7 +235,7 @@
                             {% for oeuvre in emplacement.oeuvres %}
                                 {% set px = (emplacement.positionX * 100) %}
                                 {% set py = (emplacement.positionY * 100) %}
-                                <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}">
+                                <a href="{{ path('app_admin_oeuvre_show', {'id': oeuvre.id}) }}">
                                     <rect x="{{ px - 15 }}" y="{{ py - 15 }}" 
                                         width="30" height="30" 
                                         fill="#0dcaf0" stroke="#fff" stroke-width="1" 

@@ -17,8 +17,8 @@
     {# INFOS PRINCIPALES #}
     <div class="card bg-dark border-secondary mb-4">
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
+            <div class="row g-2">
+                <div class="col-4">
                     <p class="text-secondary small mb-1">Artiste</p>
                     <p class="text-white">{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</p>
 
@@ -34,7 +34,7 @@
                         {% if oeuvre.profondeurCm %} × {{ oeuvre.profondeurCm }}{% endif %} cm
                     </p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-4">
                     <p class="text-secondary small mb-1">Exposition</p>
                     <p class="text-white">{{ oeuvre.exposition ? oeuvre.exposition.titre : '-' }}</p>
 
@@ -46,6 +46,15 @@
 
                     <p class="text-secondary small mb-1">Ajoutée le</p>
                     <p class="text-white">{{ oeuvre.dateAjout|date('d/m/Y à H:i') }}</p>
+                </div>
+                <div class="col-4">
+                    {% if oeuvre.image %}
+                        <img src="{{ asset("styles/#{oeuvre.image}") }}" class="img-fluid rounded shadow" alt="{{ oeuvre.titre }}">
+                    {% else %}
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 500px;">
+                            <span class="text-white fs-1">Image de l'œuvre</span>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
