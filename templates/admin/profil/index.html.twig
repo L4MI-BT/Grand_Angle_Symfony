@@ -1,0 +1,39 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Profil - {{ app.user.login }}{% endblock %}
+
+{% block main %}
+
+<div class="container mt-4">
+    <h2>Mon profil</h2>
+    <p>Bonjour, {{ app.user.prenom }} {{ app.user.nom }}</p>
+
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <h4 class="mt-4">Changer mon mot de passe</h4>
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.ancienMdp, 'Ancien mot de passe', {'label_attr': {'class': 'form-label text-white'}})}}
+            {{ form_widget(form.ancienMdp,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.nouveauMdp, 'Nouveau mot de passe', {'label_attr': {'class': 'form-label text-white'}})}}
+            {{ form_widget(form.nouveauMdp,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.confirmMdp, 'Confirmer votre mot de passe', {'label_attr': {'class': 'form-label text-white'}})}}
+            {{ form_widget(form.confirmMdp,{'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Valider</button>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
