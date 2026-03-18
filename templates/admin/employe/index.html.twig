@@ -3,7 +3,12 @@
 {% block title %}Employe index{% endblock %}
 
 {% block main %}
-    <h1>Employe index</h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 text-white">Employe</h1>
+        <input type="text" class="form-control bg-dark text-white border-secondary w-25" 
+            placeholder="Recherche..." id="searchInput">
+    </div>
 
     <table class="table">
         <thead>
@@ -12,32 +17,48 @@
                 <th>Prenom</th>
                 <th>Email</th>
                 <th>Login</th>
-                <th>Mdp</th>
                 <th>Role</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for employe in employes %}
-            <tr>
+            <tr class="employe-row">
                 <td>{{ employe.nom }}</td>
                 <td>{{ employe.prenom }}</td>
                 <td>{{ employe.email }}</td>
                 <td>{{ employe.login }}</td>
-                <td>{{ employe.mdp }}</td>
                 <td>{{ employe.role }}</td>
                 <td>
-                    <a href="{{ path('app_admin_employe_show', {'id': employe.id}) }}">show</a>
-                    <a href="{{ path('app_admin_employe_edit', {'id': employe.id}) }}">edit</a>
+                    <a href="{{ path('app_admin_employe_edit', {'id': employe.id}) }}" class="btn btn-sm btn-outline-warning mb-1">
+                        <i class="bi bi-pencil"></i> Modifier
+                    </a>
+                    <a href="{{ path('app_admin_employe_show', {'id': employe.id}) }}" class="btn btn-sm btn-outline-info mb-1">
+                        <i class="bi bi-eye"></i> Détails
+                    </a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">no records found</td>
+                <td colspan="12">Aucun employe trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_employe_new') }}">Create new</a>
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_employe_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Ajouter un collaborateur +
+        </a>
+    </div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const search = this.value.toLowerCase();
+        document.querySelectorAll('.employe-row').forEach(function(row) {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? '' : 'none';
+        });
+    });
+</script>
 {% endblock %}

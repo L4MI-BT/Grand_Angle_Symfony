@@ -21,6 +21,11 @@
                 </h5>
                 <ul class="nav nav-pills flex-column gap-1">
                     <li class="nav-item">
+                        <a href="{{ path('app_admin_exposition_index') }}" class="nav-link text-white">
+                            <i class="bi bi-calendar-event"></i> Expositions
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ path('app_admin_employe_index') }}" class="nav-link text-white">
                             <i class="bi bi-people-fill"></i> Collaborateur
                         </a>
@@ -64,7 +69,7 @@
             </div>
         </div>
 
-        <script src="{{ asset('styles/js/bootstrap.bundle.js') }}"></script>
-        <script src="{{ asset('styles/js/script.js') }}"></script>
+        {# <script src="{{ asset('styles/js/bootstrap.bundle.js') }}"></script> #}
+        {# <script src="{{ asset('styles/js/script.js') }}"></script> #}
     </body>
 </html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Fonction</title>
+
+{% block body %}
+    <h1>Edit Fonction</h1>
+
+    {{ include('admin/fonction/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_admin_fonction_index') }}">back to list</a>
+
+    {{ include('admin/fonction/_delete_form.html.twig') }}
+{% endblock %}

@@ -7,10 +7,13 @@ use App\Form\EmployeType;
 use App\Repository\EmployeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\ByteString;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('/admin/employe')]
@@ -25,13 +28,16 @@ final class EmployeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_admin_employe_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $employe = new Employe();
         $form = $this->createForm(EmployeType::class, $employe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hashed = $passwordHasher->hashPassword($employe, $employe->getMdp());
+            $employe->setMdp($hashed);
+
             $entityManager->persist($employe);
             $entityManager->flush();
 
@@ -44,6 +50,13 @@ final class EmployeController extends AbstractController
         ]);
     }
 
+    #[Route('/generate-password', name: 'app_new_password')]
+    public function generatePassword() {
+        return new JsonResponse([
+            'password' => ByteString::fromRandom(8)->toString(),
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_admin_employe_show', methods: ['GET'])]
     public function show(Employe $employe): Response
     {
@@ -53,12 +66,19 @@ final class EmployeController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_admin_employe_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
+    public function edit(
+        Request $request,
+        Employe $employe,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+        ): Response
     {
         $form = $this->createForm(EmployeType::class, $employe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hashed = $passwordHasher->hashPassword($employe, $employe->getMdp());
+            $employe->setMdp($hashed);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_employe_index', [], Response::HTTP_SEE_OTHER);
@@ -69,6 +89,7 @@ final class EmployeController extends AbstractController
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{id}', name: 'app_admin_employe_delete', methods: ['POST'])]
     public function delete(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
