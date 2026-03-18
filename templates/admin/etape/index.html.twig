@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>Etape index</title>
+
+{% block body %}
+    <h1>Etape index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Ordre</th>
+                <th>EstComplete</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for etape in etapes %}
+            <tr>
+                <td>{{ etape.id }}</td>
+                <td>{{ etape.libelle }}</td>
+                <td>{{ etape.ordre }}</td>
+                <td>{{ etape.estComplete ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_admin_etape_show', {'id': etape.id}) }}">show</a>
+                    <a href="{{ path('app_admin_etape_edit', {'id': etape.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_etape_new') }}">Create new</a>
+{% endblock %}

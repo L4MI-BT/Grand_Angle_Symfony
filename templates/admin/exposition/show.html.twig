@@ -137,18 +137,27 @@
                 </div>
             </div>
 
-            <div class="row">
-                {% for etape in exposition.etapes|sort((a, b) => a.ordre <=> b.ordre) %}
-                <div class="col-md-4 mb-2">
-                    {% if etape.estComplete %}
-                        <i class="bi bi-check-circle-fill text-success"></i>
-                    {% else %}
-                        <i class="bi bi-circle text-secondary"></i>
-                    {% endif %}
-                    <span class="text-white ms-2">{{ etape.libelle }}</span>
+            <form method="POST" action="{{ path('app_admin_exposition_edit', {'id': exposition.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ exposition.id) }}">
+                <div class="row">
+                    {% for etape in exposition.etapes|sort((a, b) => a.ordre <=> b.ordre) %}
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" 
+                                class="form-check-input" 
+                                name="etapes[{{ etape.id }}]" 
+                                id="etape_{{ etape.id }}"
+                                onchange="this.form.submit()"
+                                {% if etape.estComplete %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="etape_{{ etape.id }}">
+                                {{ etape.libelle }}
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
+            </form>
+
         </div>
     </div>
     {% endif %}
