@@ -5,6 +5,11 @@
 body:not(.admin) {
     background-color: variables.$blanc-casse;
     color: variables.$vert-canard;
+    min-height: 100vh;
+}
+
+main{
+    min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {

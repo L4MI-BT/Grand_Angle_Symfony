@@ -1,6 +1,23 @@
 {% block footer %}
-
-    <h2>je suis le footer</h2>
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-6">
+            <h2>Grand Angle</h2>
+            <ul>
+                <li><a href="{{ path('app_public') }}" class="text-decoration-none">Accueil</a></li>
+                <li><a href="{{ path('exposition_current') }} " class="text-decoration-none">Expo en cours</a></li>
+                <li><a href="{{ path('app_association') }}" class="text-decoration-none">Présentation</a></li>
+                <li><a href="{{ path('app_contact') }}" class="text-decoration-none">Infos pratiques</a></li>
+            </ul>
+        </div>
+        <div class="col-6">
+            <h2>Notre site mère : </h2>
+            <ul>
+                <li><a href="https://www.grandangle.fr" target="_blank">Grandangle.fr</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
     
 
 

@@ -12,6 +12,11 @@
 body:not(.admin) {
   background-color: #fffdee;
   color: #008573;
+  min-height: 100vh;
+}
+
+main {
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -228,5 +233,11 @@ footer {
   background: #008573;
 }
 footer h2 {
+  color: #fffdee;
+}
+footer ul {
+  padding: 0;
+}
+footer a {
   color: #fffdee;
 }/*# sourceMappingURL=style.css.map */
