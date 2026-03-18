@@ -9,8 +9,12 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 text-white">{{ oeuvre.titre }}</h1>
         <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}" 
-           class="btn btn-outline-warning">
+        class="btn btn-outline-warning">
             <i class="bi bi-pencil"></i> Modifier
+        </a>
+        <a href="{{ path('app_admin_oeuvre_traductions', {'id': oeuvre.id}) }}" 
+        class="btn btn-outline-info">
+            <i class="bi bi-translate"></i> Traductions
         </a>
     </div>
 

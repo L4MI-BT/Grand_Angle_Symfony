@@ -1,0 +1,72 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Traduction contenu enrichi - {{ oeuvre.titre }}{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">
+            <img src="{{ asset("styles/#{langue.img}") }}" width="30" class="me-2" alt="{{ langue.nom }}">
+            Traduction {{ langue.nom }} - {{ oeuvre.titre }}
+        </h1>
+        <a href="{{ path('app_admin_contenu_enrichi_traductions', {'id': oeuvre.id}) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+    </div>
+
+    {# CONTENU ORIGINAL #}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Contenu original (FR)</h5>
+            <p class="text-secondary small mb-1">Description</p>
+            <p class="text-white">{{ contenu.description ?? 'Aucune description' }}</p>
+            {% if contenu.urlAcces %}
+                <p class="text-secondary small mb-1">URL original</p>
+                <p class="text-white">{{ contenu.urlAcces }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# FORMULAIRE #}
+    <div class="card bg-dark border-secondary">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Traduction en {{ langue.nom }}</h5>
+            {{ form_start(form, {'attr': {'class': 'p-3'}}) }}
+
+                <div class="mb-3">
+                    {{ form_label(form.traductionTexte, 'Texte traduit', {'label_attr': {'class': 'form-label text-white'}}) }}
+                    {{ form_widget(form.traductionTexte, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.urlAcces, 'URL (audio/vidéo traduit)', {'label_attr': {'class': 'form-label text-white'}}) }}
+                    {{ form_widget(form.urlAcces, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.ordreAffichage, 'Ordre d\'affichage', {'label_attr': {'class': 'form-label text-white'}}) }}
+                    {{ form_widget(form.ordreAffichage, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+                </div>
+
+                <div class="mb-4">
+                    {{ form_label(form.employe, 'Traductrice', {'label_attr': {'class': 'form-label text-white'}}) }}
+                    {{ form_widget(form.employe, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ path('app_admin_contenu_enrichi_traductions', {'id': oeuvre.id}) }}" class="btn btn-outline-danger">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Valider
+                    </button>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
