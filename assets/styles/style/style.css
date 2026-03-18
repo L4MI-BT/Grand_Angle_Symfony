@@ -122,7 +122,7 @@ body:not(.admin) h6 {
   top: 0;
   left: 0;
   right: 0;
-  height: 56px;
+  height: 75px;
   background: #fffdee;
   display: flex;
   align-items: center;
@@ -173,7 +173,7 @@ body:not(.admin) h6 {
   font-weight: 400;
   color: #fffdee;
   letter-spacing: 0.02em;
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 
 /* ───── MENU LATÉRAL GAUCHE ───── */
@@ -228,8 +228,15 @@ main {
   top: 0;
 }
 
+.artiste-img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 350px;
+}
+
 footer {
-  height: 200px;
+  height: auto;
   background: #008573;
 }
 footer h2 {

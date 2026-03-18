@@ -9,8 +9,8 @@
     <h1 class="display-5 mb-4 text-center text-vert-sapin">{{ oeuvre.titre }}</h1>
     
     {# IMAGE DE L'OEUVRE #}
-    <div class="row justify-content-center mb-4">
-        <div class="col-lg-8">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
             {% if oeuvre.image %}
                 <img src="{{ asset("styles/#{oeuvre.image}") }}" class="img-fluid rounded shadow" alt="{{ oeuvre.titre }}">
             {% else %}
@@ -22,7 +22,7 @@
     </div>
     
     {# ARTISTE #}
-    <div class="mb-4">
+    <div class="mb-4 mt-4">
         <h3>Artiste</h3>
         <p class="fs-5">{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</p>
     </div>
