@@ -37,11 +37,15 @@
                         <td>{{ oeuvre.dateLivraisonPrevue ? oeuvre.dateLivraisonPrevue|date('d/m/Y') : '-' }}</td>
                         <td>{{ oeuvre.dateLivraisonReelle ? oeuvre.dateLivraisonReelle|date('d/m/Y') : '-' }}</td>
                         <td>
+                            <a href="{{ path('app_admin_oeuvre_show', {'id': oeuvre.id}) }}" 
+                            class="btn btn-sm btn-outline-light">
+                                <i class="bi bi-eye"></i> Voir
+                            </a>
                             <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}" 
                             class="btn btn-sm btn-outline-warning mb-1">
                                 <i class="bi bi-pencil"></i> Modifier
                             </a>
-                            <a href="{{ path('app_admin_oeuvre_show', {'id': oeuvre.id}) }}" 
+                            <a href="{{ path('app_admin_contenu_enrichi_traductions', {'id': oeuvre.id}) }}" 
                             class="btn btn-sm btn-outline-info mb-1">
                                 <i class="bi bi-eye"></i> Contenu enrichi
                             </a>

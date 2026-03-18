@@ -3,8 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ContenuEnrichi;
+use App\Entity\Oeuvre;
+use App\Entity\TraductionContenuEnrichi;
 use App\Form\ContenuEnrichiType;
+use App\Form\TraductionContenuEnrichiType;
 use App\Repository\ContenuEnrichiRepository;
+use App\Repository\LangueRepository;
+use App\Repository\OeuvreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,6 +69,82 @@ final class ContenuEnrichiController extends AbstractController
 
         return $this->render('admin/contenu_enrichi/edit.html.twig', [
             'contenu_enrichi' => $contenuEnrichi,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/oeuvre/{id}/traductions', name: 'app_admin_contenu_enrichi_traductions', methods: ['GET'])]
+    public function gererTraductions(Oeuvre $oeuvre, LangueRepository $langueRepository,
+        ContenuEnrichiRepository $contenuEnrichiRepository): Response 
+    {
+        $contenus = $contenuEnrichiRepository->findBy(['oeuvre' => $oeuvre]);
+        $langues = $langueRepository->findAll();
+
+        return $this->render('admin/contenu_enrichi/traductions.html.twig', [
+            'oeuvre' => $oeuvre,
+            'contenus' => $contenus,
+            'langues' => $langues,
+        ]);
+    }
+
+    #[Route('/oeuvre/{oeuvreId}/contenu/{id}/traductions/ajouter/{langueCode}', name: 'app_admin_contenu_enrichi_traduction_new', methods: ['GET', 'POST'])]
+    public function ajouterTraduction(
+        Request $request,
+        ContenuEnrichi $contenuEnrichi,
+        int $oeuvreId,
+        string $langueCode,
+        LangueRepository $langueRepository,
+        OeuvreRepository $oeuvreRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $langue = $langueRepository->findOneBy(['code' => $langueCode]);
+        $oeuvre = $oeuvreRepository->find($oeuvreId);
+
+        $traduction = new TraductionContenuEnrichi();
+        $traduction->setContenuEnrichi($contenuEnrichi);
+        $traduction->setLangue($langue);
+
+        $form = $this->createForm(TraductionContenuEnrichiType::class, $traduction);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($traduction);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_admin_contenu_enrichi_traductions', ['id' => $oeuvreId]);
+        }
+
+        return $this->render('admin/contenu_enrichi/traduction_form.html.twig', [
+            'contenu' => $contenuEnrichi,
+            'oeuvre' => $oeuvre,
+            'langue' => $langue,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/oeuvre/{oeuvreId}/contenu/{id}/traductions/modifier/{tradId}', name: 'app_admin_contenu_enrichi_traduction_edit', methods: ['GET', 'POST'])]
+    public function modifierTraduction(
+        Request $request,
+        ContenuEnrichi $contenuEnrichi,
+        int $oeuvreId,
+        int $tradId,
+        OeuvreRepository $oeuvreRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $traduction = $entityManager->getRepository(TraductionContenuEnrichi::class)->find($tradId);
+        $oeuvre = $oeuvreRepository->find($oeuvreId);
+
+        $form = $this->createForm(TraductionContenuEnrichiType::class, $traduction);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('app_admin_contenu_enrichi_traductions', ['id' => $oeuvreId]);
+        }
+
+        return $this->render('admin/contenu_enrichi/traduction_form.html.twig', [
+            'contenu' => $contenuEnrichi,
+            'oeuvre' => $oeuvre,
+            'langue' => $traduction->getLangue(),
             'form' => $form,
         ]);
     }
