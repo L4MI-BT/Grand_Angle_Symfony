@@ -53,6 +53,9 @@
         <a href="{{ path('app_admin_exposition_index') }}" class="btn btn-outline-danger">
             <i class="bi bi-arrow-left"></i> Retour
         </a>
+        <a href="{{ path('app_admin_exposition_traductions', {'id': exposition.id}) }}" class="btn btn-outline-info">
+            <i class="bi bi-translate"></i> Traduction
+        </a>
         <button type="submit" class="btn btn-success">
             <i class="bi bi-check-circle"></i> Valider
         </button>

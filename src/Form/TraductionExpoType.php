@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Employe;
-use App\Entity\Langue;
 use App\Entity\TraductionExpo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,10 +18,6 @@ class TraductionExpoType extends AbstractType
             ->add('traductionTexte', TextareaType::class, [
                 'required' => false,
                 'attr' => ['rows' => 8],
-            ])
-            ->add('langue', EntityType::class, [
-                'class' => Langue::class,
-                'choice_label' => 'nom',
             ])
             ->add('employe', EntityType::class, [
                 'class' => Employe::class,

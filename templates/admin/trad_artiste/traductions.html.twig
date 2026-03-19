@@ -43,7 +43,7 @@
                         {% if traduction %}
                             <p class="text-secondary small mb-1">Traduction</p>
                             <p class="text-white">{{ traduction.traductionTexte ?? 'Pas de texte' }}</p>
-                            <a href="{{ path('app_admin_artiste_traduction_edit', {'id': artiste.id, 'tradId': traduction.id}) }}" 
+                            <a href="{{ path('app_admin_artiste_traduction_edit', {'id': artiste.id, 'langueCode': langue.code}) }}" 
                             class="btn btn-sm btn-outline-warning">
                                 <i class="bi bi-pencil"></i> Modifier
                             </a>
