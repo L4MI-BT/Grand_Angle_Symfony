@@ -39,6 +39,10 @@ class OeuvreType extends AbstractType
             ->add('profondeurCm', NumberType::class, [
                 'required' => false,
             ])
+            ->add('numeroIdentification', null, [
+                'required' => false,
+                'label' => 'Numéro d\'identification',
+            ])
             ->add('dateLivraisonPrevue', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
@@ -64,6 +68,15 @@ class OeuvreType extends AbstractType
                     return $emplacement->getEspace()->getNomEspace().' - '.($emplacement->getDescription() ?? 'Sans description');
                 },
                 'required' => false,
+                'query_builder' => function(\App\Repository\EmplacementRepository $er) use ($options) {
+                    return $er->createQueryBuilder('e')
+                        ->join('e.exposition', 'exp')
+                        ->orderBy('exp.titre', 'ASC')
+                        ->addOrderBy('e.description', 'ASC');
+                },
+                'group_by' => function(Emplacement $emplacement) {
+                    return $emplacement->getExposition() ? $emplacement->getExposition()->getTitre() : 'Sans exposition';
+                },
             ])
             ->add('employe', EntityType::class, [
                 'class' => Employe::class,

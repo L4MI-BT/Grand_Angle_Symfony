@@ -19,6 +19,7 @@
                         <th>Description</th>
                         <th>Espace</th>
                         <th>Exposition</th>
+                        <th>Oeuvre(s)</th>
                         <th>Position X</th>
                         <th>Position Y</th>
                         <th>Actions</th>
@@ -30,6 +31,16 @@
                         <td>{{ emplacement.description ?? '-' }}</td>
                         <td>{{ emplacement.espace ? emplacement.espace.nomEspace : '-' }}</td>
                         <td>{{ emplacement.exposition ? emplacement.exposition.titre : '-' }}</td>
+                        <td>
+                            {% if emplacement.oeuvres is not empty %}
+                                {% for oeuvre in emplacement.oeuvres %}
+                                    <span class="badge bg-info text-dark me-1">{{ oeuvre.numeroIdentification ?? '?' }}</span>
+                                    {{ oeuvre.titre }}<br>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-secondary">-</span>
+                            {% endif %}
+                        </td>
                         <td>{{ emplacement.positionX ?? '-' }}</td>
                         <td>{{ emplacement.positionY ?? '-' }}</td>
                         <td>
@@ -45,7 +56,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6" class="text-center text-secondary">Aucun emplacement trouvé</td>
+                        <td colspan="7" class="text-center text-secondary">Aucun emplacement trouvé</td>
                     </tr>
                 {% endfor %}
                 </tbody>

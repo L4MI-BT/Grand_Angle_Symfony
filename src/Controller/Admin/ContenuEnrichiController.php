@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/contenu/enrichi')]
+#[Route('/admin/contenu_enrichi')]
 final class ContenuEnrichiController extends AbstractController
 {
     #[Route(name: 'app_admin_contenu_enrichi_index', methods: ['GET'])]
