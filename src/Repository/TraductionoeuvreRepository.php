@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Langue;
+use App\Entity\Oeuvre;
 use App\Entity\TraductionOeuvre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +18,17 @@ class TraductionOeuvreRepository extends ServiceEntityRepository
         parent::__construct($registry, TraductionOeuvre::class);
     }
 
-    //    /**
-    //     * @return Traductionoeuvre[] Returns an array of Traductionoeuvre objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findTraductionByOeuvreAndLangue(Oeuvre $oeuvre, Langue $langue): ?TraductionOeuvre
+    {
+    return $this->createQueryBuilder('t')
+        ->where('t.oeuvre = :oeuvre')
+        ->andWhere('t.langue = :langue')
+        ->setParameter('oeuvre', $oeuvre)
+        ->setParameter('langue', $langue)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Traductionoeuvre
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    
 }
+

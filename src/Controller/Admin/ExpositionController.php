@@ -88,72 +88,7 @@ final class ExpositionController extends AbstractController
     
 //TODO modifier dans un controller tarduction
 
-    #[Route('/{id}/traductions', name: 'app_admin_exposition_traductions', methods: ['GET'])]
-    public function traductions(
-        Exposition $exposition,
-        LangueRepository $langueRepository
-    ): Response {
-        $langues = $langueRepository->findAll();
-
-        return $this->render('admin/exposition/traductions.html.twig', [
-            'exposition' => $exposition,
-            'langues' => $langues,
-        ]);
-    }
-
-    #[Route('/{id}/traductions/ajouter/{langueCode}', name: 'app_admin_exposition_traduction_new', methods: ['GET', 'POST'])]
-    public function ajouterTraduction(
-        Request $request,
-        Exposition $exposition,
-        string $langueCode,
-        LangueRepository $langueRepository,
-        EntityManagerInterface $entityManager
-    ): Response {
-        $langue = $langueRepository->findOneBy(['code' => $langueCode]);
-
-        $traduction = new TraductionExpo();
-        $traduction->setExposition($exposition);
-        $traduction->setLangue($langue);
-
-        $form = $this->createForm(TraductionExpoType::class, $traduction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($traduction);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_admin_exposition_traductions', ['id' => $exposition->getId()]);
-        }
-
-        return $this->render('admin/exposition/traduction_form.html.twig', [
-            'exposition' => $exposition,
-            'langue' => $langue,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}/traductions/modifier/{tradId}', name: 'app_admin_exposition_traduction_edit', methods: ['GET', 'POST'])]
-    public function modifierTraduction(
-        Request $request,
-        Exposition $exposition,
-        int $tradId,
-        EntityManagerInterface $entityManager
-    ): Response {
-        $traduction = $entityManager->getRepository(TraductionExpo::class)->find($tradId);
-
-        $form = $this->createForm(TraductionExpoType::class, $traduction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirectToRoute('app_admin_exposition_traductions', ['id' => $exposition->getId()]);
-        }
-
-        return $this->render('admin/exposition/traduction_form.html.twig', [
-            'exposition' => $exposition,
-            'langue' => $traduction->getLangue(),
-            'form' => $form,
-        ]);
-    }
+   
     
 ////////////////////////
 

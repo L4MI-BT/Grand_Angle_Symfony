@@ -2,11 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\TraductionOeuvre;
-use App\Form\TraductionOeuvreType;
 use App\Entity\Oeuvre;
 use App\Form\OeuvreType;
-use App\Repository\LangueRepository;
 use App\Repository\OeuvreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -68,63 +65,6 @@ final class OeuvreController extends AbstractController
         return $this->render('admin/oeuvre/edit.html.twig', [
             'oeuvre' => $oeuvre,
             'form' => $form,
-        ]);
-    }
-
-//TODO deplacer dans controller trad
-    #[Route('/{id}/traductions/ajouter/{langueCode}', name: 'app_admin_oeuvre_traduction_new', methods: ['GET', 'POST'])]
-    public function ajouterTraduction(Request $request,Oeuvre $oeuvre,string $langueCode,LangueRepository $langueRepository,EntityManagerInterface $entityManager): Response 
-    {
-        $langue = $langueRepository->findOneBy(['code' => $langueCode]);
-        
-        $traduction = new TraductionOeuvre();
-        $traduction->setOeuvre($oeuvre);
-        $traduction->setLangue($langue);
-
-        $form = $this->createForm(TraductionOeuvreType::class, $traduction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($traduction);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_admin_oeuvre_traductions', ['id' => $oeuvre->getId()]);
-        }
-
-        return $this->render('admin/oeuvre/traduction_form.html.twig', [
-            'oeuvre' => $oeuvre,
-            'langue' => $langue,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}/traductions/modifier/{tradId}', name: 'app_admin_oeuvre_traduction_edit', methods: ['GET', 'POST'])]
-    public function modifierTraduction(Request $request,Oeuvre $oeuvre,int $tradId,EntityManagerInterface $entityManager): Response 
-    {
-        $traduction = $entityManager->getRepository(TraductionOeuvre::class)->find($tradId);
-
-        $form = $this->createForm(TraductionOeuvreType::class, $traduction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirectToRoute('app_admin_oeuvre_traductions', ['id' => $oeuvre->getId()]);
-        }
-
-        return $this->render('admin/oeuvre/traduction_form.html.twig', [
-            'oeuvre' => $oeuvre,
-            'langue' => $traduction->getLangue(),
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}/traductions', name: 'app_admin_oeuvre_traductions', methods: ['GET'])]
-    public function traductions(Oeuvre $oeuvre,LangueRepository $langueRepository): Response 
-    {
-        $langues = $langueRepository->findAll();
-
-        return $this->render('admin/oeuvre/traductions.html.twig', [
-            'oeuvre' => $oeuvre,
-            'langues' => $langues,
         ]);
     }
 

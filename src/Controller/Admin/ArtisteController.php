@@ -2,9 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\TraductionArtiste;
-use App\Form\TraductionArtisteType;
-use App\Repository\LangueRepository;
 use App\Entity\Artiste;
 use App\Form\ArtisteType;
 use App\Repository\ArtisteRepository;
@@ -97,65 +94,6 @@ final class ArtisteController extends AbstractController
         ]);
     }
 
-
-// TODO decaler dans controler trad
-    #[Route('/{id}/traductions', name: 'app_admin_artiste_traductions', methods: ['GET'])]
-    public function traductions(Artiste $artiste,LangueRepository $langueRepository): Response 
-    {
-        $langues = $langueRepository->findAll();
-
-        return $this->render('admin/artiste/traductions.html.twig', [
-            'artiste' => $artiste,
-            'langues' => $langues,
-        ]);
-    }
-
-    #[Route('/{id}/traductions/ajouter/{langueCode}', name: 'app_admin_artiste_traduction_new', methods: ['GET', 'POST'])]
-    public function ajouterTraduction(Request $request, Artiste $artiste, string $langueCode,
-        LangueRepository $langueRepository, EntityManagerInterface $entityManager): Response 
-    {
-        $langue = $langueRepository->findOneBy(['code' => $langueCode]);
-
-        $traduction = new TraductionArtiste();
-        $traduction->setArtiste($artiste);
-        $traduction->setLangue($langue);
-
-        $form = $this->createForm(TraductionArtisteType::class, $traduction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($traduction);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_admin_artiste_traductions', ['id' => $artiste->getId()]);
-        }
-
-        return $this->render('admin/artiste/traduction_form.html.twig', [
-            'artiste' => $artiste,
-            'langue' => $langue,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}/traductions/modifier/{tradId}', name: 'app_admin_artiste_traduction_edit', methods: ['GET', 'POST'])]
-    public function modifierTraduction(Request $request, Artiste $artiste, int $tradId,         EntityManagerInterface $entityManager): Response 
-    {
-        $traduction = $entityManager->getRepository(TraductionArtiste::class)->find($tradId);
-
-        $form = $this->createForm(TraductionArtisteType::class, $traduction);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirectToRoute('app_admin_artiste_traductions', ['id' => $artiste->getId()]);
-        }
-
-        return $this->render('admin/artiste/traduction_form.html.twig', [
-            'artiste' => $artiste,
-            'langue' => $traduction->getLangue(),
-            'form' => $form,
-        ]);
-    }
-/////////////////////////////
     #[Route('/{id}', name: 'app_admin_artiste_delete', methods: ['POST'])]
     public function delete(Request $request, Artiste $artiste, EntityManagerInterface $entityManager): Response
     {

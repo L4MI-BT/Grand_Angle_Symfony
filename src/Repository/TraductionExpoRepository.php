@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Exposition;
+use App\Entity\Langue;
 use App\Entity\TraductionExpo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +18,16 @@ class TraductionExpoRepository extends ServiceEntityRepository
         parent::__construct($registry, TraductionExpo::class);
     }
 
-    //    /**
-    //     * @return TraductionExpo[] Returns an array of TraductionExpo objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findTraductionByExpoAndLangue(Exposition $exposition, Langue $langue): ?TraductionExpo
+    {
+    return $this->createQueryBuilder('t')
+        ->where('t.exposition = :exposition')
+        ->andWhere('t.langue = :langue')
+        ->setParameter('exposition', $exposition)
+        ->setParameter('langue', $langue)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 
-    //    public function findOneBySomeField($value): ?TraductionExpo
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
+
