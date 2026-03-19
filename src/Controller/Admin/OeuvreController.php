@@ -10,7 +10,6 @@ use App\Repository\LangueRepository;
 use App\Repository\OeuvreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -72,6 +71,7 @@ final class OeuvreController extends AbstractController
         ]);
     }
 
+//TODO deplacer dans controller trad
     #[Route('/{id}/traductions/ajouter/{langueCode}', name: 'app_admin_oeuvre_traduction_new', methods: ['GET', 'POST'])]
     public function ajouterTraduction(Request $request,Oeuvre $oeuvre,string $langueCode,LangueRepository $langueRepository,EntityManagerInterface $entityManager): Response 
     {

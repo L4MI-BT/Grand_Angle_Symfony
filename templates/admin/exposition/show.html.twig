@@ -89,7 +89,7 @@
     {% if exposition.dateDebut and exposition.dateFin %}
     <div class="card bg-dark border-secondary mb-4">
         <div class="card-body">
-            <h5 class="text-white mb-3">Période de l'exposition</h5>
+            <h5 class="text-white mb-3" id="CycleDeVie">Période de l'exposition</h5>
 
             {% set debut = exposition.dateDebut|date('U') %}
             {% set fin = exposition.dateFin|date('U') %}
@@ -181,6 +181,7 @@
                             <th>Technique</th>
                             <th>Livraison prévue</th>
                             <th>Livraison réelle</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -197,6 +198,11 @@
                                     <span class="badge bg-warning text-dark">En attente</span>
                                 {% endif %}
                             </td>
+                            <td>
+                                <a href="{{ path('app_admin_oeuvre_edit', {'id': oeuvre.id}) }}" class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i> Modifier
+                                </a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -212,7 +218,7 @@
             {% if emplacements is empty %}
                 <p class="text-secondary fst-italic">Aucun emplacement défini</p>
             {% else %}
-                <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="width: 100%; background-color: #1a1a2e; border-radius: 8px;">
+                <svg viewBox="0 0 900 500"  style="width: 100%; background-color: #1a1a2e; border-radius: 8px;">
 
                     {# BATIMENT PRINCIPAL #}
                     <rect x="20" y="20" width="860" height="460" fill="none" stroke="#6c757d" stroke-width="3"/>

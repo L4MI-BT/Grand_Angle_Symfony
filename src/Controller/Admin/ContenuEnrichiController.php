@@ -73,6 +73,7 @@ final class ContenuEnrichiController extends AbstractController
         ]);
     }
 
+//TODO deplacer dans controller trad
     #[Route('/oeuvre/{id}/traductions', name: 'app_admin_contenu_enrichi_traductions', methods: ['GET'])]
     public function gererTraductions(Oeuvre $oeuvre, LangueRepository $langueRepository,
         ContenuEnrichiRepository $contenuEnrichiRepository): Response 
