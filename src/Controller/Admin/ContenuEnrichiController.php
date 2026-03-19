@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/contenu/enrichi')]
+#[Route('/admin/contenu_enrichi')]
 final class ContenuEnrichiController extends AbstractController
 {
     #[Route(name: 'app_admin_contenu_enrichi_index', methods: ['GET'])]
@@ -73,6 +73,7 @@ final class ContenuEnrichiController extends AbstractController
         ]);
     }
 
+//TODO deplacer dans controller trad
     #[Route('/oeuvre/{id}/traductions', name: 'app_admin_contenu_enrichi_traductions', methods: ['GET'])]
     public function gererTraductions(Oeuvre $oeuvre, LangueRepository $langueRepository,
         ContenuEnrichiRepository $contenuEnrichiRepository): Response 

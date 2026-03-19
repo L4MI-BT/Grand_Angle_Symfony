@@ -77,7 +77,7 @@ final class ExpositionController extends AbstractController
                 $etape->setEstComplete($estComplete);
             }
             $entityManager->flush();
-            return $this->redirectToRoute('app_admin_exposition_edit', ['id' => $exposition->getId()]);
+            return $this->redirectToRoute('app_admin_exposition_show', ['id' => $exposition->getId(),'_fragment'=>'CycleDeVie']);
         }
 
         return $this->render('admin/exposition/edit.html.twig', [
@@ -86,6 +86,8 @@ final class ExpositionController extends AbstractController
         ]);
     }
     
+//TODO modifier dans un controller tarduction
+
     #[Route('/{id}/traductions', name: 'app_admin_exposition_traductions', methods: ['GET'])]
     public function traductions(
         Exposition $exposition,
@@ -152,6 +154,8 @@ final class ExpositionController extends AbstractController
             'form' => $form,
         ]);
     }
+    
+////////////////////////
 
     #[Route('/{id}', name: 'app_admin_exposition_delete', methods: ['POST'])]
     public function delete(Request $request, Exposition $exposition, EntityManagerInterface $entityManager): Response

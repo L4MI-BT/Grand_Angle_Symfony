@@ -13,5 +13,40 @@
             {{ include('admin/exposition/_form.html.twig', {'button_label': 'Modifier'}) }}
         </div>
     </div>
+
+        {# CYCLE DE VIE #}
+    {% if exposition.etapes is not empty %}
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-body">
+            <h5 class="text-white mb-3">Cycle de vie</h5>
+            <form method="POST">
+                <input type="hidden" name="_method" value="POST">
+                <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ exposition.id) }}">
+
+                <div class="row">
+                    {% for etape in exposition.etapes|sort((a, b) => a.ordre <=> b.ordre) %}
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" 
+                                class="form-check-input" 
+                                name="etapes[{{ etape.id }}]" 
+                                id="etape_{{ etape.id }}"
+                                {% if etape.estComplete %}checked{% endif %}>
+                            <label class="form-check-label text-white" for="etape_{{ etape.id }}">
+                                {{ etape.libelle }}
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-success mt-2">
+                    <i class="bi bi-check-circle"></i> Sauvegarder le cycle de vie
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}

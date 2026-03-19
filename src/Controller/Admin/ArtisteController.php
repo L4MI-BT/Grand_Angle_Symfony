@@ -46,6 +46,31 @@ final class ArtisteController extends AbstractController
         ]);
     }
 
+    #[Route('/associer', name: 'app_admin_artiste_associer')]
+    public function associer(Request $request, ArtisteRepository $artisteRepository, OeuvreRepository   $oeuvreRepository, EntityManagerInterface $entityManager): Response
+    {
+        $artistes = $artisteRepository->findAll();
+        $oeuvres = $oeuvreRepository->findAll();
+
+        if($request->isMethod('POST')) {
+            $oeuvreId = $request->request->get('oeuvre');
+            $artisteId = $request->request->get('artiste');
+
+            $oeuvre = $oeuvreRepository->find($oeuvreId);
+            $artiste = $artisteRepository->find($artisteId);
+
+            if($oeuvre && $artiste) {
+                $oeuvre->setArtiste($artiste);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_admin_artiste_index');
+            }
+        }
+        return $this->render('admin/artiste/associer.html.twig', [
+            'artistes' => $artistes,
+            'oeuvres' => $oeuvres,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_admin_artiste_show', methods: ['GET'])]
     public function show(Artiste $artiste): Response
     {
@@ -72,6 +97,8 @@ final class ArtisteController extends AbstractController
         ]);
     }
 
+
+// TODO decaler dans controler trad
     #[Route('/{id}/traductions', name: 'app_admin_artiste_traductions', methods: ['GET'])]
     public function traductions(Artiste $artiste,LangueRepository $langueRepository): Response 
     {
@@ -128,7 +155,7 @@ final class ArtisteController extends AbstractController
             'form' => $form,
         ]);
     }
-
+/////////////////////////////
     #[Route('/{id}', name: 'app_admin_artiste_delete', methods: ['POST'])]
     public function delete(Request $request, Artiste $artiste, EntityManagerInterface $entityManager): Response
     {
@@ -140,28 +167,5 @@ final class ArtisteController extends AbstractController
         return $this->redirectToRoute('app_admin_artiste_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/admin/artiste/associer', name: 'app_admin_artiste_associer')]
-    public function associer(Request $request, ArtisteRepository $artisteRepository, OeuvreRepository   $oeuvreRepository, EntityManagerInterface $entityManager): Response
-    {
-        $artistes = $artisteRepository->findAll();
-        $oeuvres = $oeuvreRepository->findAll();
-
-        if($request->isMethod('POST')) {
-            $oeuvreId = $request->request->get('oeuvre');
-            $artisteId = $request->request->get('artiste');
-
-            $oeuvre = $oeuvreRepository->find($oeuvreId);
-            $artiste = $artisteRepository->find($artisteId);
-
-            if($oeuvre && $artiste) {
-                $oeuvre->setArtiste($artiste);
-                $entityManager->flush();
-                return $this->redirectToRoute('app_admin_artiste_index');
-            }
-        }
-        return $this->render('admin/artiste/associer.html.twig', [
-            'artistes' => $artistes,
-            'oeuvres' => $oeuvres,
-        ]);
-    }
+    
 }
