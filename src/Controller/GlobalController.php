@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class GlobalController extends AbstractController
 {
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    
     #[Route('/', name: 'app_public')]
     public function public(ExpositionRepository $expositionRepository,): Response
     {
@@ -23,11 +23,16 @@ final class GlobalController extends AbstractController
             'futurExpo' => $futurExpo,
         ]);
     }
-
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/admin', name: 'app_admin')]
-    public function admin(): Response
+    public function admin(ExpositionRepository $expositionRepository): Response
     {
-        return $this->render('admin/index.html.twig');
+        $expoCourante = $expositionRepository->findCurrent();
+        $expoAVenir = $expositionRepository->findNext();
+        return $this->render('admin/index.html.twig', [
+            'expoCourante' => $expoCourante,
+            'expoAVenir' => $expoAVenir,
+        ]);
     }
 
 

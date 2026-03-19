@@ -1,8 +1,141 @@
 {% extends 'admin/base_admin.html.twig' %}
 
-
-{% block title %}Admin{% endblock %}
+{% block title %}Dashboard - Admin Grand Angle{% endblock %}
 
 {% block main %}
-    <h1>Bienvenue dans l'espace admin !</h1>
+<div class="container-fluid py-4">
+
+    <h1 class="h3 text-white mb-4">Tableau de bord</h1>
+
+    <div class="row">
+
+        {# COLONNE GAUCHE - EXPO EN COURS #}
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header text-white">
+                    <h5 class="mb-0"><i class="bi bi-easel"></i> Exposition en cours</h5>
+                </div>
+                <div class="card-body">
+                    {% if expoCourante %}
+                        <h4 class="text-white">{{ expoCourante.titre }}</h4>
+                        <p class="text-secondary">
+                            {{ expoCourante.dateDebut|date('d/m/Y') }} → {{ expoCourante.dateFin|date('d/m/Y') }}
+                        </p>
+
+                        {# FREQUENTATION #}
+                        <p class="text-secondary small mb-1">Fréquentation</p>
+                        <p class="text-white fs-4">
+                            {{ expoCourante.frequentation ?? '0' }}
+                            <span class="text-secondary fs-6">visiteurs</span>
+                        </p>
+
+                        {# CONSULTATIONS PAR OEUVRE #}
+                        <p class="text-secondary small mb-2">Consultations QR code par oeuvre</p>
+                        {% if expoCourante.oeuvres is not empty %}
+                            {% for oeuvre in expoCourante.oeuvres %}
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="text-white small">{{ oeuvre.titre }}</span>
+                                    <span class="badge bg-info text-dark">{{ oeuvre.consultations|length }}</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    {% set maxConsultations = 1000 %}
+                                    {% set pct = oeuvre.consultations|length > 0 ? (oeuvre.consultations|length / maxConsultations * 100)|round : 0 %}
+                                    {% set pct = pct > 100 ? 100 : pct %}
+                                    <div class="progress-bar bg-info" style="width: {{ pct }}%"></div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-secondary fst-italic">Aucune oeuvre</p>
+                        {% endif %}
+
+                        <div class="mt-3">
+                            <a href="{{ path('app_admin_exposition_show', {'id': expoCourante.id}) }}" 
+                            class="btn btn-outline-info btn-sm">
+                                <i class="bi bi-eye"></i> Voir l'exposition
+                            </a>
+                        </div>
+                    {% else %}
+                        <p class="text-secondary fst-italic">Aucune exposition en cours</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# COLONNE DROITE - EXPO A VENIR #}
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header text-white">
+                    <h5 class="mb-0"><i class="bi bi-calendar-event"></i> Prochaine exposition</h5>
+                </div>
+                <div class="card-body">
+                    {% if expoAVenir %}
+
+                        {# ALERTE OEUVRES NON LIVREES #}
+                        {% set oeuvresNonLivrees = expoAVenir.oeuvres|filter(o => o.dateLivraisonReelle is null) %}
+                        {% if oeuvresNonLivrees|length > 0 and expoAVenir.dateDebut %}
+                            {% set joursAvantDebut = (expoAVenir.dateDebut|date('U') - "now"|date('U')) / 86400 %}
+                            {% if joursAvantDebut <= 7 and joursAvantDebut > 0 %}
+                                <div class="alert alert-danger mb-3">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    <strong>Attention !</strong> Ouverture dans {{ joursAvantDebut|round }} jour(s) et 
+                                    <strong>{{ oeuvresNonLivrees|length }} oeuvre(s)</strong> non livrées !
+                                    <ul class="mt-2 mb-0">
+                                        {% for oeuvre in oeuvresNonLivrees %}
+                                            <li>{{ oeuvre.titre }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        <h4 class="text-white">{{ expoAVenir.titre }}</h4>
+                        <p class="text-secondary">
+                            {{ expoAVenir.dateDebut ? expoAVenir.dateDebut|date('d/m/Y') : 'Non définie' }} 
+                            → 
+                            {{ expoAVenir.dateFin ? expoAVenir.dateFin|date('d/m/Y') : 'Non définie' }}
+                        </p>
+
+                        {# CYCLE DE VIE #}
+                        {% if expoAVenir.etapes is not empty %}
+                            {% set total = expoAVenir.etapes|length %}
+                            {% set completes = expoAVenir.etapes|filter(e => e.estComplete == true)|length %}
+                            {% set pourcentage = total > 0 ? (completes / total * 100)|round : 0 %}
+
+                            <p class="text-secondary small mb-1">Cycle de vie</p>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div class="progress-bar bg-success" 
+                                    role="progressbar" 
+                                    style="width: {{ pourcentage }}%">
+                                    {{ pourcentage }}%
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                {% for etape in expoAVenir.etapes|sort((a, b) => a.ordre <=> b.ordre) %}
+                                <div class="col-6 mb-1">
+                                    {% if etape.estComplete %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-circle text-secondary"></i>
+                                    {% endif %}
+                                    <span class="text-white small ms-1">{{ etape.libelle }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <a href="{{ path('app_admin_exposition_show', {'id': expoAVenir.id}) }}" 
+                        class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-eye"></i> Voir l'exposition
+                        </a>
+
+                    {% else %}
+                        <p class="text-secondary fst-italic">Aucune exposition à venir</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 {% endblock %}

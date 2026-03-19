@@ -50,6 +50,20 @@ class ExpositionRepository extends ServiceEntityRepository
             ->getArrayResult();
             
     }
+
+    // retourne l'expo à venir
+    public function findNext(): ?Exposition
+    {
+        $today = new \DateTime();
+        
+        return $this->createQueryBuilder('e')
+            ->where('e.dateDebut > :today')
+            ->orderBy('e.dateDebut', 'ASC')
+            ->setParameter('today', $today)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     //    /**
     //     * @return Exposition[] Returns an array of Exposition objects
     //     */
