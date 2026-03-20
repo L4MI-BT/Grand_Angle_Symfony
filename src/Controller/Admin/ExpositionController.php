@@ -86,11 +86,14 @@ final class ExpositionController extends AbstractController
         ]);
     }
     
-//TODO modifier dans un controller tarduction
-
-   
-    
-////////////////////////
+    //Gestion des impressions des oeuvres par expo 
+    #[Route('/{id}/impression', name: 'app_admin_exposition_impression', methods: ['GET'])]
+    public function impression(Exposition $exposition): Response
+    {
+        return $this->render('admin/exposition/impression.html.twig', [
+            'exposition' => $exposition,
+        ]);
+    }
 
     #[Route('/{id}', name: 'app_admin_exposition_delete', methods: ['POST'])]
     public function delete(Request $request, Exposition $exposition, EntityManagerInterface $entityManager): Response

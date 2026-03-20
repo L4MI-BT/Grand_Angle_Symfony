@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des oeuvres - {{ exposition.titre }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #000;
+            background: #fff;
+        }
+        h1 {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        h2 {
+            font-size: 14px;
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th {
+            background-color: #2d3748;
+            color: #fff;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+        td {
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+        }
+        tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        .btn-print {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #2d3748;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        @media print {
+            .btn-print {
+                display: none;
+            }
+            body {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{{ exposition.titre }}</h1>
+    <h2>
+        {{ exposition.dateDebut ? exposition.dateDebut|date('d/m/Y') : 'Non définie' }}
+        →
+        {{ exposition.dateFin ? exposition.dateFin|date('d/m/Y') : 'Non définie' }}
+    </h2>
+
+    <button class="btn-print" onclick="window.print()">
+        🖨️ Imprimer
+    </button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>Titre</th>
+                <th>Artiste</th>
+                <th>Technique</th>
+                <th>Dimensions (cm)</th>
+                <th>Espace</th>
+                <th>Emplacement</th>
+                <th>Position X/Y</th>
+                <th>Livraison</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for oeuvre in exposition.oeuvres %}
+            <tr>
+                <td>{{ oeuvre.numeroIdentification ?? '-' }}</td>
+                <td>{{ oeuvre.titre }}</td>
+                <td>{{ oeuvre.artiste.prenom }} {{ oeuvre.artiste.nom }}</td>
+                <td>{{ oeuvre.technique ?? '-' }}</td>
+                <td>
+                    {{ oeuvre.hauteurCm ?? '-' }} × {{ oeuvre.largeurCm ?? '-' }}
+                    {% if oeuvre.profondeurCm %} × {{ oeuvre.profondeurCm }}{% endif %}
+                </td>
+                <td>{{ oeuvre.emplacement ? oeuvre.emplacement.espace.nomEspace : '-' }}</td>
+                <td>{{ oeuvre.emplacement ? oeuvre.emplacement.description : '-' }}</td>
+                <td>
+                    {% if oeuvre.emplacement %}
+                        X: {{ oeuvre.emplacement.positionX }} / Y: {{ oeuvre.emplacement.positionY }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if oeuvre.dateLivraisonReelle %}
+                        ✅ {{ oeuvre.dateLivraisonReelle|date('d/m/Y') }}
+                    {% else %}
+                        ⏳ Prévu: {{ oeuvre.dateLivraisonPrevue ? oeuvre.dateLivraisonPrevue|date('d/m/Y') : '-' }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="9" style="text-align: center;">Aucune oeuvre associée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

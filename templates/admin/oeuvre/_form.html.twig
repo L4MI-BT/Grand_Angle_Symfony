@@ -39,10 +39,10 @@
     </div>
 
     {# NUMERO IDENTIFICATION #}
-    <div class="mb-3">
-        {{ form_label(form.numeroIdentification, 'Numéro d\'identification', {'label_attr': {'class': 'form-label text-white'}}) }}
-        {{ form_widget(form.numeroIdentification, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
-    </div>
+<div class="mb-3">
+    {{ form_label(form.numeroIdentification, 'Numéro d\'identification', {'label_attr': {'class': 'form-label text-white'}}) }}
+    {{ form_widget(form.numeroIdentification, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+</div>
 
     {# DATES LIVRAISON #}
     <div class="row mb-3">
@@ -68,6 +68,12 @@
         {{ form_widget(form.exposition, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
     </div>
 
+    {# ESPACE (filtre) #}
+    <div class="mb-3">
+        {{ form_label(form.espaceFilter, 'Espace', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.espaceFilter, {'attr': {'class': 'form-select bg-dark text-white border-secondary'}}) }}
+    </div>
+    
     {# EMPLACEMENT #}
     <div class="mb-3">
         {{ form_label(form.emplacement, 'Emplacement', {'label_attr': {'class': 'form-label text-white'}}) }}
@@ -85,12 +91,61 @@
         <a href="{{ path('app_admin_oeuvre_index') }}" class="btn btn-outline-danger">
             <i class="bi bi-arrow-left"></i> Retour
         </a>
-        <a href="{{ path('app_admin_oeuvre_traductions', {'id': oeuvre.id}) }}" class="btn btn-outline-info">
-            <i class="bi bi-translate"></i> Traduction
-        </a>
         <button type="submit" class="btn btn-success">
             <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
         </button>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const expoSelect = document.querySelector('#oeuvre_exposition');
+            const espaceSelect = document.querySelector('#oeuvre_espaceFilter');
+            const emplacementSelect = document.querySelector('#oeuvre_emplacement');
+
+            // Quand on change l'exposition
+            expoSelect.addEventListener('change', function() {
+                const expoId = this.value;
+
+                // Vider espace et emplacement
+                espaceSelect.innerHTML = '<option value="">-- Sélectionner un espace --</option>';
+                emplacementSelect.innerHTML = '<option value="">-- Sélectionner un emplacement --</option>';
+
+                if (expoId) {
+                    fetch('/admin/emplacement/espaces-par-exposition/' + expoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(function(espace) {
+                                const option = document.createElement('option');
+                                option.value = espace.id;
+                                option.textContent = espace.label;
+                                espaceSelect.appendChild(option);
+                            });
+                        });
+                }
+            });
+
+            // Quand on change l'espace
+            espaceSelect.addEventListener('change', function() {
+                const espaceId = this.value;
+                const expoId = expoSelect.value;
+
+                // Vider emplacement
+                emplacementSelect.innerHTML = '<option value="">-- Sélectionner un emplacement --</option>';
+
+                if (espaceId && expoId) {
+                    fetch('/admin/emplacement/par-exposition-et-espace/' + expoId + '/' + espaceId)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(function(emplacement) {
+                                const option = document.createElement('option');
+                                option.value = emplacement.id;
+                                option.textContent = emplacement.label;
+                                emplacementSelect.appendChild(option);
+                            });
+                        });
+                }
+            });
+        });
+    </script>
 
 {{ form_end(form) }}

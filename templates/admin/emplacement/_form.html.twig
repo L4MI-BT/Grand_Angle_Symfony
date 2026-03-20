@@ -11,10 +11,12 @@
         <div class="col-md-6">
             {{ form_label(form.positionX, 'Position X (mètres)', {'label_attr': {'class': 'form-label text-white'}}) }}
             {{ form_widget(form.positionX, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+            <small class="text-secondary">Distance depuis le mur gauche de l'espace</small>
         </div>
         <div class="col-md-6">
             {{ form_label(form.positionY, 'Position Y (mètres)', {'label_attr': {'class': 'form-label text-white'}}) }}
             {{ form_widget(form.positionY, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+            <small class="text-secondary">Distance depuis le mur haut de l'espace</small>
         </div>
     </div>
 
