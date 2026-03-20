@@ -7,6 +7,7 @@ use App\Form\EmplacementType;
 use App\Repository\EmplacementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -66,6 +67,43 @@ final class EmplacementController extends AbstractController
             'emplacement' => $emplacement,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/espaces-par-exposition/{expoId}', name: 'app_admin_emplacement_espaces_par_exposition', methods: ['GET'])]
+    public function espacesByExposition(int $expoId,EmplacementRepository $emplacementRepository
+    ): JsonResponse 
+    {
+        $emplacements = $emplacementRepository->findBy(['exposition' => $expoId]);
+        
+        $espaces = [];
+        foreach ($emplacements as $emplacement) {
+            $espace = $emplacement->getEspace();
+            if (!isset($espaces[$espace->getId()])) {
+                $espaces[$espace->getId()] = [
+                    'id' => $espace->getId(),
+                    'label' => $espace->getNomEspace(),
+                ];
+            }
+        }
+
+        return new JsonResponse(array_values($espaces));
+    }
+    #[Route('/par-exposition-et-espace/{expoId}/{espaceId}', name: 'app_admin_emplacement_by_espace_by_expo', methods: ['GET'])]
+    public function emplacementByEspaceByExpo(int $expoId, int $espaceId,EmplacementRepository $emplacementRepository): JsonResponse 
+    {
+        $emplacements = $emplacementRepository->findBy([
+            'exposition' => $expoId,
+            'espace' => $espaceId
+        ]);
+        
+        $data = array_map(function($emplacement) {
+            return [
+                'id' => $emplacement->getId(),
+                'label' => $emplacement->getDescription() ?? 'Emplacement #'.$emplacement->getId(),
+            ];
+        }, $emplacements);
+
+        return new JsonResponse($data);
     }
 
     #[Route('/{id}', name: 'app_admin_emplacement_delete', methods: ['POST'])]

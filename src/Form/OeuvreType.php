@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Artiste;
+use App\Entity\Espace;
 use App\Entity\Emplacement;
 use App\Entity\Employe;
 use App\Entity\Exposition;
@@ -61,6 +62,14 @@ class OeuvreType extends AbstractType
                 'class' => Exposition::class,
                 'choice_label' => 'titre',
                 'required' => false,
+            ])
+            ->add('espaceFilter', EntityType::class, [
+                'class' => Espace::class,
+                'choice_label' => 'nomEspace',
+                'required' => false,
+                'mapped' => false,
+                'label' => 'Espace',
+                'placeholder' => '-- Sélectionner un espace --',
             ])
             ->add('emplacement', EntityType::class, [
                 'class' => Emplacement::class,
