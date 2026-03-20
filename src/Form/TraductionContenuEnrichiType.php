@@ -27,10 +27,6 @@ class TraductionContenuEnrichiType extends AbstractType
             ->add('ordreAffichage', null, [
                 'required' => false,
             ])
-            ->add('langue', EntityType::class, [
-                'class' => Langue::class,
-                'choice_label' => 'nom',
-            ])
             ->add('employe', EntityType::class, [
                 'class' => Employe::class,
                 'choice_label' => function(Employe $employe) {

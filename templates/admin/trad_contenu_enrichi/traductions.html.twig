@@ -1,0 +1,74 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block title %}Contenu enrichi - {{ contenus.oeuvre.titre }}{% endblock %}
+
+{% block main %}
+<div class="container-fluid py-4">
+
+    {# HEADER #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-white">Contenu enrichi - {{ contenus.oeuvre.titre }}</h1>
+        <a href="{{ path('app_admin_oeuvre_show', {'id': contenus.oeuvre.id}) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à l'oeuvre
+        </a>
+    </div>
+
+    {# CONTENUS ENRICHIS #}
+    {% if contenus is empty %}
+        <div class="alert alert-warning">
+            Aucun contenu enrichi pour cette oeuvre.
+            <a href="{{ path('app_admin_contenu_enrichi_new') }}" class="btn btn-success btn-sm ms-3">
+                <i class="bi bi-plus-circle"></i> Ajouter un contenu
+            </a>
+        </div>
+    {% else %}
+
+        <div class="card bg-dark border-secondary mb-4">
+            <div class="card-body">
+                <h5 class="text-white mb-3">Texte original (FR)</h5>
+                <p class="text-white">{{ contenus.description ?? 'Aucune description' }}</p>
+                {% if contenus.urlAcces %}
+                    <span class="text-secondary ms-3 small">{{ contenus.urlAcces }}</span>
+                {% endif %}
+            </div>
+        </div>
+    
+        <div class="row">
+            {% for langue in langues %}
+                {% if langue.code != 'FR' %}
+                    {% set traduction = null %}
+                    {% for trad in contenus.traductions %}
+                        {% if trad.langue.id == langue.id %}
+                            {% set traduction = trad %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-header d-flex align-items-center">
+                                <img src="{{ asset("styles/#{langue.img}") }}" width="24" class="me-2" alt="{{ langue.nom }}">
+                                <span class="text-white">{{ langue.nom }}</span>
+                            </div>
+                            <div class="card-body">
+                                {% if traduction %}
+                                    <p class="text-secondary small mb-1">Traduction</p>
+                                    <p class="text-white">{{ traduction.traductionTexte ?? 'Pas de texte' }}</p>
+                                    <a href="{{ path('app_admin_contenu_enrichi_traduction_edit', {'id': contenus.id, 'langueCode': langue.code}) }}" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                {% else %}
+                                    <p class="text-secondary fst-italic">Pas encore traduit</p>
+                                    <a href="{{ path('app_admin_contenu_enrichi_traduction_new', {'id': contenus.id, 'langueCode': langue.code}) }}" class="btn btn-sm btn-outline-success">
+                                        <i class="bi bi-plus-circle"></i> Ajouter
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -30,8 +30,13 @@ final class TradArtisteController extends AbstractController
 
     
     #[Route('/{id}/ajouter/{langueCode}', name: 'app_admin_artiste_traduction_new', methods: ['GET', 'POST'])]
-    public function ajouterTraduction(Request $request, Artiste $artiste, string $langueCode,
-        LangueRepository $langueRepository, EntityManagerInterface $entityManager): Response
+    public function ajouterTraduction(
+        Request $request,
+        Artiste $artiste,
+        string $langueCode,
+        LangueRepository $langueRepository,
+        EntityManagerInterface $entityManager
+        ): Response
     {
         $langue = $langueRepository->findOneBy(['code' => $langueCode]);
 
