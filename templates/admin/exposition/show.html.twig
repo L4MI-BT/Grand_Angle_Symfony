@@ -250,14 +250,13 @@
                                 {% set px = (emplacement.positionX * 100) %}
                                 {% set py = (emplacement.positionY * 100) %}
                                 <a href="{{ path('app_admin_oeuvre_show', {'id': oeuvre.id}) }}">
-                                    <rect x="{{ px - 15 }}" y="{{ py - 15 }}" 
-                                        width="30" height="30" 
+                                    <rect x="{{ px - 18 }}" y="{{ py - 18 }}" 
+                                        width="36" height="36" 
                                         fill="#0dcaf0" stroke="#fff" stroke-width="1" 
                                         rx="4"/>
                                     <text x="{{ px }}" y="{{ py + 5 }}" 
                                         fill="#000" font-size="12" 
-                                        text-anchor="middle" font-weight="bold">
-                                        {{ oeuvre.numeroIdentification ?? '?' }}
+                                        text-anchor="middle" font-weight="bold">#{{ oeuvre.numeroIdentification ?? '?' }}
                                     </text>
                                 </a>
                             {% endfor %}

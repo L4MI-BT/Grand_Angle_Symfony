@@ -28,7 +28,7 @@ class OeuvreType extends AbstractType
                 'required' => false,
             ])
             ->add('technique', null, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('anneeCreation', null, [
                 'required' => false,

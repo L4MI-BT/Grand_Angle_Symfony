@@ -120,6 +120,10 @@ final class EmplacementController extends AbstractController
     public function delete(Request $request, Emplacement $emplacement, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$emplacement->getId(), $request->getPayload()->getString('_token'))) {
+            // Délier les oeuvres avant suppression
+            foreach ($emplacement->getOeuvres() as $oeuvre) {
+                $oeuvre->setEmplacement(null);
+            }
             $entityManager->remove($emplacement);
             $entityManager->flush();
         }

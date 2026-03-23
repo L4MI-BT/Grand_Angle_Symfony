@@ -1,4 +1,14 @@
-<form method="post" action="{{ path('app_admin_oeuvre_delete', {'id': oeuvre.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ oeuvre.id) }}">
-    <button class="btn">Delete</button>
-</form>
+{% if oeuvre.contenuEnrichis is empty and oeuvre.consultations is empty %}
+    <form method="post" action="{{ path('app_admin_oeuvre_delete', {'id': oeuvre.id}) }}" 
+        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette œuvre ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ oeuvre.id) }}">
+        <button class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Supprimer l'œuvre
+        </button>
+    </form>
+{% else %}
+    <button class="btn btn-outline-danger" disabled title="Impossible de supprimer : cette œuvre a des données associées">
+        <i class="bi bi-trash"></i> Supprimer l'œuvre
+    </button>
+    <small class="text-secondary ms-2">Suppression impossible : contenus enrichis ou consultations associés</small>
+{% endif %}
