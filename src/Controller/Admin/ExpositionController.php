@@ -4,9 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Exposition;
 use App\Form\ExpositionType;
-use App\Entity\TraductionExpo;
-use App\Form\TraductionExpoType;
-use App\Repository\LangueRepository;
 use App\Repository\EmplacementRepository;
 use App\Repository\ExpositionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -88,8 +85,7 @@ final class ExpositionController extends AbstractController
         }
 
         // Gestion des étapes séparément
-        if ($request->isMethod('POST') && $request->request->has('etapes') || 
-            $request->isMethod('POST') && !$form->isSubmitted()) {
+        if ($request->isMethod('POST') && $request->request->has('etapes') || $request->isMethod('POST') && !$form->isSubmitted()) {
             
             $etapesData = $request->request->all('etapes') ?? [];
             foreach ($exposition->getEtapes() as $etape) {
@@ -106,7 +102,7 @@ final class ExpositionController extends AbstractController
         ]);
     }
     
-    //Gestion des impressions des oeuvres par expo 
+    //Gestion des impressions des oeuvres par expo
     #[Route('/{id}/impression', name: 'app_admin_exposition_impression', methods: ['GET'])]
     public function impression(Exposition $exposition): Response
     {
