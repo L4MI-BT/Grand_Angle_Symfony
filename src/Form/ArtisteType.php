@@ -23,7 +23,11 @@ class ArtisteType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false,
             ])
-            // ->add('image')
+            ->add('image', null, [
+                'required' => false,
+                'label' => 'Nom du fichier image',
+                'help' => 'Ex: images/monimage.jpg',
+            ])
             ->add('employe', EntityType::class, [
                 'class' => Employe::class,
                 'choice_label' => function(Employe $employe) {

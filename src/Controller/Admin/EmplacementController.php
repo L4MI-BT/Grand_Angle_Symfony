@@ -69,6 +69,10 @@ final class EmplacementController extends AbstractController
         ]);
     }
 
+    /**
+     * Retourne les espaces disponibles pour une exposition donnée
+     * Utilisé par le JavaScript pour remplir le dropdown espace en cascade
+     */
     #[Route('/espaces-par-exposition/{expoId}', name: 'app_admin_emplacement_espaces_par_exposition', methods: ['GET'])]
     public function espacesByExposition(int $expoId,EmplacementRepository $emplacementRepository
     ): JsonResponse 
@@ -88,6 +92,12 @@ final class EmplacementController extends AbstractController
 
         return new JsonResponse(array_values($espaces));
     }
+
+    /**
+     * Retourne les emplacements disponibles pour une exposition et un espace donnés
+     * Utilisé par le JavaScript pour remplir le dropdown emplacement en cascade
+     * après la sélection de l'exposition et de l'espace dans le formulaire oeuvre
+     */
     #[Route('/par-exposition-et-espace/{expoId}/{espaceId}', name: 'app_admin_emplacement_by_espace_by_expo', methods: ['GET'])]
     public function emplacementByEspaceByExpo(int $expoId, int $espaceId,EmplacementRepository $emplacementRepository): JsonResponse 
     {

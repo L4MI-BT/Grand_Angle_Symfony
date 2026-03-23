@@ -58,6 +58,11 @@ class OeuvreType extends AbstractType
                     return $artiste->getPrenom().' '.$artiste->getNom();
                 },
             ])
+            ->add('image', null, [
+                'required' => false,
+                'label' => 'Nom du fichier image',
+                'help' => 'Ex: images/monimage.jpg',
+            ])
             ->add('exposition', EntityType::class, [
                 'class' => Exposition::class,
                 'choice_label' => 'titre',

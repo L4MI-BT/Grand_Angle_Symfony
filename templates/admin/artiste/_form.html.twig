@@ -24,6 +24,13 @@
         {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark text-white border-secondary', 'rows': '4'}}) }}
     </div>
 
+    {# IMAGE #}
+    <div class="mb-3">
+        {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.image, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        <small class="text-secondary">Ex: images/monimage.jpg (fichier à placer dans assets/styles/)</small>
+    </div>
+
     {# EMPLOYE #}
     <div class="mb-4">
         {{ form_label(form.employe, 'Responsable', {'label_attr': {'class': 'form-label text-white'}}) }}

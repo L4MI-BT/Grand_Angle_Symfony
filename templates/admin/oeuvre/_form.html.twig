@@ -18,6 +18,13 @@
         {{ form_widget(form.technique, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
     </div>
 
+    {# IMAGE #}
+    <div class="mb-3">
+        {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label text-white'}}) }}
+        {{ form_widget(form.image, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+        <small class="text-secondary">Ex: images/monimage.jpg (fichier à placer dans assets/styles/)</small>
+    </div>
+    
     {# ANNÉE + DIMENSIONS #}
     <div class="row mb-3">
         <div class="col-md-3">
