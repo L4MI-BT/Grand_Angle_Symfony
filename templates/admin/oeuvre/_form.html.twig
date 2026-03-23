@@ -15,6 +15,9 @@
     {# TECHNIQUE #}
     <div class="mb-3">
         {{ form_label(form.technique, 'Technique', {'label_attr': {'class': 'form-label text-white'}}) }}
+        <label class="form-label text-white">
+            <span style="color: #dc3545;" title="Champ obligatoire">*</span>
+        </label>
         {{ form_widget(form.technique, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
     </div>
 
@@ -105,9 +108,11 @@
         <a href="{{ path('app_admin_oeuvre_index') }}" class="btn btn-outline-danger">
             <i class="bi bi-arrow-left"></i> Retour
         </a>
-        <a href="{{ path('app_admin_oeuvre_traductions', {'id': oeuvre.id}) }}" class="btn btn-outline-info">
-            <i class="bi bi-translate"></i> Traduction
-        </a>
+        {% if oeuvre.id %}
+            <a href="{{ path('app_admin_oeuvre_traductions', {'id': oeuvre.id}) }}" class="btn btn-outline-info">
+                <i class="bi bi-translate"></i> Traduction
+            </a>
+        {% endif %}
         <button type="submit" class="btn btn-success">
             <i class="bi bi-check-circle"></i> {{ button_label|default('Valider') }}
         </button>
