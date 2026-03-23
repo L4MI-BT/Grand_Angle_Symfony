@@ -41,13 +41,72 @@
     </div>
     
     {# ========== PLAN DE L'EXPOSITION ========== #}
-    <div class="card mb-5 shadow-sm border-vert-sapin" style="display: none">
-        <div class="card-body text-center">
-            <h2 class="mb-4">Plan de l'exposition</h2>
-            {# Remplace par le vrai chemin de ton plan #}
-            <img src="/images/plan-exposition.jpg" class="img-fluid rounded" alt="Plan de l'exposition" style="max-height: 400px;">
+    {% if emplacements is not empty %}
+    <div class="card mb-5 shadow-sm border-vert-sapin">
+        <div class="card-body">
+            <h2 class="mb-4 text-center">Plan de l'exposition</h2>
+            
+            {# LEGENDE #}
+            <div class="row mb-3">
+                {% for emplacement in emplacements %}
+                    {% if emplacement.oeuvres is not empty %}
+                        {% for oeuvre in emplacement.oeuvres %}
+                        <div class="col-md-3 mb-2">
+                            <span class="badge bg-success me-2">{{ oeuvre.numeroIdentification ?? '?' }}</span>
+                            <span>{{ oeuvre.titre }}</span>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {# PLAN SVG #}
+            <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="width: 100%; border-radius: 8px; background-color: #f8f9fa;">
+
+                {# BATIMENT PRINCIPAL #}
+                <rect x="20" y="20" width="860" height="460" fill="none" stroke="#2d6a4f" stroke-width="3"/>
+
+                {# HALL PRINCIPAL #}
+                <rect x="620" y="20" width="260" height="460" fill="#e8f5e9" stroke="#2d6a4f" stroke-width="2"/>
+                <text x="750" y="260" fill="#2d6a4f" font-size="14" text-anchor="middle">Hall Principal</text>
+
+                {# ESPACE 2 (nord-est) #}
+                <rect x="320" y="20" width="300" height="220" fill="#e8f5e9" stroke="#2d6a4f" stroke-width="2"/>
+                <text x="470" y="120" fill="#2d6a4f" font-size="14" text-anchor="middle">Espace 2</text>
+
+                {# ESPACE 1 (sud-est) #}
+                <rect x="320" y="260" width="300" height="220" fill="#e8f5e9" stroke="#2d6a4f" stroke-width="2"/>
+                <text x="470" y="380" fill="#2d6a4f" font-size="14" text-anchor="middle">Espace 1</text>
+
+                {# ESPACE 3 (ouest) #}
+                <rect x="20" y="20" width="300" height="460" fill="#e8f5e9" stroke="#2d6a4f" stroke-width="2"/>
+                <text x="170" y="260" fill="#2d6a4f" font-size="14" text-anchor="middle">Espace 3</text>
+
+                {# EMPLACEMENTS ET OEUVRES #}
+                {% for emplacement in emplacements %}
+                    {% if emplacement.oeuvres is not empty %}
+                        {% for oeuvre in emplacement.oeuvres %}
+                            {% set px = (emplacement.positionX * 100) %}
+                            {% set py = (emplacement.positionY * 100) %}
+                            <a href="{{ path('oeuvre_show', {'id': oeuvre.id}) }}">
+                                <rect x="{{ px - 15 }}" y="{{ py - 15 }}" 
+                                    width="30" height="30" 
+                                    fill="#2d6a4f" stroke="#fff" stroke-width="1" 
+                                    rx="4"/>
+                                <text x="{{ px }}" y="{{ py + 5 }}" 
+                                    fill="#fff" font-size="12" 
+                                    text-anchor="middle" font-weight="bold">
+                                    {{ oeuvre.numeroIdentification ?? '?' }}
+                                </text>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+
+            </svg>
         </div>
     </div>
+    {% endif %}
     
     {# ========== ARTISTES ========== #}
     <div class="mb-5">

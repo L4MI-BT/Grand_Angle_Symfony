@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ExpositionRepository;
 use App\Repository\OeuvreRepository;
 use App\Repository\ArtisteRepository;
+use App\Repository\EmplacementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ class ExpositionController extends AbstractController
         ExpositionRepository $expositionRepository,
         OeuvreRepository $oeuvreRepository,
         ArtisteRepository $artisteRepository,
+        EmplacementRepository $emplacementRepository,
         EntityManagerInterface $em
     ): Response {
         $exposition = $expositionRepository->findCurrent();
@@ -25,6 +27,7 @@ class ExpositionController extends AbstractController
             return $this->render('public/exposition/no_current.html.twig');
         }
         
+        $emplacements = $emplacementRepository->findBy(['exposition' => $exposition]);
         $oeuvres = $oeuvreRepository->findByExposition($exposition->getId());
         
         // Récupérer les artistes de cette exposition
@@ -45,6 +48,7 @@ class ExpositionController extends AbstractController
             'oeuvres' => $oeuvres,
             'artistes' => $artistes,
             'horaires' => $horaires,
+            'emplacements' => $emplacements,
         ]);
     }
 }
