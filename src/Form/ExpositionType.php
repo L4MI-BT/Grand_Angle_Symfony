@@ -8,9 +8,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ExpositionType extends AbstractType
 {
@@ -31,7 +33,18 @@ class ExpositionType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false,
             ])
-            // ->add('image')
+            ->add('image', FileType::class, [
+                'required' => false,
+                'label' => 'Nom du fichier image',
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+                        'mimeTypesMessage' => 'Veuillez uploader une image valide (JPG, PNG, WEBP)',
+                        ])
+                ]
+            ])
             ->add('modulePublicActif', CheckboxType::class, [
                 'label' => 'Activer le module public',
                 'required' => false,
