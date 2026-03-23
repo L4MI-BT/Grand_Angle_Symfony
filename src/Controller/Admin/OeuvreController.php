@@ -63,6 +63,14 @@ final class OeuvreController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $ancienneImage = $oeuvre->getImage();
+            if ($ancienneImage) {
+                $cheminAncienne = $this->getParameter('images_directory') . '/' . basename($ancienneImage);
+                if (file_exists($cheminAncienne)) {
+                    unlink($cheminAncienne);
+                }
+            }
+
             $image = $form->get('image')->getData();
             if ($image) {
                 $nouveauNom = 'images/'.uniqid() . '.' . $image->guessExtension();
