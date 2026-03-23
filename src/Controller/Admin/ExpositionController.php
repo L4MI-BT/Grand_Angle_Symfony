@@ -34,6 +34,12 @@ final class ExpositionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $nouveauNom = 'images/'.uniqid() . '.' . $image->guessExtension();
+                $image->move($this->getParameter('images_directory'),$nouveauNom);
+                $exposition->setImage($nouveauNom);
+            }
             $entityManager->persist($exposition);
             $entityManager->flush();
 
@@ -63,6 +69,12 @@ final class ExpositionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $nouveauNom = 'images/'.uniqid() . '.' . $image->guessExtension();
+                $image->move($this->getParameter('images_directory'),$nouveauNom);
+                $exposition->setImage($nouveauNom);
+            }
             $entityManager->flush();
             return $this->redirectToRoute('app_admin_exposition_index', [], Response::HTTP_SEE_OTHER);
         }

@@ -30,6 +30,12 @@ final class OeuvreController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $nouveauNom = 'images/'.uniqid() . '.' . $image->guessExtension();
+                $image->move($this->getParameter('images_directory'),$nouveauNom);
+                $oeuvre->setImage($nouveauNom);
+            }
             $entityManager->persist($oeuvre);
             $entityManager->flush();
 
@@ -57,6 +63,12 @@ final class OeuvreController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $nouveauNom = 'images/'.uniqid() . '.' . $image->guessExtension();
+                $image->move($this->getParameter('images_directory'),$nouveauNom);
+                $oeuvre->setImage($nouveauNom);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_oeuvre_index', [], Response::HTTP_SEE_OTHER);

@@ -48,6 +48,20 @@
         {{ form_label(form.modulePublicActif, 'Activer le module public', {'label_attr': {'class': 'form-check-label text-white'}}) }}
     </div>
 
+    {# IMAGES #}
+    <div class="mb-3">
+        {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label text-white'}}) }}
+        
+        {% if exposition.image %}
+            <img src="{{ asset("styles/#{exposition.image}") }}" width="150" class="d-block mb-2 rounded" alt="{{exposition.titre}}">
+            <small class="text-muted d-block mb-2">Image actuelle — laisser vide pour la conserver</small>
+        {% else %}
+            <small class="text-muted d-block mb-2">Aucune image pour le moment</small>
+        {% endif %}
+
+        {{ form_widget(form.image, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
+    </div>
+
     {# BOUTONS #}
     <div class="d-flex justify-content-between">
         <a href="{{ path('app_admin_exposition_index') }}" class="btn btn-outline-danger">

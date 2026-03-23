@@ -27,8 +27,15 @@
     {# IMAGE #}
     <div class="mb-3">
         {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label text-white'}}) }}
+        
+        {% if artiste.image %}
+            <img src="{{ asset("styles/#{artiste.image}") }}" width="150" class="d-block mb-2 rounded" alt="{{artiste.nom}}">
+            <small class="text-muted d-block mb-2">Image actuelle — laisser vide pour la conserver</small>
+        {% else %}
+            <small class="text-muted d-block mb-2">Aucune image pour le moment</small>
+        {% endif %}
+
         {{ form_widget(form.image, {'attr': {'class': 'form-control bg-dark text-white border-secondary'}}) }}
-        <small class="text-secondary">Ex: images/monimage.jpg (fichier à placer dans assets/styles/)</small>
     </div>
 
     {# EMPLOYE #}
